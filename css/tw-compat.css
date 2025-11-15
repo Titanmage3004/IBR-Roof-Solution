@@ -1,0 +1,39 @@
+/* Compatibility helpers to provide a small set of responsive utility classes
+   when the built Tailwind output is missing some responsive variants.
+   These mirror the Tailwind responsive utilities used in the HTML (sm:, md:, lg:)
+   so the layout responds correctly on desktop and mobile without using the CDN.
+*/
+
+/* Small (sm) breakpoint: min-width 640px */
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sm\:flex { display: flex; }
+  .sm\:grid { display: grid; }
+}
+
+/* Medium (md) breakpoint: min-width 768px */
+@media (min-width: 768px) {
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .md\:flex { display: flex; }
+  .md\:grid { display: grid; }
+  .md\:items-center { align-items: center; }
+  .md\:items-start { align-items: flex-start; }
+}
+
+/* Large (lg) breakpoint: min-width 1024px */
+@media (min-width: 1024px) {
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lg\:flex { display: flex; }
+  .lg\:grid { display: grid; }
+  .lg\:items-center { align-items: center; }
+}
+
+/* Utility helpers for gap/grid display when needed */
+.gap-8 { gap: 2rem; }
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
