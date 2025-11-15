@@ -960,6 +960,18 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   }
 }
 
+  /* Helper style for nav animation clones */
+  .nav-anim-clone{
+    position:fixed;
+    z-index:9999;
+    pointer-events:none;
+    will-change:transform, opacity;
+    transition:transform .8s cubic-bezier(.2,.8,.2,1), opacity .45s ease;
+    opacity:0.98;
+  }
+
+  .nav-anim-pop{ transform: scale(1.02); transition: transform .18s ease; }
+
 /* Page load animations
    - Elements marked with .will-animate start slightly translated and transparent.
    - When the document body receives the .loaded class they transition in with
