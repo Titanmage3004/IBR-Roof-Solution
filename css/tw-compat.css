@@ -78,6 +78,18 @@
 .min-h-screen { min-height: 100vh; }
 .flex-grow { flex-grow: 1; }
 
+/* Common spacing utilities used in HTML (fallbacks when Tailwind utilities are missing) */
+.h-28 { height: 7rem !important; }
+.px-6 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+.px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.py-12 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+.py-8 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+.mt-12 { margin-top: 3rem !important; }
+.mt-8 { margin-top: 2rem !important; }
+.w-8 { width: 2rem !important; }
+.h-8 { height: 2rem !important; }
+
+
 /* Simple responsive tweaks for lg: variants (increase font-size on larger screens) */
 @media (min-width: 1024px) {
   .lg\:text-6xl { font-size: 3.75rem; }
