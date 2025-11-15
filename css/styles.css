@@ -32,13 +32,21 @@ nav .logo{position:relative}
    size depending on the build. We prefer a fixed, responsive height for the
    logo so it matches the visual reference. This rule uses higher specificity
    and `max-height` to prevent the logo becoming oversized. */
-header .logo img{ height:46px !important; max-height:56px; width:auto !important; display:block }
+/* Make header logo slightly larger to match the embedded text inside the SVG.
+   We use higher specificity and !important to override utility classes like h-14. */
+header .logo img{ height:60px !important; max-height:72px; width:auto !important; display:block }
 
 @media (max-width:640px){
-  header .logo img{ height:44px !important; max-height:48px }
+  /* Slightly reduced size on small screens so the header remains balanced */
+  header .logo img{ height:54px !important; max-height:60px }
 }
+/* Small caption under the centered header logo (matches footer small style) */
+/* header caption removed — logo SVG already contains the caption text */
 
 
+
+/* model-viewer fallback sizing (if still present) */
+model-viewer{display:block}
 /* model-viewer fallback sizing (if still present) */
 model-viewer{display:block}
 
@@ -46,6 +54,71 @@ model-viewer{display:block}
   .logo img{height:44px}
   .pill-btn{padding:.45rem .8rem}
   .btn-primary,.btn-outline{padding:.6rem 1rem}
+}
+
+/* Improve hero scaling on small screens so the logo, headline and images
+   remain balanced and don't overwhelm the viewport. This reduces the
+   logo size, headline font-size, paragraph text size, and hero image widths
+   on narrow viewports. It also removes the horizontal translate applied to
+   the visual column so the stack centers under the copy. */
+@media (max-width:768px){
+  .hero-top-logo{ width:160px !important; max-width:60%; }
+  /* target the headline directly when it follows the hero-top-logo */
+  .hero-top-logo + h1{ font-size:2rem !important; line-height:1.08 !important; margin-top:0.25rem }
+  /* slightly smaller paragraph for better wrap */
+  .hero-top-logo + h1 + p{ font-size:0.95rem !important; max-width:20rem }
+
+  /* center the visual column and reduce sizes so it doesn't push horizontal scroll */
+  .hero-visual-column{ transform:none !important; gap:0.6rem !important; padding-top:0.5rem }
+  .hero-prod-item{ width:9.5rem !important }
+  .hero-prod-wrap::after{ bottom:-0.35rem; width:48%; height:0.45rem; filter: blur(4px) }
+
+  /* reduce overall hero spacing to keep the fold tight on phones */
+  main.container{ padding-top:1.25rem; padding-bottom:1.25rem }
+}
+
+/* Header & footer: mobile-friendly scaling without affecting desktop
+   - reduce header height, use fluid logo width, compact nav spacing
+   - keep pill buttons tappable but visually lighter
+   - enlarge footer touch targets and stack footer columns
+   These rules are intentionally scoped to <=768px so desktop layouts remain unchanged. */
+@media (max-width:768px){
+  /* Make the nav row auto-size and reduce its vertical footprint */
+  header .nav-grid{ height:auto !important; min-height:56px; align-items:center; padding-top:6px; padding-bottom:6px }
+
+  /* Fluid logo sizing: keep it legible but not dominant */
+  /* On mobile keep the logo left-aligned and nudge it further left using transform
+    (negative X translation moves it left; scoped to mobile only). */
+  header .logo{ justify-self:start; padding-left:0; transform:translateX(-40px) }
+  header .logo img{ width:140px !important; max-width:56%; height:auto !important; display:block; margin:0 }
+
+  /* Compact nav groups: remove large side gaps and allow pill buttons to remain readable */
+  .nav-grid .nav-left, .nav-grid .nav-right{ gap:1rem !important; margin-left:0 !important; margin-right:0 !important }
+
+  /* Pill buttons: keep vertical padding for touch, reduce horizontal bulk */
+  .pill-btn{ padding: .55rem .9rem !important; font-size:1rem; border-radius:10px }
+
+  /* Ensure the mobile hamburger is easy to tap */
+  .mobile-toggle{ padding:.5rem !important }
+  .mobile-toggle svg{ width:30px; height:30px }
+
+  /* Mobile menu links: larger tappable area */
+  .mobile-nav-link{ padding:.75rem 1rem; font-size:1rem; border-radius:10px }
+
+  /* Footer: stack columns, center content and enlarge touch targets */
+  footer.site-footer .footer-row{ flex-direction:column; align-items:center; gap:14px }
+  footer.site-footer .footer-left, footer.site-footer .footer-center, footer.site-footer .footer-right{ width:100%; text-align:center }
+  footer.site-footer .social-icons{ justify-content:center }
+
+  /* Larger social icons for easier tapping */
+  .social-icon, .small-social{ width:44px; height:44px }
+  .social-icon img, .small-social img{ width:28px; height:28px }
+
+  /* Slightly more breathing room in the footer on mobile */
+  footer.site-footer .container{ padding-top:18px !important; padding-bottom:18px !important }
+
+  /* Keep the centered footer logo from being too large */
+  footer.site-footer .footer-center img{ height:40px; max-width:60% }
 }
 
 /* Footer small tweaks */
@@ -170,7 +243,18 @@ footer a{transition:color .15s}
 }
 
 /* Slightly lift the stack so the shadows sit comfortably below the items */
-.hero-visual-column{transform: translateY(-0.5rem)}
+.hero-visual-column{transform: translate(24px, -0.5rem)}
+
+/* Large logo used in the hero area (centered above the main H1). This
+   uses a fluid width so the logo remains large on desktop but fits on
+   smaller screens. Adjust values if you'd like it bigger/smaller. */
+.hero-top-logo{display:block;margin:0 auto 1rem;width:220px;max-width:80%;height:auto;object-fit:contain}
+@media (min-width:768px){
+  .hero-top-logo{width:360px}
+}
+@media (min-width:1100px){
+  .hero-top-logo{width:420px}
+}
 
 /* Title centered, uppercase, bold and blue with subtle 3D feel */
 .product-card .product-title{
@@ -297,7 +381,9 @@ footer a{transition:color .15s}
 /* Site footer layout to match reference */
 footer.site-footer{background:#f3f5f7;border-top:1px solid rgba(0,0,0,0.06)}
 /* make the footer content slightly narrower than the main container to match reference */
-footer.site-footer .container{ max-width:940px; margin-left:auto; margin-right:auto }
+/* Make footer container use the same max width as the main content container so
+  left/right edges align with header and hero content. */
+footer.site-footer .container{ max-width:1180px; margin-left:auto; margin-right:auto; padding-top:20px !important; padding-bottom:20px !important }
 footer.site-footer .footer-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
 footer.site-footer .footer-left, footer.site-footer .footer-center, footer.site-footer .footer-right{flex:1}
 footer.site-footer .footer-left{display:flex;flex-direction:column;align-items:flex-start}
@@ -457,7 +543,7 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 @media (max-width:800px){.two-col{flex-direction:column}.two-col .left{flex:0 0 auto;width:100%}}
 
 /* Navigation grid to center logo and distribute side buttons */
-.nav-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 48px}
+.nav-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0}
 /* larger gap on desktop so buttons are spaced farther apart */
 .nav-grid .nav-left{justify-self:end;display:flex;gap:9rem;align-items:center; margin-right:9rem}
 .nav-grid .nav-right{justify-self:start;display:flex;gap:9rem;align-items:center; margin-left:9rem}
@@ -482,7 +568,8 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
   .nav-grid .nav-left, .nav-grid .nav-right{gap:1.125rem}
   .nav-grid .nav-left{margin-right:1.125rem}
   .nav-grid .nav-right{margin-left:1.125rem}
-  .nav-grid .logo{justify-self:center}
+  /* On narrow screens position the logo more to the left like a home button */
+  .nav-grid .logo{justify-self:start; grid-column:1}
 }
 
 /* Mobile hamburger toggle: hidden by default, shown at <=1200px and aligned to the right */
@@ -498,6 +585,9 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
   /* mobile menu container (JS toggles .hidden) */
   #mobileMenu{display:block}
   #mobileMenu.hidden{display:none}
+  /* Increase spacing between mobile menu links for easier tapping */
+  [id^="mobileMenu"] .mobile-nav-link{ margin-bottom:20px; display:block }
+  [id^="mobileMenu"] .mobile-nav-link:last-child{ margin-bottom:0 }
 }
 
 /* Mobile menu link styles: default is white (static), active page gets brand blue */
@@ -619,8 +709,10 @@ footer a{transition:color .15s}
 footer.site-footer .pill-btn,
 header .pill-btn{ margin-bottom:0.6rem }
 
-/* Make footer a little taller so it doesn't feel squashed */
-footer.site-footer{ padding-top:1.25rem; padding-bottom:1.25rem }
+/* Reduce external gap above footer entirely and control internal spacing via
+   the footer container so we get a consistent 20px padding between the top
+   edge of the footer and its content (overrides Tailwind `mt-*` and `py-*`). */
+footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
 
 /* Contact page: improve spacing and input appearance inside the card */
 .max-w-5xl.bg-gray-100{ padding:1.25rem; }
@@ -667,7 +759,7 @@ footer.site-footer{ padding-top:1.25rem; padding-bottom:1.25rem }
 
 .max-w-5xl .left .flex.items-center.gap-3{align-items:center;gap:1rem}
 .max-w-5xl .left .small-social{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:transparent}
-.max-w-5xl .left .small-social img{width:20px;height:20px}
+.max-w-5xl .left .small-social img{width:30px;height:30px}
 
 /* Right column form inputs: full width, pill style except textarea */
 .max-w-5xl .right input[type="text"],
@@ -686,6 +778,30 @@ footer.site-footer{ padding-top:1.25rem; padding-bottom:1.25rem }
 
 /* Slightly increase spacing between left items */
 .max-w-5xl .left .mt-2{margin-top:0.5rem}
+
+/* Make the contact card stack to a single column on small screens so the
+   form and contact inputs behave like other pages. This prevents the
+   two-column layout from staying side-by-side on narrow viewports. */
+@media (max-width:768px){
+  .max-w-5xl .grid{ grid-template-columns: 1fr !important; gap:1rem }
+  /* tighten left column spacing for mobile and ensure icon rows wrap neatly */
+  .max-w-5xl .left{ padding-right:0 }
+  .max-w-5xl .left .p-3,
+  .max-w-5xl .left a[title],
+  .max-w-5xl .left input[type="text"],
+  .max-w-5xl .left input[type="email"]{
+    height:auto; padding:.75rem 0.9rem; border-radius:9999px; align-items:center
+  }
+  /* Make right column form inputs full width and ensure submit button spans container */
+  .max-w-5xl .right input[type="text"],
+  .max-w-5xl .right input[type="email"],
+  .max-w-5xl .right input[name],
+  .max-w-5xl .right .p-3,
+  .max-w-5xl .right textarea{ width:100%; height:auto; padding:.75rem; }
+  .max-w-5xl .right .btn-primary{ width:100%; max-width:none; margin:1rem 0 0; }
+  /* Ensure labels and text remain readable on small devices */
+  .max-w-5xl label{ font-size:0.95rem }
+}
 
 
 
@@ -774,5 +890,32 @@ footer.site-footer{ padding-top:1.25rem; padding-bottom:1.25rem }
   .invoice-table td:nth-child(6){grid-column:6;grid-row:2;text-align:right;font-size:0.88rem;padding:0.15rem 0.35rem}
   /* keep vertical alignment tidy */
   .invoice-table td{vertical-align:middle}
+}
+
+/* Mobile-only stacked footer: hidden by default; shown only on small viewports
+   This keeps the desktop footer (.footer-row) unchanged and provides exact
+   vertical ordering and centering on mobile devices. */
+.footer-mobile-stack{ display:none }
+
+@media (max-width:768px){
+  /* Hide the desktop footer row and reveal the mobile stack */
+  footer.site-footer .footer-row{ display:none !important }
+  footer.site-footer .container{ padding-top:12px !important; padding-bottom:12px !important }
+
+  .footer-mobile-stack{ display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; padding:14px 8px }
+  .footer-mobile-stack .pill-btn{ display:block; width:88%; max-width:420px; font-size:1.02rem; padding:.7rem 1rem; border-radius:12px }
+  .footer-mobile-stack .pill-btn + .pill-btn{ margin-top:0.4rem }
+  .footer-mobile-stack .footer-note{ margin-top:0.25rem; font-weight:700; background:#ecfdf5; border:1px solid rgba(6,95,70,0.06); color:#065f46; padding:.5rem .75rem; border-radius:10px }
+  .footer-mobile-stack .social-icons{ display:flex; gap:12px; justify-content:center; margin-top:0.25rem }
+  .footer-mobile-stack .social-icon, .footer-mobile-stack .small-social{ width:44px; height:44px; border-radius:10px }
+  .footer-mobile-stack .social-icon img, .footer-mobile-stack .small-social img{ width:28px; height:28px }
+  .footer-mobile-stack .footer-center img{ height:44px; max-width:60%; margin-top:6px }
+  .footer-mobile-stack .footer-small{ margin-top:0.25rem }
+
+  /* Improve touch targets and spacing slightly on very small screens */
+  @media (max-width:420px){
+    .footer-mobile-stack .pill-btn{ width:94% }
+    .footer-mobile-stack .social-icon, .footer-mobile-stack .small-social{ width:48px; height:48px }
+  }
 }
 
