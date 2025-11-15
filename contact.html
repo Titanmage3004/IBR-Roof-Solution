@@ -125,14 +125,9 @@
             </div>
 
             <div class="contact-actions">
-              <button type="button" id="whatsappBtn" class="pill-btn contact-btn contact-whatsapp" aria-label="Send via WhatsApp">
+              <button type="button" id="whatsappBtn" class="pill-btn contact-btn contact-whatsapp" aria-label="Submit via WhatsApp">
                 <img src="assets/Untitled design (9).svg" alt="WhatsApp icon" />
-                <span>WhatsApp me</span>
-              </button>
-
-              <button type="button" class="pill-btn contact-btn contact-email" id="emailSubmitBtn" aria-label="Send via email">
-                <img src="assets/Untitled design (12).svg" alt="Email icon" />
-                <span>Send via Email</span>
+                <span>Submit</span>
               </button>
             </div>
 
@@ -201,67 +196,40 @@
       localStorage.setItem('contacts', JSON.stringify(existing));
     }
 
-    // Helper: build a mailto: URL that includes all form fields (safe encoded)
-    function buildMailtoForData(data){
-      const subject = 'Distributor enquiry from ' + (data.name || 'website');
-      const lines = [];
-      lines.push('Name: ' + (data.name || ''));
-      lines.push('Email: ' + (data.email || ''));
-      lines.push('Phone: ' + (data.phone || ''));
-      lines.push('Preferred contact: ' + (data.preferred || ''));
-      lines.push('');
-      lines.push('Message:');
-      lines.push(data.message || '');
-
-      const body = lines.join('\n');
-      const mailto = 'mailto:' + OWNER_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      return mailto;
-    }
-
-    // Shared action used by both the form submit (Enter) and the Email button click
-    function openEmailClientWithForm(){
+    // Open WhatsApp with the form fields encoded. Used for both the button and form submit.
+    function openWhatsAppWithForm(){
       const data = Object.fromEntries(new FormData(form).entries());
       try{ saveLocally(data); }catch(err){ console.warn('local save failed', err); }
-      const mailto = buildMailtoForData(data);
-      result.textContent = "Opening your email client to send the message. Please tap Send in your mail app.";
-      result.classList.remove('hidden');
-      // Open in a new tab/window so desktop web clients (webmail) have a chance to handle it.
-      window.open(mailto, '_blank');
-      // Do NOT reset the form immediately so users can verify or re-send if needed.
+      // Build a readable message. Use encodeURIComponent for safety; WhatsApp expects + or %20 and %0A for new lines.
+      const parts = [];
+      parts.push('New distributor enquiry:');
+      parts.push('Name: ' + (data.name || ''));
+      parts.push('Email: ' + (data.email || ''));
+      parts.push('Phone: ' + (data.phone || ''));
+      parts.push('Preferred: ' + (data.preferred || ''));
+      parts.push('');
+      parts.push('Message:');
+      parts.push(data.message || '');
+
+      const message = parts.join('\n');
+      const encoded = encodeURIComponent(message);
+      const url = 'https://wa.me/' + OWNER_WHATSAPP + '?text=' + encoded;
+      // Open WhatsApp in the same tab to maximize chance of opening native app on mobile; on desktop this will open web.whatsapp in the current tab.
+      window.location.href = url;
     }
 
-    // Form submit (e.g., pressing Enter) uses the same flow
+    // Form submit uses the WhatsApp flow (pressing Enter will open WhatsApp with prefilled message)
     form.addEventListener('submit', function(e){
       e.preventDefault();
-      openEmailClientWithForm();
+      openWhatsAppWithForm();
     });
 
-    // Email button explicitly opens the mail client with prefilled fields
-    const emailBtn = document.getElementById('emailSubmitBtn');
-    if(emailBtn){
-      emailBtn.addEventListener('click', function(ev){
-        ev.preventDefault();
-        openEmailClientWithForm();
-      });
-    }
-
-    // WhatsApp click-to-chat handler: opens WhatsApp (web or app) with a prefilled message
+    // WhatsApp button uses the same flow
     const whatsappBtn = document.getElementById('whatsappBtn');
     if(whatsappBtn){
-      whatsappBtn.addEventListener('click', (ev)=>{
+      whatsappBtn.addEventListener('click', function(ev){
         ev.preventDefault();
-        // gather data from form (do not submit)
-        const data = Object.fromEntries(new FormData(form).entries());
-        try{ saveLocally(data); }catch(err){ console.warn('local save failed', err); }
-        let msg = '';
-        msg += 'New distributor enquiry:%0A';
-        msg += 'Name: ' + encodeURIComponent(data.name || '') + '%0A';
-        msg += 'Email: ' + encodeURIComponent(data.email || '') + '%0A';
-        msg += 'Phone: ' + encodeURIComponent(data.phone || '') + '%0A';
-        msg += 'Preferred: ' + encodeURIComponent(data.preferred || '') + '%0A%0A';
-        msg += 'Message: ' + encodeURIComponent(data.message || '');
-        const url = 'https://wa.me/' + OWNER_WHATSAPP + '?text=' + msg;
-        window.open(url, '_blank');
+        openWhatsAppWithForm();
       });
     }
   </script>
