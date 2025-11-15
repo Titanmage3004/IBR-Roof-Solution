@@ -292,76 +292,36 @@ function initLoadAnimations(){
 // Animate nav items from the logo center outward into their natural positions.
 function animateNavFromLogo(){
   try{
+    // If user prefers reduced motion, skip
     if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const logo = document.querySelector('header .logo');
-    if(!logo) return;
-
+    // Instead of clone animation, do a gentle fade-in from opacity/translate using will-animate
     const leftItems = Array.from(document.querySelectorAll('header .nav-left .pill-btn'));
     const rightItems = Array.from(document.querySelectorAll('header .nav-right .pill-btn'));
-    const all = leftItems.concat(rightItems);
+    const all = leftItems.concat(rightItems).filter(el=> el.offsetWidth && el.offsetHeight);
     if(all.length===0) return;
 
-    // compute logo center
-    const logoRect = logo.getBoundingClientRect();
-    const startX = logoRect.left + logoRect.width/2;
-    const startY = logoRect.top + logoRect.height/2;
-
-    // For each nav item, create an animating clone, hide original, animate clone to target rect
-    const clones = [];
-    all.forEach((el, idx)=>{
-      // skip if not visible
-      if(!(el.offsetWidth && el.offsetHeight)) return;
-      const rect = el.getBoundingClientRect();
-      const clone = el.cloneNode(true);
-      clone.classList.add('nav-anim-clone');
-      // measure clone size before placing
-      clone.style.left = (startX - rect.width/2) + 'px';
-      clone.style.top = (startY - rect.height/2) + 'px';
-      clone.style.width = rect.width + 'px';
-      clone.style.height = rect.height + 'px';
-      // center transform origin
-      clone.style.transformOrigin = 'center center';
-      document.body.appendChild(clone);
-      clones.push({clone, rect});
-      // hide original so we don't see layout flicker
-      el.style.visibility = 'hidden';
+    // Apply will-animate and btn-pop and assign a slower stagger (120ms step)
+    all.forEach((el, i)=>{
+      try{
+        if(!el.classList.contains('will-animate')) el.classList.add('will-animate');
+        if(!el.classList.contains('btn-pop')) el.classList.add('btn-pop');
+        const delay = (i * 0.12).toFixed(2) + 's';
+        el.style.setProperty('--delay', delay);
+        // start hidden (CSS handles opacity/transform) and let body.loaded trigger the reveal
+        el.style.visibility = 'visible';
+      }catch(e){}
     });
 
-    // Force reflow then animate clones to their final positions with stagger
-    // small timeout to ensure clones inserted
-    setTimeout(()=>{
-      clones.forEach(({clone, rect}, i)=>{
-        const targetLeft = rect.left;
-        const targetTop = rect.top;
-        const currentLeft = parseFloat(clone.style.left || 0);
-        const currentTop = parseFloat(clone.style.top || 0);
-        const deltaX = targetLeft - currentLeft;
-        const deltaY = targetTop - currentTop;
-        // apply stagger: left side earlier, right side slightly later for a natural spread
-        const delay = i * 80; // ms
-        clone.style.transitionDelay = (delay/1000) + 's';
-        // translate using transform so we don't trigger reflow
-        clone.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-        clone.style.opacity = '1';
-      });
-      // after animation completes, reveal originals and remove clones
-      const totalDuration = 900 + clones.length * 90;
-      setTimeout(()=>{
-        clones.forEach(({clone}, i)=>{
-          try{ clone.classList.add('nav-anim-pop'); }catch(e){}
-        });
-        // reveal originals
-        all.forEach(el=> el.style.visibility = 'visible');
-        // remove clones shortly after pop
-        setTimeout(()=> clones.forEach(({clone})=> clone.remove()), 180);
-      }, totalDuration);
-    }, 40);
+    // ensure body.loaded is present so the transitions run; if not, add it after a short pause
+    if(!document.body.classList.contains('loaded')){
+      setTimeout(()=> document.body.classList.add('loaded'), 160);
+    }
   }catch(e){ console.warn('animateNavFromLogo failed', e) }
 }
 
-// call nav animation after load animations so it doesn't clash
+// call nav fade-in after DOMContentLoaded (post load animations)
 document.addEventListener('DOMContentLoaded', ()=>{
-  try{ setTimeout(animateNavFromLogo, 220); }catch(e){}
+  try{ setTimeout(animateNavFromLogo, 300); }catch(e){}
 });
 
 /* Admin modal: clicking the footer logo opens a login/admin panel to change prices and currency.
