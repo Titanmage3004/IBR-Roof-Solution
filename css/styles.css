@@ -637,6 +637,50 @@ footer.site-footer{ padding-top:1.25rem; padding-bottom:1.25rem }
 /* Slightly reduce the icon size inside the small-social wrappers so they match text */
 .small-social img{ width:28px; height:28px }
 
+/* ==========================
+   Contact card: precise layout to match reference
+   ========================== */
+.max-w-5xl.bg-gray-100{
+  background:#f3f5f7; /* ensure consistent light gray */
+  border-radius:16px;
+  padding:2rem 2.25rem;
+  box-shadow:0 6px 18px rgba(15,23,42,0.03);
+}
+.max-w-5xl .grid{grid-template-columns: 1fr 1fr; align-items:start; gap:2rem}
+.max-w-5xl h2{margin:0 0 0.5rem 0}
+
+/* Left column contact inputs: pill style with icon aligned */
+.max-w-5xl .left .p-3,
+.max-w-5xl .left a[title],
+.max-w-5xl .left input[type="text"],
+.max-w-5xl .left input[type="email"]{
+  display:flex;align-items:center;gap:0.75rem;
+  height:48px;padding:0 1rem;border-radius:9999px;border:1px solid rgba(0,0,0,0.06);background:#fff;width:100%;box-shadow:none;font-size:0.98rem
+}
+
+.max-w-5xl .left .flex.items-center.gap-3{align-items:center;gap:1rem}
+.max-w-5xl .left .small-social{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:transparent}
+.max-w-5xl .left .small-social img{width:20px;height:20px}
+
+/* Right column form inputs: full width, pill style except textarea */
+.max-w-5xl .right input[type="text"],
+.max-w-5xl .right input[type="email"],
+.max-w-5xl .right input[name],
+.max-w-5xl .right .p-3{
+  height:44px;padding:0 1rem;border-radius:9999px;border:1px solid rgba(0,0,0,0.06);background:#fff;width:100%;box-shadow:none;font-size:0.98rem;display:block
+}
+.max-w-5xl .right textarea{min-height:90px;border-radius:8px;padding:0.75rem;border:1px solid rgba(0,0,0,0.06);background:#fff;width:100%;resize:vertical}
+
+/* Submit button: wide, centered and rounded like reference */
+.max-w-5xl .right .btn-primary{display:block;width:68%;max-width:360px;margin:1rem auto 0;padding:.9rem 1.25rem;border-radius:9999px;text-align:center}
+
+/* Ensure labels are compact and slightly muted */
+.max-w-5xl label{display:block;margin-bottom:0.35rem;color:#374151;font-weight:700;font-size:0.95rem}
+
+/* Slightly increase spacing between left items */
+.max-w-5xl .left .mt-2{margin-top:0.5rem}
+
+
 
 /* Make modals and invoice tables scale down and wrap better under 1200px */
 @media (max-width:1200px){
