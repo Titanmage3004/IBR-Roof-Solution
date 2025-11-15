@@ -324,7 +324,7 @@ footer.site-footer .footer-note{
   font-size:0.92rem;
 }
 footer.site-footer .footer-small{font-size:.85rem;color:#5b6166}
-footer.site-footer .social-icons{display:flex;gap:1rem}
+footer.site-footer .social-icons{display:flex;gap:1.25rem}
 /* remove the white badge background so the SVG artwork itself shows through */
 footer.site-footer .social-icons a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:transparent;padding:0}
 footer.site-footer .footer-center img{height:46px;object-fit:contain}
