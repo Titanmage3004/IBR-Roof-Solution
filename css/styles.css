@@ -803,6 +803,23 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .max-w-5xl label{ font-size:0.95rem }
 }
 
+/* Contact action buttons (email / whatsapp) — match site pill style but compact
+   Use .contact-actions container to center buttons and allow horizontal or
+   vertical stacking on narrow screens. Buttons inherit the pill look used
+   across the site so they are visually consistent and scalable. */
+.contact-actions{display:flex;gap:0.75rem;justify-content:center;align-items:center;margin-top:0.75rem}
+.contact-actions .pill-btn, .contact-actions .contact-btn{display:inline-flex;align-items:center;justify-content:center;padding:.6rem .9rem;border-radius:12px;font-weight:700}
+.contact-actions .contact-btn img{height:18px;width:18px;margin-right:0.5rem}
+.contact-actions .contact-whatsapp{background:var(--accent);color:#fff}
+.contact-actions .contact-whatsapp:hover{background:#276b49}
+.contact-actions .contact-email{background:var(--brand);color:#fff}
+.contact-actions .contact-email:hover{background:var(--brand-dark)}
+
+@media (max-width:768px){
+  .contact-actions{flex-direction:column}
+  .contact-actions .pill-btn, .contact-actions .contact-btn{width:100%;max-width:none}
+}
+
 
 
 /* Make modals and invoice tables scale down and wrap better under 1200px */

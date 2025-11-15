@@ -124,19 +124,16 @@
               <textarea name="message" rows="3" class="mt-1 p-3 rounded-lg w-full border bg-white" placeholder=""></textarea>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <button type="submit" class="btn-primary w-full flex items-center justify-center" id="emailSubmitBtn" aria-label="Send via email">
-                  <img src="assets/Untitled design (12).svg" alt="Email icon" class="h-5 w-5 mr-2 inline-block" />
-                  <span>Send via Email</span>
-                </button>
-              </div>
-              <div>
-                <button type="button" id="whatsappBtn" class="w-full bg-green-600 text-white rounded flex items-center justify-center" aria-label="Send via WhatsApp">
-                  <img src="assets/Untitled design (9).svg" alt="WhatsApp icon" class="h-5 w-5 mr-2 inline-block" />
-                  <span>WhatsApp me</span>
-                </button>
-              </div>
+            <div class="contact-actions">
+              <button type="submit" class="pill-btn contact-btn contact-email" id="emailSubmitBtn" aria-label="Send via email">
+                <img src="assets/Untitled design (12).svg" alt="Email icon" />
+                <span>Send via Email</span>
+              </button>
+
+              <button type="button" id="whatsappBtn" class="pill-btn contact-btn contact-whatsapp" aria-label="Send via WhatsApp">
+                <img src="assets/Untitled design (9).svg" alt="WhatsApp icon" />
+                <span>WhatsApp me</span>
+              </button>
             </div>
 
             <div id="contactResult" class="text-sm text-green-600 hidden">Thanks — we'll contact you soon.</div>
