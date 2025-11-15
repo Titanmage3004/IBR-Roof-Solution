@@ -235,7 +235,59 @@ document.addEventListener('DOMContentLoaded', ()=>{
   try{ buildMediaCards(); }catch(e){console.warn('buildMediaCards failed', e)}
   try{ initMediaAspectRatios(); }catch(e){console.warn('media ratio init failed', e)}
   try{ markActiveMobileNavLinks(); }catch(e){/* no-op */}
+  try{ initLoadAnimations(); }catch(e){/* ignore if animation init fails */}
 });
+
+// Page load animations initializer: marks common elements with .will-animate and
+// assigns staggered --delay CSS variables so they animate when body.loaded is added.
+function initLoadAnimations(){
+  // Ordered selectors to create a pleasing stagger
+  const selectors = [
+    'header .logo',
+    'header .pill-btn',
+    '.hero-top-logo',
+    'main h1, main h2, main h3',
+    '.hero-visual-column img',
+    '.hero-prod-item',
+    '.section-pill',
+    '.product-card',
+    '.media-card-wrap',
+    '.two-col .left',
+    '.two-col .right',
+    '.max-w-5xl .left .p-3',
+    '.max-w-5xl .right input, .max-w-5xl .right textarea',
+    '.contact-actions .contact-btn',
+    '.pill-btn',
+    'footer.site-footer .footer-center img'
+  ];
+
+  const nodes = [];
+  selectors.forEach(sel=>{
+    document.querySelectorAll(sel).forEach(el=> nodes.push(el));
+  });
+
+  // remove duplicates while preserving order
+  const seen = new Set();
+  const uniq = nodes.filter(n=>{ if(seen.has(n)) return false; seen.add(n); return true });
+
+  // Apply will-animate and stagger --delay
+  uniq.forEach((el, i)=>{
+    try{
+      el.classList.add('will-animate');
+      // make images/cards slightly different flavor
+      if(el.matches && (el.matches('.product-card') || el.matches('.media-card-wrap') )) el.classList.add('card-pop');
+      if(el.tagName === 'IMG' || el.querySelector && el.querySelector('img')) el.classList.add('img-pop');
+      if(el.matches && el.matches('.pill-btn, .contact-actions .contact-btn')) el.classList.add('btn-pop');
+      const delay = (i * 0.06).toFixed(2) + 's';
+      el.style.setProperty('--delay', delay);
+    }catch(e){/* ignore individual failures */}
+  });
+
+  // After a short tick, add .loaded to body so transitions run
+  window.requestAnimationFrame(()=>{
+    setTimeout(()=> document.body.classList.add('loaded'), 80);
+  });
+}
 
 /* Admin modal: clicking the footer logo opens a login/admin panel to change prices and currency.
    Default admin password: 'admin' (client-side only). Settings stored in localStorage under 'site_admin'.
