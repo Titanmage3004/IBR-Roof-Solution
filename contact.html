@@ -130,7 +130,7 @@
                 <span>WhatsApp me</span>
               </button>
 
-              <button type="submit" class="pill-btn contact-btn contact-email" id="emailSubmitBtn" aria-label="Send via email">
+              <button type="button" class="pill-btn contact-btn contact-email" id="emailSubmitBtn" aria-label="Send via email">
                 <img src="assets/Untitled design (12).svg" alt="Email icon" />
                 <span>Send via Email</span>
               </button>
@@ -201,32 +201,49 @@
       localStorage.setItem('contacts', JSON.stringify(existing));
     }
 
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
+    // Helper: build a mailto: URL that includes all form fields (safe encoded)
+    function buildMailtoForData(data){
+      const subject = 'Distributor enquiry from ' + (data.name || 'website');
+      const lines = [];
+      lines.push('Name: ' + (data.name || ''));
+      lines.push('Email: ' + (data.email || ''));
+      lines.push('Phone: ' + (data.phone || ''));
+      lines.push('Preferred contact: ' + (data.preferred || ''));
+      lines.push('');
+      lines.push('Message:');
+      lines.push(data.message || '');
+
+      const body = lines.join('\n');
+      const mailto = 'mailto:' + OWNER_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      return mailto;
+    }
+
+    // Shared action used by both the form submit (Enter) and the Email button click
+    function openEmailClientWithForm(){
       const data = Object.fromEntries(new FormData(form).entries());
-
-      // Save in localStorage as a fallback/record
       try{ saveLocally(data); }catch(err){ console.warn('local save failed', err); }
-
-      // Build an email prefill using mailto: (will open the user's email client)
-      const subject = encodeURIComponent('Distributor enquiry from ' + (data.name || 'website'));
-      let body = '';
-      body += 'Name: ' + (data.name || '') + '\n';
-      body += 'Email: ' + (data.email || '') + '\n';
-      body += 'Phone: ' + (data.phone || '') + '\n';
-      body += 'Preferred contact: ' + (data.preferred || '') + '\n\n';
-      body += 'Message:\n' + (data.message || '');
-
-      const mailto = 'mailto:' + OWNER_EMAIL + '?subject=' + subject + '&body=' + encodeURIComponent(body);
-
-      // Notify user and open email client
-      result.textContent = "Thanks — we'll contact you soon. Opening your email client to send the message.";
+      const mailto = buildMailtoForData(data);
+      result.textContent = "Opening your email client to send the message. Please tap Send in your mail app.";
       result.classList.remove('hidden');
+      // Open in a new tab/window so desktop web clients (webmail) have a chance to handle it.
+      window.open(mailto, '_blank');
+      // Do NOT reset the form immediately so users can verify or re-send if needed.
+    }
 
-      // Use location.href so the user's default mail app opens. This requires the user to click 'Send'.
-      window.location.href = mailto;
-      form.reset();
+    // Form submit (e.g., pressing Enter) uses the same flow
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      openEmailClientWithForm();
     });
+
+    // Email button explicitly opens the mail client with prefilled fields
+    const emailBtn = document.getElementById('emailSubmitBtn');
+    if(emailBtn){
+      emailBtn.addEventListener('click', function(ev){
+        ev.preventDefault();
+        openEmailClientWithForm();
+      });
+    }
 
     // WhatsApp click-to-chat handler: opens WhatsApp (web or app) with a prefilled message
     const whatsappBtn = document.getElementById('whatsappBtn');
