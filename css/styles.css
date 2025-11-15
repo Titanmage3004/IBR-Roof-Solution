@@ -296,6 +296,8 @@ footer a{transition:color .15s}
 
 /* Site footer layout to match reference */
 footer.site-footer{background:#f3f5f7;border-top:1px solid rgba(0,0,0,0.06)}
+/* make the footer content slightly narrower than the main container to match reference */
+footer.site-footer .container{ max-width:980px; margin-left:auto; margin-right:auto }
 footer.site-footer .footer-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
 footer.site-footer .footer-left, footer.site-footer .footer-center, footer.site-footer .footer-right{flex:1}
 footer.site-footer .footer-left{display:flex;flex-direction:column;align-items:flex-start}
@@ -322,10 +324,12 @@ footer.site-footer .footer-note{
   font-size:0.92rem;
 }
 footer.site-footer .footer-small{font-size:.85rem;color:#5b6166}
-footer.site-footer .social-icons{display:flex;gap:.5rem}
+footer.site-footer .social-icons{display:flex;gap:1rem}
 /* remove the white badge background so the SVG artwork itself shows through */
 footer.site-footer .social-icons a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:transparent;padding:0}
 footer.site-footer .footer-center img{height:46px;object-fit:contain}
+/* small extra spacing between the left pill and shipping note */
+footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 
 /* Utility classes for consistent social icon sizing and form-line icons */
 .social-icon{display:inline-flex;align-items:center;justify-content:center;padding:0;margin:0;border-radius:8px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease, background .12s ease;background:transparent}
