@@ -590,6 +590,54 @@ footer a{transition:color .15s}
   .toast-container{display:none !important}
 }
 
+/* ==========================
+   Local fixes: cart button, footer spacing, contact form tweaks
+   These are small, targeted rules to restore the look and spacing lost when some
+   Tailwind utilities were not present in the built CSS. They are intentionally
+   lightweight and override earlier utility classes where necessary.
+   ========================== */
+
+/* Cart button (store header) — make it feel like a pill and stand out) */
+#cartBtn{
+  background:var(--brand);
+  color:#fff;
+  padding:.6rem .9rem;
+  border-radius:12px;
+  border:0;
+  font-weight:800;
+  box-shadow:0 10px 22px rgba(81,124,173,0.10);
+  cursor:pointer;
+  transition:transform .14s ease, background .14s ease, box-shadow .14s ease;
+}
+#cartBtn:hover{ background:var(--brand-dark); transform:translateY(-3px); box-shadow:0 18px 36px rgba(81,124,173,0.12) }
+
+/* Ensure header/shop buttons have breathing room from surrounding content */
+footer.site-footer .pill-btn,
+header .pill-btn{ margin-bottom:0.6rem }
+
+/* Make footer a little taller so it doesn't feel squashed */
+footer.site-footer{ padding-top:1.25rem; padding-bottom:1.25rem }
+
+/* Contact page: improve spacing and input appearance inside the card */
+.max-w-5xl.bg-gray-100{ padding:1.25rem; }
+.max-w-5xl .grid{ gap:1.5rem }
+.max-w-5xl .space-y-4 > *{ margin-bottom:1rem }
+
+.max-w-5xl input[type="text"],
+.max-w-5xl input[type="email"],
+.max-w-5xl textarea,
+.max-w-5xl a[title],
+.max-w-5xl .p-3{ font-family:inherit; font-size:1rem; padding:.85rem; border-radius:9999px; border:1px solid rgba(0,0,0,0.08); background:#fff; display:block }
+
+/* Make the follow/message items align nicely with their icons */
+.max-w-5xl .flex.items-center.gap-3,
+.max-w-5xl .flex.items-center.gap-3 > a,
+.max-w-5xl .flex.items-center.gap-3 > input{ vertical-align:middle }
+
+/* Slightly reduce the icon size inside the small-social wrappers so they match text */
+.small-social img{ width:28px; height:28px }
+
+
 /* Make modals and invoice tables scale down and wrap better under 1200px */
 @media (max-width:1200px){
   .modal-panel{ width: calc(100% - 40px); max-width:720px; padding:1rem; border-radius:12px; font-size:0.95rem }
