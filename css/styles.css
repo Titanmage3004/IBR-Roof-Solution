@@ -825,9 +825,19 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
    of the right column and have each button share the space (50/50) so their
    edges align with the text inputs/textarea. Also match input height for visual
    consistency. */
-.max-w-5xl .right .contact-actions{width:100%;max-width:none;justify-content:stretch}
-.max-w-5xl .right .contact-actions .contact-btn{flex:1;min-height:44px;align-items:center;padding:.6rem .9rem}
-.max-w-5xl .right .contact-actions .contact-btn + .contact-btn{margin-left:0.75rem}
+/* Make the action group fill the right column and have each button share space
+   Use gap to control spacing (more reliable than manual margins). Remove the
+   invalid `justify-content: stretch` which doesn't exist; use space-between and
+   align-items:stretch so buttons match input heights. */
+.max-w-5xl .right .contact-actions{
+  width:100%;
+  max-width:none;
+  display:flex;
+  gap:0.75rem;
+  justify-content:space-between;
+  align-items:stretch;
+}
+.max-w-5xl .right .contact-actions .contact-btn{flex:1;min-height:44px;align-items:center;padding:.6rem .9rem;display:inline-flex;justify-content:center}
 
 @media (max-width:768px){
   .max-w-5xl .right .contact-actions{width:100%}
