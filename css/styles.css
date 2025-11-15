@@ -641,6 +641,9 @@ footer.site-footer{ padding-top:1.25rem; padding-bottom:1.25rem }
 /* Slightly reduce the icon size inside the small-social wrappers so they match text */
 .small-social img{ width:28px; height:28px }
 
+/* Increase vertical spacing between each social 'pill' row (20px) to match reference */
+.max-w-5xl .left .space-y-3{ display:flex; flex-direction:column; row-gap:20px }
+
 /* ==========================
    Contact card: precise layout to match reference
    ========================== */
