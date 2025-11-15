@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact Us</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="stylesheet" href="css/tw-compat.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50 text-gray-800 antialiased">
@@ -18,7 +19,7 @@
 
         <div class="logo text-center">
           <a href="index.html" class="inline-block">
-            <img src="assets/ibr_header_logo.webp" alt="Logo" class="h-14 w-auto mx-auto">
+            <img src="assets/All Products Patented (1).svg" alt="All products patented logo (variant)" class="h-14 w-auto mx-auto">
           </a>
         </div>
 
@@ -49,8 +50,8 @@
   <main class="flex-grow container mx-auto px-6 py-8">
     <section class="max-w-5xl mx-auto bg-gray-100 rounded-xl p-6 shadow-sm">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Left column: contact details -->
-        <div>
+  <!-- Left column: contact details -->
+  <div class="left">
           <h2 class="text-lg font-semibold" style="color:var(--brand);">Contact us on:</h2>
           <div class="mt-4 space-y-4">
             <div>
@@ -91,10 +92,10 @@
 
         <!-- Right column: distributor form -->
         <div>
-      <div class="flex items-start justify-between">
+      <div class="flex items-center justify-between">
   <h2 class="text-xl font-semibold tracking-tight" style="color:var(--brand);">Interested in becoming a distributer?</h2>
               <div class="ml-2">
-                <img src="assets/16.svg" alt="menu icon" style="width:96px;height:96px;display:block;transform:translateX(-44px);" />
+                <img src="assets/16.svg" alt="menu icon" style="width:76px;height:76px;display:block;margin-left:12px;" />
               </div>
           </div>
           <form id="contactForm" class="mt-4 space-y-4">
@@ -135,7 +136,7 @@
   </main>
 
   <!-- Footer matching reference: left pill + note, centered logo + copy, right pill + socials -->
-  <footer class="site-footer mt-12">
+  <footer class="site-footer mt-8">
     <div class="container mx-auto px-6 py-6">
       <div class="footer-row">
         <div class="footer-left">
@@ -159,6 +160,22 @@
       </div>
     </div>
   </footer>
+
+  <!-- Mobile-only stacked footer (hidden on desktop). Visible only under 768px via CSS -->
+  <div class="footer-mobile-stack" aria-hidden="true">
+    <a href="store.html" class="pill-btn">Products</a>
+    <a href="contact.html" class="pill-btn" style="margin-top:0.6rem">Contact Us</a>
+    <div class="footer-note" style="margin-top:0.6rem">Free Delivery on orders over R500</div>
+    <div class="social-icons" style="margin-top:0.6rem">
+      <a href="#" class="social-icon" aria-label="WhatsApp"><img src="assets/Untitled design (9).svg" alt="WhatsApp"></a>
+      <a href="https://www.facebook.com/profile.php?id=100087598423269&sk=reels_tab" class="social-icon" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><img src="assets/Untitled design (11).svg" alt="Facebook"></a>
+      <a href="https://www.instagram.com/ibr_roof_solutions_?igsh=dTZqMG00aGpoZGVn" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><img src="assets/Untitled design (10).svg" alt="Instagram"></a>
+    </div>
+    <div class="footer-center" style="margin-top:0.75rem">
+      <img src="assets/ibr_header_logo.webp" alt="IBR Roof Solutions" />
+      <div class="footer-small mt-2">© 2026 IBR Roof Solutions. All rights reserved.</div>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
   <script>

@@ -1,0 +1,97 @@
+/* Compatibility helpers to provide a small set of responsive utility classes
+   when the built Tailwind output is missing some responsive variants.
+   These mirror the Tailwind responsive utilities used in the HTML (sm:, md:, lg:)
+   so the layout responds correctly on desktop and mobile without using the CDN.
+*/
+
+/* Small (sm) breakpoint: min-width 640px */
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sm\:flex { display: flex; }
+  .sm\:grid { display: grid; }
+}
+
+/* Medium (md) breakpoint: min-width 768px */
+@media (min-width: 768px) {
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .md\:flex { display: flex; }
+  .md\:grid { display: grid; }
+  .md\:items-center { align-items: center; }
+  .md\:items-start { align-items: flex-start; }
+}
+
+/* Large (lg) breakpoint: min-width 1024px */
+@media (min-width: 1024px) {
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lg\:flex { display: flex; }
+  .lg\:grid { display: grid; }
+  .lg\:items-center { align-items: center; }
+}
+
+/* Utility helpers for gap/grid display when needed */
+.gap-8 { gap: 2rem; }
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+
+/* Spacing helpers */
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+
+/* Typography helpers */
+.text-5xl { font-size: 3rem; line-height: 1; }
+.lg\:text-6xl { font-size: 3.75rem; line-height: 1; }
+.text-3xl { font-size: 1.875rem; line-height: 1.2; }
+.text-lg { font-size: 1.125rem; }
+.font-extrabold { font-weight: 800; }
+.font-bold { font-weight: 700; }
+.leading-tight { line-height: 1.05; }
+.text-gray-900 { color: #0f1724; }
+.text-gray-600 { color: #4b5563; }
+
+/* Form and button helpers */
+.rounded-full { border-radius: 9999px; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.border { border: 1px solid rgba(0,0,0,0.08); }
+.bg-white { background: #ffffff; }
+.bg-gray-100 { background: #f3f4f6; }
+.w-full { width: 100%; }
+.max-w-xl { max-width: 36rem; }
+.h-14 { height: 3.5rem; }
+.container { max-width: 1180px; margin-left: auto; margin-right: auto; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.min-h-screen { min-height: 100vh; }
+.flex-grow { flex-grow: 1; }
+
+/* Common spacing utilities used in HTML (fallbacks when Tailwind utilities are missing) */
+.h-28 { height: 7rem !important; }
+.px-6 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+.px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.py-12 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+.py-8 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+.mt-12 { margin-top: 3rem !important; }
+.mt-8 { margin-top: 2rem !important; }
+.w-8 { width: 2rem !important; }
+.h-8 { height: 2rem !important; }
+
+
+/* Simple responsive tweaks for lg: variants (increase font-size on larger screens) */
+@media (min-width: 1024px) {
+  .lg\:text-6xl { font-size: 3.75rem; }
+}
+
