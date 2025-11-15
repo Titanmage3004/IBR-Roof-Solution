@@ -124,8 +124,19 @@
               <textarea name="message" rows="3" class="mt-1 p-3 rounded-lg w-full border bg-white" placeholder=""></textarea>
             </div>
 
-            <div>
-              <button type="submit" class="btn-primary w-full">Submit</button>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <button type="submit" class="btn-primary w-full flex items-center justify-center" id="emailSubmitBtn" aria-label="Send via email">
+                  <img src="assets/Untitled design (12).svg" alt="Email icon" class="h-5 w-5 mr-2 inline-block" />
+                  <span>Send via Email</span>
+                </button>
+              </div>
+              <div>
+                <button type="button" id="whatsappBtn" class="w-full bg-green-600 text-white rounded flex items-center justify-center" aria-label="Send via WhatsApp">
+                  <img src="assets/Untitled design (9).svg" alt="WhatsApp icon" class="h-5 w-5 mr-2 inline-block" />
+                  <span>WhatsApp me</span>
+                </button>
+              </div>
             </div>
 
             <div id="contactResult" class="text-sm text-green-600 hidden">Thanks — we'll contact you soon.</div>
@@ -181,7 +192,8 @@
   <script>
     // contact form handler (free): Save locally and open user's email client (mailto:) so
     // the visitor can send the enquiry directly to the owner. No paid services required.
-    const OWNER_EMAIL = 'IBRroofsolutions@gmail.com'; // where mailto will send
+  const OWNER_EMAIL = 'IBRroofsolutions@gmail.com'; // where mailto will send
+  const OWNER_WHATSAPP = '27734355596'; // WhatsApp number in E.164 without the + (South Africa example)
 
     const form = document.getElementById('contactForm');
     const result = document.getElementById('contactResult');
@@ -218,6 +230,26 @@
       window.location.href = mailto;
       form.reset();
     });
+
+    // WhatsApp click-to-chat handler: opens WhatsApp (web or app) with a prefilled message
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    if(whatsappBtn){
+      whatsappBtn.addEventListener('click', (ev)=>{
+        ev.preventDefault();
+        // gather data from form (do not submit)
+        const data = Object.fromEntries(new FormData(form).entries());
+        try{ saveLocally(data); }catch(err){ console.warn('local save failed', err); }
+        let msg = '';
+        msg += 'New distributor enquiry:%0A';
+        msg += 'Name: ' + encodeURIComponent(data.name || '') + '%0A';
+        msg += 'Email: ' + encodeURIComponent(data.email || '') + '%0A';
+        msg += 'Phone: ' + encodeURIComponent(data.phone || '') + '%0A';
+        msg += 'Preferred: ' + encodeURIComponent(data.preferred || '') + '%0A%0A';
+        msg += 'Message: ' + encodeURIComponent(data.message || '');
+        const url = 'https://wa.me/' + OWNER_WHATSAPP + '?text=' + msg;
+        window.open(url, '_blank');
+      });
+    }
   </script>
 </body>
 </html>
