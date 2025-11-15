@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800 antialiased">
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4">
+      <nav class="nav-grid h-28 px-6">
+        <div class="nav-left">
+          <a href="index.html" class="pill-btn">Home</a>
+          <a href="about.html" class="pill-btn">About</a>
+        </div>
+
+        <div class="logo text-center">
+          <a href="index.html" class="inline-block">
+            <img src="assets/ibr_header_logo.webp" alt="Logo" class="h-14 w-auto mx-auto">
+          </a>
+        </div>
+
+        <div class="nav-right">
+          <a href="store.html" class="pill-btn">Store</a>
+          <a href="contact.html" class="pill-btn">Contact</a>
+        </div>
+        <!-- Mobile toggle (appears at <=1200px) -->
+        <button id="mobileMenuBtn" class="mobile-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="6" width="18" height="2" rx="1" />
+            <rect x="3" y="11" width="18" height="2" rx="1" />
+            <rect x="3" y="16" width="18" height="2" rx="1" />
+          </svg>
+        </button>
+      </nav>
+      <div id="mobileMenu" class="hidden py-2">
+        <div class="flex flex-col gap-2">
+          <a href="index.html" class="mobile-nav-link px-3 py-2 rounded">Home</a>
+          <a href="about.html" class="mobile-nav-link px-3 py-2 rounded">About</a>
+          <a href="store.html" class="mobile-nav-link px-3 py-2 rounded">Store</a>
+          <a href="contact.html" class="mobile-nav-link px-3 py-2 rounded">Contact</a>
+        </div>
+      </div>
+      <div id="mobileMenu2" class="hidden sm:hidden py-2">
+        <div class="flex flex-col gap-2">
+          <a href="index.html" class="mobile-nav-link px-3 py-2 rounded">Home</a>
+          <a href="about.html" class="mobile-nav-link px-3 py-2 rounded">About</a>
+          <a href="store.html" class="mobile-nav-link px-3 py-2 rounded">Store</a>
+          <a href="contact.html" class="mobile-nav-link px-3 py-2 rounded">Contact</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold">About Us</h1>
+    <p class="mt-4 text-gray-600">We build interactive products with user experience in mind. Below are demos and product videos explaining the design and usage.</p>
+
+    <!-- Top media area: JS will build the portrait grid and landscape slot from available assets -->
+    <section class="mt-6">
+      <!-- grid where the top three portrait cards will be inserted -->
+      <div id="topMediaGrid" class="grid md:grid-cols-3 gap-8 items-start justify-center"></div>
+
+      <!-- pill captions under the three cards (populated dynamically) -->
+      <div id="mediaPills" class="mt-6 flex flex-col sm:flex-row items-center sm:justify-center gap-6"></div>
+
+      <!-- container where a landscape (horizontal) video will be moved to and displayed full-width -->
+      <div id="landscapeContainer" class="mt-8"></div>
+    </section>
+
+    <!-- Provide the list of media assets to the page so JS can build the layout dynamically -->
+    <script>
+      window.mediaAssets = {
+        videos: [
+          'AQMcQLhcdY5MMteF_aVnAgGx2eWqCFjkTuePxvbGmEsT7AOClgvvlVyKWuPcGrp-k_7_LtTA3n-OBAA1y-yNFpskExb3jZgGsEqdKxG52qU1cQ.mp4',
+          'AQMt76YN7hRFWu4ANmUfXtTBrcRfoxnAF2pQp74QLl_LS47NZ2AkWnE2CxCC07dhRC3BLbnkCWKsSkiC2gU9ratDuI91zUxFuaTfp-4jZN484Q.mp4',
+          'AQMulXOMalAYzuyK8WdaLX9LVDUU4_AisGTEMZz7iiZYqOwXcJUz52E2Ik8WiP98ei9F6K_wlL1S8FJ702P_YClsJ6XLIiyl1yjAEsikxydl1A.mp4',
+          'AQNDc6EJbSZJfT-x_v8GHTJUfgyVs0THYCZii8i8ofdELd5h8OvAgXtB73JzgBHVMk1DmTuGgXHd5whnv3HK6mjVF4ARILt7CtisfQ6d1y5ZnQ (1).mp4',
+          'AQNJTSpIR3fmIH6mRTOABySKoCX-Vw5ooLOO1qEFF37kNxClfDXng6Ch8OCHzlOjbUlKiQ-8LXxnpKlssxvAGF-4f5dSFcUb0ll1gNw3hudCyw.mp4',
+          'AQNU10Jt264jgh6NePOKK3vvjb06XzI579hPxFMgTXAxMPhv3nJ8nOMnuvD8uNU6vwV3kfgz5JO6bfrgEPjgkq8mceVRiTAc8slYnZ4PERcmJQ.mp4'
+        ],
+        images: [
+          '476221519_594834240113185_7203426001611182768_n.jpg',
+          '476500581_595370980059511_6236944891318466094_n.jpg',
+          '476508509_595371040059505_2143475231093520394_n.jpg',
+          '476823188_595371220059487_7211842033287945810_n.jpg'
+        ],
+        // Optional titles to show under each featured portrait card (will map to chosen portraits)
+        titles: [ 'Inner Rib Block', 'Upper Roof Support Bracket', 'DIY Kit' ],
+        // Optional: explicit titles by position in the top portrait row.
+        // Set this to swap/reorder captions shown under the 3 portrait cards.
+        // We set DIY Kit first, then Inner Rib Block, as requested.
+        positionTitles: [ 'DIY Kit', 'Inner Rib Block', 'Upper Roof Support Bracket' ]
+        ,
+        // Title to show under the full-width landscape video (if one is displayed)
+        landscapeTitle: 'Inner Rib Block — Full installation demo'
+      };
+    </script>
+
+    <!-- original Inner Rib Block feature-detail removed per user request -->
+
+    <!-- Mission / commitment section: updated per request to use pill heading and clearer customer-facing copy -->
+    <section class="mt-8">
+      <span class="section-pill section-pill--wide">More about our products</span>
+      <!-- removed white background and shadow to match page look; pulled section up slightly -->
+      <div class="two-col mt-4 p-6 rounded">
+        <div class="left">
+          <!-- optional visual placeholder: keep layout consistent with other two-col sections -->
+          <img src="assets/Untitled design (8).svg" alt="Product illustration (SVG #8)" class="w-full rounded">
+        </div>
+        <div class="right">
+          <p class="text-gray-600 mt-2">Our components are manufactured from high‑grade, UV‑stabilized polypropylene — a material selected for its excellent impact resistance, low moisture absorption, and long‑term dimensional stability in outdoor environments. This makes our parts durable, lightweight, and resistant to corrosion.</p>
+          <p class="text-gray-600 mt-4">Products are injection‑molded to tight tolerances so they mate cleanly with standard IBR sheeting and fasteners. Polypropylene resists rust and chemical degradation, reducing maintenance and extending the service life of repairs.</p>
+          <p class="text-gray-600 mt-4">Key material features:</p>
+          <ul class="support-steps" style="margin-top:.5rem">
+            <li>UV‑stabilized polypropylene for long outdoor life</li>
+            <li>Corrosion‑resistant — will not rust</li>
+            <li>Lightweight and impact‑resistant for easy handling</li>
+            <li>Thermally stable across typical roof temperature ranges</li>
+            <li>Recyclable and low‑maintenance</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support bracket informational section (placed just above footer) -->
+    <!-- Inner Rib Block comparison section (inserted above support bracket) -->
+      <section class="compare-section">
+        <span class="section-pill section-pill--wide">Inner Rib Block</span>
+      <div class="compare-content">
+        <div class="compare-row">
+          <div class="compare-left left">
+            <img src="assets/Untitled design (5).svg" alt="Inner Rib Block - with" class="compare-image">
+          </div>
+          <div class="compare-right right">
+            <h4>With the Inner Rib Block:</h4>
+            <p>Installing IBR sheeting using only screws may seem sufficient at first, but over time this method can lead to significant roof damage.</p>
+            <p>As the roof expands and contracts due to changing temperatures, the area around the screw becomes prone to wear, loosening the fixings and creating vulnerability to water penetration.</p>
+            <p>Additionally, the pressure of the screw can cause dents in the sheeting, disrupting the natural flow of rainwater and increasing the risk of pooling and leaks.</p>
+            <p>To mitigate these issues, the use of an Inner Rib Block is essential. When installed alongside the IBR sheeting and screw, the Inner Rib Block distributes pressure evenly, maintaining the integrity of the sheet and reducing stress on the fixings.</p>
+            <p>This method not only enhances the durability of the roof but also significantly reduces the need for ongoing maintenance.</p>
+          </div>
+        </div>
+
+        <div class="compare-row">
+          <div class="compare-left left">
+            <img src="assets/Untitled design (7).svg" alt="Inner Rib Block - without" class="compare-image">
+          </div>
+          <div class="compare-right right">
+            <h4>Without the Inner Rib Block:</h4>
+            <p>When IBR sheeting is fixed using only screws, the load concentrates around the fastener point which over time leads to material fatigue and potential leaks.</p>
+            <p>Without a supporting block, the sheeting can deform and the screw may loosen as thermal movement occurs, increasing the risk of water ingress and structural damage.</p>
+            <p>This approach requires more frequent maintenance and can shorten the lifespan of the roof sheeting compared with installations that use the Inner Rib Block.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="support-section">
+        <span class="section-pill section-pill--wide">Upper Roof Support Bracket</span>
+      <div class="support-content two-col mt-6">
+        <div class="support-left left">
+          <!-- use SVG assets (third and fourth svg) as visual references -->
+          <img src="assets/Untitled design (3).svg" alt="Upper Roof Support Bracket" class="support-photo">
+          <img src="assets/Untitled design (4).svg" alt="Installation diagram" class="support-diagram">
+        </div>
+        <div class="support-right right">
+          <p class="support-lead">Cost-Effective Roof Repair Without Full Sheet Replacement</p>
+          <p>Instead of replacing your entire roof sheeting, you can now minimize repair costs with a simple and effective solution. The combination of the Upper Roof Support Bracket and the Inner Rib Block provides a practical DIY alternative for addressing localized damage caused by rusted screws or sheet corrosion.</p>
+          <p>Over time, rust around screw points can deteriorate the sheeting, creating holes that lead to leaks. This solution allows you to repair only the affected areas, restoring structural integrity and preventing further water damage.</p>
+          <p>Follow these steps for a cost-effective repair:</p>
+          <ul class="support-steps">
+            <li>Remove the old, rusted screw.</li>
+            <li>Cut out the damaged section of the sheeting.</li>
+            <li>Prepare a replacement piece of roof sheeting, ideally 40 mm larger than the area removed.</li>
+            <li>Install the new sheeting using the Inner Rib Block, Upper Roof Support Bracket (as shown in the image), and a new screw.</li>
+            <li>Paint and seal the repaired section to protect against future corrosion.</li>
+          </ul>
+          <p>By implementing this method, you can extend the lifespan of your roof, reduce maintenance requirements, and avoid the costs of full roof replacement.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer matching reference: left pill + note, centered logo + copy, right pill + socials -->
+  <footer class="site-footer mt-12">
+    <div class="container mx-auto px-6 py-6">
+      <div class="footer-row">
+        <div class="footer-left">
+          <a href="store.html" class="pill-btn">Products</a>
+          <div class="footer-note mt-2">Free Delivery on orders over R500</div>
+        </div>
+
+        <div class="footer-center">
+          <img src="assets/ibr_header_logo.webp" alt="IBR Roof Solutions" />
+          <div class="footer-small mt-2">© 2026 IBR Roof Solutions. All rights reserved.</div>
+        </div>
+
+        <div class="footer-right">
+          <a href="contact.html" class="pill-btn">Contact Us</a>
+          <div class="social-icons mt-2">
+            <a href="#" class="social-icon" aria-label="WhatsApp"><img src="assets/Untitled design (9).svg" alt="WhatsApp"></a>
+            <a href="https://www.facebook.com/profile.php?id=100087598423269&sk=reels_tab" class="social-icon" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><img src="assets/Untitled design (11).svg" alt="Facebook"></a>
+            <a href="https://www.instagram.com/ibr_roof_solutions_?igsh=dTZqMG00aGpoZGVn" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><img src="assets/Untitled design (10).svg" alt="Instagram"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

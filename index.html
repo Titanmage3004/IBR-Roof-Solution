@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Site — Home</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800 antialiased">
+  <!-- Navbar -->
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-6">
+      <nav class="nav-grid h-28 px-6">
+        <div class="nav-left">
+          <a href="index.html" class="pill-btn">Home</a>
+          <a href="about.html" class="pill-btn">About</a>
+        </div>
+
+        <div class="logo text-center">
+          <a href="index.html" class="inline-block">
+            <img src="assets/ibr_header_logo.webp" alt="Logo" class="h-14 w-auto mx-auto">
+          </a>
+        </div>
+        <div class="nav-right">
+          <a href="store.html" class="pill-btn">Store</a>
+          <a href="contact.html" class="pill-btn">Contact</a>
+        </div>
+        <!-- Mobile toggle (appears at <=1200px) -->
+        <button id="mobileMenuBtn" class="mobile-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="6" width="18" height="2" rx="1" />
+            <rect x="3" y="11" width="18" height="2" rx="1" />
+            <rect x="3" y="16" width="18" height="2" rx="1" />
+          </svg>
+        </button>
+      </nav>
+      <div id="mobileMenu" class="hidden py-2">
+        <div class="flex flex-col gap-2">
+          <a href="index.html" class="mobile-nav-link px-3 py-2 rounded">Home</a>
+          <a href="about.html" class="mobile-nav-link px-3 py-2 rounded">About</a>
+          <a href="store.html" class="mobile-nav-link px-3 py-2 rounded">Store</a>
+          <a href="contact.html" class="mobile-nav-link px-3 py-2 rounded">Contact</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow container mx-auto px-6 py-12 flex items-center">
+    <!-- Hero -->
+    <section class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6">
+        <h1 class="text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">Premium roofing solutions, made simple.</h1>
+        <p class="text-lg text-gray-600 max-w-xl">We deliver professional roofing products with quality & care. Explore our products and contact us for a free consultation.</p>
+        <div class="flex gap-4 mt-4">
+          <a href="contact.html" class="btn-primary">Request a Quote</a>
+          <a href="store.html" class="btn-outline">Shop Products</a>
+        </div>
+      </div>
+
+      <div class="relative">
+        <!-- Product stack image (approximation) -->
+        <div class="w-full flex items-center justify-center">
+          <div class="hero-visual-column">
+            <div class="hero-prod-wrap"><img src="assets/Inner rib block - index.svg" alt="Inner rib block" class="hero-prod-item"></div>
+            <div class="hero-prod-wrap"><img src="assets/Untitled design (2).svg" alt="Supplementary design 1" class="hero-prod-item"></div>
+            <div class="hero-prod-wrap"><img src="assets/Untitled design (3).svg" alt="Supplementary design 2" class="hero-prod-item"></div>
+          </div>
+        </div>
+        <div class="absolute inset-x-0 bottom-0 flex justify-center -mb-8">
+          <div class="w-80 h-20 bg-gradient-to-b from-transparent to-gray-200 rounded-full filter blur-xl opacity-60"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer matching reference: left pill + note, centered logo + copy, right pill + socials -->
+  <footer class="site-footer mt-12">
+    <div class="container mx-auto px-6 py-6">
+      <div class="footer-row">
+        <div class="footer-left">
+          <a href="store.html" class="pill-btn">Products</a>
+          <div class="footer-note mt-2">Free Delivery on orders over R500</div>
+        </div>
+
+        <div class="footer-center">
+          <img src="assets/ibr_header_logo.webp" alt="IBR Roof Solutions" />
+          <div class="footer-small mt-2">© 2026 IBR Roof Solutions. All rights reserved.</div>
+        </div>
+
+        <div class="footer-right">
+          <a href="contact.html" class="pill-btn">Contact Us</a>
+          <div class="social-icons mt-2">
+            <a href="#" class="social-icon" aria-label="WhatsApp"><img src="assets/Untitled design (9).svg" alt="WhatsApp"></a>
+            <a href="https://www.facebook.com/profile.php?id=100087598423269&sk=reels_tab" class="social-icon" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><img src="assets/Untitled design (11).svg" alt="Facebook"></a>
+            <a href="https://www.instagram.com/ibr_roof_solutions_?igsh=dTZqMG00aGpoZGVn" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><img src="assets/Untitled design (10).svg" alt="Instagram"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
