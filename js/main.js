@@ -270,15 +270,19 @@ function initLoadAnimations(){
   const seen = new Set();
   const uniq = nodes.filter(n=>{ if(seen.has(n)) return false; seen.add(n); return true });
 
-  // Apply will-animate and stagger --delay
+  // Apply will-animate and compute stagger so the full sequence finishes ~1s
+  const totalTime = 1.0; // seconds total desired for full sequence
+  const animDuration = 0.6; // should match CSS duration for will-animate
+  const count = uniq.length || 1;
+  const maxDelay = Math.max(0, totalTime - animDuration);
+  const step = count > 1 ? (maxDelay / (count - 1)) : 0;
   uniq.forEach((el, i)=>{
     try{
       el.classList.add('will-animate');
-      // make images/cards slightly different flavor
       if(el.matches && (el.matches('.product-card') || el.matches('.media-card-wrap') )) el.classList.add('card-pop');
-      if(el.tagName === 'IMG' || el.querySelector && el.querySelector('img')) el.classList.add('img-pop');
+      if(el.tagName === 'IMG' || (el.querySelector && el.querySelector('img'))) el.classList.add('img-pop');
       if(el.matches && el.matches('.pill-btn, .contact-actions .contact-btn')) el.classList.add('btn-pop');
-      const delay = (i * 0.06).toFixed(2) + 's';
+      const delay = (i * step).toFixed(3) + 's';
       el.style.setProperty('--delay', delay);
     }catch(e){/* ignore individual failures */}
   });
@@ -300,14 +304,18 @@ function animateNavFromLogo(){
     const all = leftItems.concat(rightItems).filter(el=> el.offsetWidth && el.offsetHeight);
     if(all.length===0) return;
 
-    // Apply will-animate and btn-pop and assign a slower stagger (120ms step)
+    // Apply will-animate and btn-pop and compute stagger so nav finishes near 1s
+    const totalTime = 1.0; // seconds
+    const animDuration = 0.6; // seconds (match CSS)
+    const count = all.length || 1;
+    const maxDelay = Math.max(0, totalTime - animDuration);
+    const step = count > 1 ? (maxDelay / (count - 1)) : 0;
     all.forEach((el, i)=>{
       try{
         if(!el.classList.contains('will-animate')) el.classList.add('will-animate');
         if(!el.classList.contains('btn-pop')) el.classList.add('btn-pop');
-        const delay = (i * 0.12).toFixed(2) + 's';
+        const delay = (i * step).toFixed(3) + 's';
         el.style.setProperty('--delay', delay);
-        // start hidden (CSS handles opacity/transform) and let body.loaded trigger the reveal
         el.style.visibility = 'visible';
       }catch(e){}
     });
