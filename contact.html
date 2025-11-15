@@ -179,16 +179,43 @@
 
   <script src="js/main.js"></script>
   <script>
-    // simple contact form handler (saves to localStorage)
+    // contact form handler (free): Save locally and open user's email client (mailto:) so
+    // the visitor can send the enquiry directly to the owner. No paid services required.
+    const OWNER_EMAIL = 'IBRroofsolutions@gmail.com'; // where mailto will send
+
     const form = document.getElementById('contactForm');
     const result = document.getElementById('contactResult');
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
+
+    function saveLocally(data){
       const existing = JSON.parse(localStorage.getItem('contacts') || '[]');
       existing.push({...data, submittedAt: new Date().toISOString()});
       localStorage.setItem('contacts', JSON.stringify(existing));
+    }
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      // Save in localStorage as a fallback/record
+      try{ saveLocally(data); }catch(err){ console.warn('local save failed', err); }
+
+      // Build an email prefill using mailto: (will open the user's email client)
+      const subject = encodeURIComponent('Distributor enquiry from ' + (data.name || 'website'));
+      let body = '';
+      body += 'Name: ' + (data.name || '') + '\n';
+      body += 'Email: ' + (data.email || '') + '\n';
+      body += 'Phone: ' + (data.phone || '') + '\n';
+      body += 'Preferred contact: ' + (data.preferred || '') + '\n\n';
+      body += 'Message:\n' + (data.message || '');
+
+      const mailto = 'mailto:' + OWNER_EMAIL + '?subject=' + subject + '&body=' + encodeURIComponent(body);
+
+      // Notify user and open email client
+      result.textContent = "Thanks — we'll contact you soon. Opening your email client to send the message.";
       result.classList.remove('hidden');
+
+      // Use location.href so the user's default mail app opens. This requires the user to click 'Send'.
+      window.location.href = mailto;
       form.reset();
     });
   </script>
