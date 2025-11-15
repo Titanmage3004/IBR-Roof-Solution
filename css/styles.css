@@ -27,6 +27,18 @@ header .pill-btn, footer .pill-btn{ border-radius:12px }
 /* small tweaks for the centered logo with nav groups */
 nav .logo{position:relative}
 
+/* Force a consistent header logo size that overrides utility classes from Tailwind
+   The project uses Tailwind utilities like `h-14` which may change the image
+   size depending on the build. We prefer a fixed, responsive height for the
+   logo so it matches the visual reference. This rule uses higher specificity
+   and `max-height` to prevent the logo becoming oversized. */
+header .logo img{ height:46px !important; max-height:56px; width:auto !important; display:block }
+
+@media (max-width:640px){
+  header .logo img{ height:44px !important; max-height:48px }
+}
+
+
 /* model-viewer fallback sizing (if still present) */
 model-viewer{display:block}
 
@@ -289,6 +301,15 @@ footer.site-footer .footer-left, footer.site-footer .footer-center, footer.site-
 footer.site-footer .footer-left{display:flex;flex-direction:column;align-items:flex-start}
 footer.site-footer .footer-center{display:flex;flex-direction:column;align-items:center}
 footer.site-footer .footer-right{display:flex;flex-direction:column;align-items:flex-end}
+
+/* Prevent footer from appearing vertically squashed on desktop by
+   keeping the footer row from wrapping and allowing the three columns
+   to share available horizontal space. On narrow viewports we still
+   allow wrapping for readability. */
+footer.site-footer .footer-row{flex-wrap:nowrap}
+@media (max-width:900px){
+  footer.site-footer .footer-row{flex-wrap:wrap}
+}
 /* Make the footer shipping note match the in-card green pill style */
 footer.site-footer .footer-note{
   font-weight:700;
