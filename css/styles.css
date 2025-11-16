@@ -1,53 +1,37 @@
-/* Global base and brand variables */
+
 .root, :root{
-  --brand: #517cad; /* updated brand color requested */
-  --brand-dark: #3e6090; /* slightly darker for hover */
-  --accent: #2f855a; /* green */
+  --brand: #517cad; 
+  --brand-dark: #3e6090; 
+  --accent: #2f855a; 
 }
 
 *{box-sizing:border-box}
 body{font-family: 'Aptos', 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; line-height:1.45; background:#f6f8fb}
 .container{max-width:1180px; margin-left:auto; margin-right:auto}
 
-/* nav pill buttons */
 .pill-btn{display:inline-block; background:var(--brand); color:white; padding:.6rem 1.25rem; border-radius:9999px; font-weight:600; transition:transform .18s ease, background .18s ease, box-shadow .18s ease}
 .pill-btn:hover{background:var(--accent); transform:translateY(-4px); box-shadow:0 10px 20px rgba(47,133,90,0.12);}
 .pill-green{background:var(--brand);}
 .pill-green:hover{background:var(--accent)}
 
-/* Reduce radius only for nav (top & bottom) buttons to match reference */
 header .pill-btn, footer .pill-btn{ border-radius:12px }
 
-/* primary and outline buttons used in hero */
 .btn-primary{display:inline-block;background:var(--brand);color:#fff;padding:.75rem 1.25rem;border-radius:9999px;font-weight:700;transition:transform .18s ease, background .18s ease, box-shadow .18s ease}
 .btn-primary:hover{background:var(--accent);transform:translateY(-4px);box-shadow:0 10px 20px rgba(47,133,90,0.12)}
 .btn-outline{display:inline-block;border:2px solid var(--brand);background:white;color:var(--brand);padding:.6rem 1.25rem;border-radius:9999px;transition:transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease}
 .btn-outline:hover{background:var(--accent);color:white;transform:translateY(-4px);box-shadow:0 10px 20px rgba(47,133,90,0.12)}
 
-/* small tweaks for the centered logo with nav groups */
 nav .logo{position:relative}
 
-/* Force a consistent header logo size that overrides utility classes from Tailwind
-   The project uses Tailwind utilities like `h-14` which may change the image
-   size depending on the build. We prefer a fixed, responsive height for the
-   logo so it matches the visual reference. This rule uses higher specificity
-   and `max-height` to prevent the logo becoming oversized. */
-/* Make header logo slightly larger to match the embedded text inside the SVG.
-   We use higher specificity and !important to override utility classes like h-14. */
 header .logo img{ height:60px !important; max-height:72px; width:auto !important; display:block }
 
 @media (max-width:640px){
-  /* Slightly reduced size on small screens so the header remains balanced */
+  
   header .logo img{ height:54px !important; max-height:60px }
 }
-/* Small caption under the centered header logo (matches footer small style) */
-/* header caption removed — logo SVG already contains the caption text */
 
-
-
-/* model-viewer fallback sizing (if still present) */
 model-viewer{display:block}
-/* model-viewer fallback sizing (if still present) */
+
 model-viewer{display:block}
 
 @media (max-width:640px){
@@ -56,120 +40,98 @@ model-viewer{display:block}
   .btn-primary,.btn-outline{padding:.6rem 1rem}
 }
 
-/* Improve hero scaling on small screens so the logo, headline and images
-   remain balanced and don't overwhelm the viewport. This reduces the
-   logo size, headline font-size, paragraph text size, and hero image widths
-   on narrow viewports. It also removes the horizontal translate applied to
-   the visual column so the stack centers under the copy. */
 @media (max-width:768px){
   .hero-top-logo{ width:160px !important; max-width:60%; }
-  /* target the headline directly when it follows the hero-top-logo */
+  
   .hero-top-logo + h1{ font-size:2rem !important; line-height:1.08 !important; margin-top:0.25rem }
-  /* slightly smaller paragraph for better wrap */
+  
   .hero-top-logo + h1 + p{ font-size:0.95rem !important; max-width:20rem }
 
-  /* center the visual column and reduce sizes so it doesn't push horizontal scroll */
+  
   .hero-visual-column{ transform:none !important; gap:0.6rem !important; padding-top:0.5rem }
   .hero-prod-item{ width:9.5rem !important }
   .hero-prod-wrap::after{ bottom:-0.35rem; width:48%; height:0.45rem; filter: blur(4px) }
 
-  /* reduce overall hero spacing to keep the fold tight on phones */
+  
   main.container{ padding-top:1.25rem; padding-bottom:1.25rem }
 }
 
-/* Header & footer: mobile-friendly scaling without affecting desktop
-   - reduce header height, use fluid logo width, compact nav spacing
-   - keep pill buttons tappable but visually lighter
-   - enlarge footer touch targets and stack footer columns
-   These rules are intentionally scoped to <=768px so desktop layouts remain unchanged. */
 @media (max-width:768px){
-  /* Make the nav row auto-size and reduce its vertical footprint */
+  
   header .nav-grid{ height:auto !important; min-height:56px; align-items:center; padding-top:6px; padding-bottom:6px }
 
-  /* Fluid logo sizing: keep it legible but not dominant */
-  /* On mobile keep the logo left-aligned and nudge it further left using transform
-    (negative X translation moves it left; scoped to mobile only). */
+  
+  
   header .logo{ justify-self:start; padding-left:0; transform:translateX(-40px) }
   header .logo img{ width:140px !important; max-width:56%; height:auto !important; display:block; margin:0 }
 
-  /* Compact nav groups: remove large side gaps and allow pill buttons to remain readable */
+  
   .nav-grid .nav-left, .nav-grid .nav-right{ gap:1rem !important; margin-left:0 !important; margin-right:0 !important }
 
-  /* Pill buttons: keep vertical padding for touch, reduce horizontal bulk */
+  
   .pill-btn{ padding: .55rem .9rem !important; font-size:1rem; border-radius:10px }
 
-  /* Ensure the mobile hamburger is easy to tap */
+  
   .mobile-toggle{ padding:.5rem !important }
   .mobile-toggle svg{ width:30px; height:30px }
 
-  /* Mobile menu links: larger tappable area */
+  
   .mobile-nav-link{ padding:.75rem 1rem; font-size:1rem; border-radius:10px }
 
-  /* Footer: stack columns, center content and enlarge touch targets */
+  
   footer.site-footer .footer-row{ flex-direction:column; align-items:center; gap:14px }
   footer.site-footer .footer-left, footer.site-footer .footer-center, footer.site-footer .footer-right{ width:100%; text-align:center }
   footer.site-footer .social-icons{ justify-content:center }
 
-  /* Larger social icons for easier tapping */
+  
   .social-icon, .small-social{ width:44px; height:44px }
   .social-icon img, .small-social img{ width:28px; height:28px }
 
-  /* Slightly more breathing room in the footer on mobile */
+  
   footer.site-footer .container{ padding-top:18px !important; padding-bottom:18px !important }
 
-  /* Keep the centered footer logo from being too large */
+  
   footer.site-footer .footer-center img{ height:40px; max-width:60% }
 }
 
-/* Footer small tweaks */
 footer p{margin:0}
 footer a{transition:color .15s}
 
-/* ==========================
-   Store visual refresh (match reference image)
-   ========================== */
-
-/* Product card: light rounded panel with roomy padding */
 .product-card{
-  background: #f4f6f8; /* very light panel */
+  background: #f4f6f8; 
   border-radius:18px;
     display: inline-block;
-    position: relative; /* position context for the sheen pseudo-element */
+    position: relative; 
     line-height: 1.02;
-    color: #0f1724; /* solid base color */
+    color: #0f1724; 
     font-weight: 900;
     overflow: visible;
   }
 
-  /* Headline container: keep the pseudo-element strictly clipped to the
-     headline bounding box so the sheen never spills over the rest of the page. */
+  
   .metal-headline{ position: relative; display: inline-block; overflow: hidden; padding: 0 0.06em }
 
-  /* Single, broad, soft light strip that travels from the top-left corner
-     down to the bottom-right. Implemented with a blurred ::after pseudo-element
-     which is clipped by the headline's overflow:hidden so it only overlays
-     the headline text. Animation repeats infinitely by design. */
+  
   .metal-headline.animate-base::after{
     content: '';
     position: absolute;
-    /* start well left/top so the strip appears to originate near the 'P' */
+    
     left: -50%;
     top: -50%;
-    /* make the strip large enough to cover the diagonal sweep but it will be
-       clipped to the H1 box by overflow:hidden on the headline itself */
+    
     width: 220%;
     height: 220%;
     background: rgba(255,255,255,0.30);
     filter: blur(10px);
     transform-origin: center;
-    /* rotate so movement along X creates a diagonal top-left -> bottom-right travel */
+    
     transform: rotate(25deg) translateX(-150%);
     pointer-events: none;
     mix-blend-mode: screen;
     opacity: 0;
     will-change: transform, opacity;
     z-index: 2;
-    /* repeat the shine so it continues to look like a soft light sweeping the H1 */
+    
     animation: hero-headline-shine 5.2s linear 0s infinite;
   }
 
@@ -188,7 +150,6 @@ footer a{transition:color .15s}
   .hero-aux{right:-1.75rem;bottom:-1.5rem;width:22rem}
 }
 
-/* New vertical product stack to match reference image */
 .hero-visual-column{
   display:flex;
   flex-direction:column;
@@ -197,7 +158,7 @@ footer a{transition:color .15s}
   gap:1.25rem;
 }
 .hero-prod-item{
-  width:12.5rem; /* base size for each product image */
+  width:12.5rem; 
   max-width:100%;
   display:block;
   object-fit:contain;
@@ -213,12 +174,8 @@ footer a{transition:color .15s}
   .hero-visual-column{gap:2rem}
 }
 
-/* Remove any transforms or overlap styles previously applied to hero images */
 .hero-product, .hero-aux, .hero-stack, .hero-product.object-contain{transform:none !important}
 
-/* Wrapper for each product item: add a soft bottom-only shadow to simulate a
-   small floating cast shadow like in the reference image. The pseudo-element
-   creates an elliptical blur under each image. */
 .hero-prod-wrap{position:relative;display:inline-block}
 .hero-prod-wrap::after{
   content: '';
@@ -242,12 +199,8 @@ footer a{transition:color .15s}
   .hero-prod-wrap::after{bottom: -0.75rem; width: 62%; height:0.8rem; filter: blur(8px)}
 }
 
-/* Slightly lift the stack so the shadows sit comfortably below the items */
 .hero-visual-column{transform: translate(24px, -0.5rem)}
 
-/* Large logo used in the hero area (centered above the main H1). This
-   uses a fluid width so the logo remains large on desktop but fits on
-   smaller screens. Adjust values if you'd like it bigger/smaller. */
 .hero-top-logo{display:block;margin:0 auto 1rem;width:220px;max-width:80%;height:auto;object-fit:contain}
 @media (min-width:768px){
   .hero-top-logo{width:360px}
@@ -256,7 +209,6 @@ footer a{transition:color .15s}
   .hero-top-logo{width:420px}
 }
 
-/* Title centered, uppercase, bold and blue with subtle 3D feel */
 .product-card .product-title{
   text-align:center;
   color:var(--brand);
@@ -269,11 +221,9 @@ footer a{transition:color .15s}
   text-shadow: 0 3px 0 rgba(255,255,255,0.75), 0 2px 0 rgba(0,0,0,0.02);
 }
 
-/* Also target markup produced by js/store.js (h3 + p) so styling applies without changing JS */
 .product-card h3{ text-align:center; color:var(--brand); font-weight:900; text-transform:uppercase; letter-spacing:1.5px; margin:0.25rem 0 0.6rem 0; font-size:1.05rem }
 .product-card p.text-sm{ text-align:center; color:#1f2937; font-weight:700; margin:0 }
 
-/* Product image sits inside a white rounded card to match reference 'floating' feel */
 .product-card .product-image-wrapper{
   background:white;
   border-radius:12px;
@@ -284,19 +234,16 @@ footer a{transition:color .15s}
 }
 .product-card .product-image{height:9.25rem;object-fit:contain;border-radius:6px}
 
-/* Apply white inset look even when JS inserts img directly (no wrapper) */
 .product-card > img.product-image{background:white;padding:1.25rem;border-radius:12px;object-fit:contain}
 @media (min-width:1024px){
   .product-card .product-image{height:11.5rem}
 }
 
-/* Price row: label + rounded pill input/display */
 .product-card .price-row{display:flex;flex-direction:column;gap:.35rem}
 .product-card .price-main-row{display:flex;align-items:center;gap:0.6rem}
 .product-card .price-per-unit{color:#6b7280;font-weight:700;font-size:0.95rem}
 .product-card .price-min{font-size:0.85rem;color:#6b7280;font-weight:700}
 
-/* Small shipping hint displayed near prices and in the cart modal */
 .shipping-hint, .shipping-note{
   background:#ecfdf5;
   border:1px solid rgba(6,95,70,0.06);
@@ -309,7 +256,6 @@ footer a{transition:color .15s}
   margin-top:0.4rem;
 }
 
-/* Invoice styles */
 .invoice-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem}
 .invoice-meta{color:#6b7280;font-weight:700}
 .invoice-table{width:100%;border-collapse:collapse;margin-top:0.5rem}
@@ -330,37 +276,31 @@ footer a{transition:color .15s}
 .product-card .price-row .price-label{font-weight:700;color:#222;font-size:.92rem}
 .price-pill{background:#eef2f5;border-radius:12px;padding:.65rem .9rem;display:block;border:1px solid rgba(0,0,0,0.04);min-width:140px}
 
-/* Ensure the DIY kit price displays like product cards: keep pill compact and the "per unit" text inline */
 .diy-kit .price-main-row{display:flex;align-items:center;gap:0.6rem}
 .diy-kit .price-pill{display:inline-block;flex:0 0 auto;min-width:140px;max-width:none}
-/* Match per-unit and minimum-order typography to product cards */
+
 .diy-kit .price-per-unit{color:#6b7280;font-weight:700;font-size:0.95rem}
 .diy-kit .price-min{font-size:0.85rem;color:#6b7280;font-weight:700}
 
-/* Color selection: slightly larger swatches in a clean row */
 .swatches{display:flex;gap:.65rem;margin-top:.45rem}
 .swatch{width:34px;height:34px;border-radius:9px;display:inline-block;border:1.5px solid rgba(0,0,0,0.06);cursor:pointer;box-shadow:0 3px 8px rgba(17,24,39,0.04)}
 .swatch.selected{outline:3px solid rgba(81,124,173,0.12);transform:translateY(-2px)}
 
-/* Units/quantity row: label and rounded-square controls to match reference */
 .units-row{display:flex;flex-direction:column;gap:.5rem;margin-top:.45rem}
 .units-row .units-label{font-weight:700}
 .qty-controls{display:inline-flex;align-items:center;gap:.5rem;border:0 !important;background:transparent !important;box-shadow:none !important}
 .qty-button{width:40px;height:40px;border-radius:10px;border:1px solid rgba(0,0,0,0.08);background:white;display:inline-flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer}
-/* remove thin border around qty display to match user request */
+
 .qty-value{min-width:56px;padding:.6rem .8rem;border-radius:8px;border:0;background:transparent;text-align:center;font-weight:700}
 
-/* controls layout: left side color/units, right side add button */
 .controls{display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .controls-left{display:flex;flex-direction:column;gap:.5rem}
 .controls-right{display:flex;align-items:center}
 .add-to-cart{background:var(--brand);color:#fff;padding:.6rem .9rem;border-radius:10px;border:none;cursor:pointer}
 .add-to-cart:hover{background:var(--brand-dark)}
 
-/* Tidy small form pieces inside card */
 .product-card .controls{display:flex;flex-direction:column;gap:.75rem}
 
-/* DIY Kit banner: full-width rounded card with centered oversized headline and product row */
 .diy-kit{background:#eef3f6;border-radius:14px;padding:1.75rem;margin-top:2.5rem}
 .diy-kit .kit-strap{display:block;text-align:center;color:#6b7280;font-weight:700;margin-bottom:.5rem}
 .diy-kit .kit-title{font-weight:900;color:var(--brand);text-transform:uppercase;text-align:center;letter-spacing:2px;font-size:1.6rem;margin-bottom:1.25rem}
@@ -371,18 +311,12 @@ footer a{transition:color .15s}
 }
 @media (max-width:900px){.diy-kit .kit-products{grid-template-columns:1fr;}.diy-kit .kit-title{font-size:1.15rem}}
 
-/* Slight spacing helpers for store grid (more airy) */
 #products{margin-top:1.25rem}
 
-/* smaller misc adjustments to match reference spacing */
 .product-card .meta-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
 
-
-/* Site footer layout to match reference */
 footer.site-footer{background:#f3f5f7;border-top:1px solid rgba(0,0,0,0.06)}
-/* make the footer content slightly narrower than the main container to match reference */
-/* Make footer container use the same max width as the main content container so
-  left/right edges align with header and hero content. */
+
 footer.site-footer .container{ max-width:1180px; margin-left:auto; margin-right:auto; padding-top:20px !important; padding-bottom:20px !important }
 footer.site-footer .footer-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
 footer.site-footer .footer-left, footer.site-footer .footer-center, footer.site-footer .footer-right{flex:1}
@@ -390,15 +324,11 @@ footer.site-footer .footer-left{display:flex;flex-direction:column;align-items:f
 footer.site-footer .footer-center{display:flex;flex-direction:column;align-items:center}
 footer.site-footer .footer-right{display:flex;flex-direction:column;align-items:flex-end}
 
-/* Prevent footer from appearing vertically squashed on desktop by
-   keeping the footer row from wrapping and allowing the three columns
-   to share available horizontal space. On narrow viewports we still
-   allow wrapping for readability. */
 footer.site-footer .footer-row{flex-wrap:nowrap}
 @media (max-width:900px){
   footer.site-footer .footer-row{flex-wrap:wrap}
 }
-/* Make the footer shipping note match the in-card green pill style */
+
 footer.site-footer .footer-note{
   font-weight:700;
   background:#ecfdf5;
@@ -411,13 +341,12 @@ footer.site-footer .footer-note{
 }
 footer.site-footer .footer-small{font-size:.85rem;color:#5b6166}
 footer.site-footer .social-icons{display:flex;gap:1.5rem}
-/* remove the white badge background so the SVG artwork itself shows through */
+
 footer.site-footer .social-icons a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:transparent;padding:0}
 footer.site-footer .footer-center img{height:46px;object-fit:contain}
-/* small extra spacing between the left pill and shipping note */
+
 footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 
-/* Utility classes for consistent social icon sizing and form-line icons */
 .social-icon{display:inline-flex;align-items:center;justify-content:center;padding:0;margin:0;border-radius:8px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease, background .12s ease;background:transparent}
 .social-icon img{width:36px;height:36px;display:block}
 .social-icon:hover,.social-icon:focus{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 30px rgba(15,23,42,0.08);background:rgba(81,124,173,0.06)}
@@ -426,7 +355,6 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 .small-social img{width:26px;height:26px;display:block}
 .small-social:hover,.small-social:focus{transform:translateY(-2px);background:rgba(81,124,173,0.06)}
 
-/* Toast notifications (small non-blocking messages shown on actions like Add to cart) */
 .toast-container{position:fixed;top:1rem;right:1rem;display:flex;flex-direction:column;gap:0.75rem;z-index:9999}
 .site-toast{background:#0f1724;color:#e6eef8;padding:0.75rem 1rem;border-radius:10px;box-shadow:0 14px 32px rgba(2,6,23,0.36);border:1px solid rgba(255,255,255,0.03);max-width:320px;display:flex;align-items:flex-start;gap:0.75rem}
 .site-toast .toast-message{flex:1;font-weight:600;font-size:0.95rem}
@@ -434,7 +362,6 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 .site-toast .toast-close:focus{outline:2px solid rgba(81,124,173,0.18);outline-offset:3px}
 .site-toast .toast-meta{font-size:0.8rem;color:rgba(230,238,248,0.75)}
 
-/* Modal / cart styles */
 .modal-overlay{position:fixed;inset:0;background:rgba(2,6,23,0.72);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:60}
 .modal-overlay.hidden{display:none}
 .modal-panel{background:#fff;max-width:1200px;width:calc(100% - 80px);border-radius:16px;box-shadow:0 48px 120px rgba(2,6,23,0.48);padding:1.75rem 1.75rem;display:flex;flex-direction:column;gap:1rem;overflow:auto;max-height:90vh}
@@ -449,60 +376,45 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 .cart-item .meta .title{font-weight:800;color:#0f1724}
 .cart-item .meta .color{font-size:0.9rem;color:#6b7280}
 
-/* small circular swatch shown next to color name in cart */
 .color-swatch{display:inline-block;width:14px;height:14px;border-radius:9999px;border:1px solid rgba(15,23,42,0.06);vertical-align:middle;margin-right:0.5rem;box-shadow:0 2px 6px rgba(2,6,23,0.06)}
 .cart-item .qty-controls{display:flex;gap:0.5rem;align-items:center}
 .cart-footer{display:flex;justify-content:space-between;align-items:center;padding-top:0.75rem;border-top:none}
 
-/* Remove button styling inside cart */
 .remove-item{background:transparent;border:1px solid rgba(239,68,68,0.12);color:#ef4444;padding:0.45rem 0.75rem;border-radius:10px;cursor:pointer;font-weight:800;font-size:1.05rem}
 .remove-item:hover{background:rgba(239,68,68,0.06);transform:translateY(-2px)}
 
-/* Quantity input styling inside cart */
 .qty-box{display:flex;align-items:center;gap:0.5rem}
 .qty-decrease,.qty-increase{background:transparent;border:1px solid rgba(15,23,42,0.06);padding:0.4rem 0.7rem;border-radius:8px;cursor:pointer;font-weight:800;font-size:1.05rem}
 .qty-decrease:hover,.qty-increase:hover{background:rgba(15,23,42,0.03);transform:translateY(-1px)}
 .qty-display{min-width:56px;text-align:center;font-weight:900;font-size:1.05rem;padding:0.25rem 0.35rem}
 .qty-display[aria-live]{font-variant-numeric: tabular-nums}
 
-/* Per-line total styling */
 .line-total{color:#0f1724;font-size:1.02rem;font-weight:800}
 
-/* Footer summary tweaks */
 .cart-summary-items{color:#6b7280}
 .cart-summary-total{color:#0f1724}
 
-/* prevent background scroll when modal open */
 .modal-open{overflow:hidden;height:100vh}
 
-/* shadow approximation for floating product */
 .shadow-2xl{box-shadow:0 40px 50px -30px rgba(15,23,42,0.2)}
 
-/* Media grid cards (Instagram/YouTube style) */
 .media-card{border-radius:12px;overflow:hidden;display:block;background:#fff}
 .media-card img,.media-card video{width:100%;height:100%;object-fit:cover;display:block}
 .media-card .card-meta{padding:.75rem}
 .media-pill{display:block;margin:.9rem auto 0;width:220px;text-align:center}
 
-/* Media cards adapt to each media's intrinsic aspect ratio.
-  We set a CSS variable --ar (width/height) from JS and use it here.
-  Fallback uses a tall portrait ratio to match the reference.
-*/
 .media-card{border-radius:12px;overflow:hidden;display:block;position:relative;aspect-ratio:var(--ar,9/16);background:#000}
 .media-card img,.media-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
-/* Wrapper for a media card + its caption so the caption can match the media width */
 .media-card-wrap{display:flex;flex-direction:column;align-items:stretch;gap:.75rem}
 .media-caption{display:block;padding:0 0 0 0;width:100%;text-align:center}
-/* Make media caption pills visually match section pills (width, padding, radius) */
+
 .media-caption .pill-btn{display:block;width:100%;max-width:none;margin:0;padding:.6rem 1.25rem;border-radius:10px;background:var(--brand);color:#fff;font-weight:700;text-align:center}
 .media-caption .pill-btn:hover{transform:none;background:var(--brand-dark)}
 
-/* Landscape caption: full-width pill that matches the wide media below */
 .landscape-caption{display:flex;justify-content:center;margin-top:.75rem}
 .landscape-caption .pill-btn{display:block;width:100%;max-width:none;margin:0;padding:.6rem 1.25rem;border-radius:10px;background:var(--brand);color:#fff;font-weight:700;text-align:center}
 
-/* Store swatches and quantity controls */
 .swatches{display:flex;gap:.5rem;margin-top:.5rem}
 .swatch{width:28px;height:28px;border-radius:9999px;display:inline-block;border:2px solid rgba(0,0,0,0.08);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.06)}
 .swatch.selected{outline:3px solid rgba(81,124,173,0.18);transform:translateY(-2px)}
@@ -510,19 +422,16 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 .qty-button{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:white;border:none;cursor:pointer}
 .qty-value{display:inline-block;padding:0 8px;min-width:36px;text-align:center}
 
-/* Product card visual upgrades */
 .product-card{border-radius:14px;box-shadow:0 10px 25px rgba(15,23,42,0.08);transition:transform .18s ease,box-shadow .18s ease}
 .product-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(15,23,42,0.12)}
-.product-image{height:14.5rem /* 232px */;border-radius:10px;object-fit:cover}
+.product-image{height:14.5rem ;border-radius:10px;object-fit:cover}
 @media (min-width:1024px){
-  .product-image{height:18rem /* 288px */}
+  .product-image{height:18rem }
 }
 
-/* Optional model-viewer viewport styling to make 3D models look good */
 .model-viewport{width:100%;height:18rem;border-radius:10px;overflow:hidden;background:#111}
 @media (min-width:1024px){.model-viewport{height:22rem}}
 
-/* Admin modal styles */
 .admin-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:60}
 .admin-panel{background:#fff;padding:1.25rem;border-radius:10px;min-width:320px;max-width:720px;box-shadow:0 20px 40px rgba(2,6,23,0.2)}
 .admin-panel h2{margin:0 0 .5rem 0}
@@ -532,23 +441,19 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
 .admin-product{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:.5rem;border-bottom:1px solid rgba(0,0,0,0.06)}
 .admin-footer{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.75rem}
 
-/* Section pill heading (full-width rounded bar) */
 .section-pill{display:block;background:var(--brand);color:#fff;padding:.6rem 1.25rem;border-radius:10px;font-weight:700;text-align:center;margin:1.75rem auto}
 .section-pill--wide{width:100%;max-width:none}
 
-/* Two-column content used below the media grid */
 .two-col{display:flex;gap:2rem;align-items:flex-start}
 .two-col .left{flex:0 0 360px}
 .two-col .right{flex:1}
 @media (max-width:800px){.two-col{flex-direction:column}.two-col .left{flex:0 0 auto;width:100%}}
 
-/* Navigation grid to center logo and distribute side buttons */
 .nav-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0}
-/* larger gap on desktop so buttons are spaced farther apart */
+
 .nav-grid .nav-left{justify-self:end;display:flex;gap:9rem;align-items:center; margin-right:9rem}
 .nav-grid .nav-right{justify-self:start;display:flex;gap:9rem;align-items:center; margin-left:9rem}
 
-/* responsive reductions for narrower viewports */
 @media (max-width:1400px){
   .nav-grid{padding:0 36px}
   .nav-grid .nav-left, .nav-grid .nav-right{gap:4.5rem}
@@ -568,69 +473,60 @@ footer.site-footer .footer-left .pill-btn{ margin-right:0.6rem }
   .nav-grid .nav-left, .nav-grid .nav-right{gap:1.125rem}
   .nav-grid .nav-left{margin-right:1.125rem}
   .nav-grid .nav-right{margin-left:1.125rem}
-  /* On narrow screens position the logo more to the left like a home button */
+  
   .nav-grid .logo{justify-self:start; grid-column:1}
 }
 
-/* Mobile hamburger toggle: hidden by default, shown at <=1200px and aligned to the right */
 .mobile-toggle{display:none;background:transparent;border:0;padding:.35rem;border-radius:8px;cursor:pointer;color:var(--brand);align-items:center;justify-content:center}
 .mobile-toggle svg{width:26px;height:26px;fill:currentColor;display:block}
 .nav-grid .mobile-toggle{justify-self:end;align-self:center;z-index:60}
 
 @media (max-width:1200px){
   .mobile-toggle{display:inline-flex}
-  /* hide large nav groups and keep logo left */
+  
   .nav-grid .nav-left, .nav-grid .nav-right{display:none}
   .nav-grid .logo{justify-self:start}
-  /* mobile menu container (JS toggles .hidden) */
+  
   #mobileMenu{display:block}
   #mobileMenu.hidden{display:none}
-  /* Increase spacing between mobile menu links for easier tapping */
+  
   [id^="mobileMenu"] .mobile-nav-link{ margin-bottom:20px; display:block }
   [id^="mobileMenu"] .mobile-nav-link:last-child{ margin-bottom:0 }
 }
 
-/* Mobile menu link styles: default is white (static), active page gets brand blue */
 .mobile-nav-link{display:block;background:#ffffff;color:#0f1724;padding:.5rem .75rem;border:1px solid rgba(0,0,0,0.06);border-radius:8px;text-align:left}
 .mobile-nav-link:hover{background:#f8fafc}
 .mobile-nav-link.active{background:var(--brand);color:#fff;border-color:transparent;box-shadow:0 8px 22px rgba(81,124,173,0.12)}
 
-/* Apply to any mobileMenu variants (mobileMenu2/3/etc) */
 [id^="mobileMenu"] .mobile-nav-link{width:100%}
 
-/* Footer small tweaks */
 footer p{margin:0}
 footer a{transition:color .15s}
 
-/* ==========================
-   Support bracket info section (About page)
-   Matches reference layout: wide blue pill heading, left stacked images, right copy + steps
-   ========================== */
 .support-section{margin-top:2rem;margin-bottom:2rem}
-/* make the pill span the full content width and match the rounded pill look */
+
 .support-pill{display:block;background:var(--brand);color:#fff;padding:.6rem 1.25rem;border-radius:10px;font-weight:700;text-align:center;margin:1.75rem 0 1rem;width:100%;max-width:none}
-/* remove boxed background/shadow so the section sits flush with page like the reference */
+
 .support-content{background:transparent;border-radius:0;padding:0;margin:0}
-/* left column: stack images, keep controlled width on large screens */
+
 .support-left{flex:0 0 420px;display:flex;flex-direction:column;gap:1rem;align-items:center;padding-right:1rem}
 .support-photo{width:100%;max-width:320px;object-fit:contain;border-radius:6px}
 .support-diagram{width:100%;max-width:420px;object-fit:contain;border-radius:6px}
-/* right column: tighter text layout, improved readability next to images */
+
 .support-right{flex:1;padding-left:1rem}
 .support-right .support-lead{font-weight:800;color:#111827;margin-bottom:0.4rem;font-size:1.02rem}
 .support-right p{color:#374151;margin-top:0.5rem;line-height:1.6}
 .support-steps{
   margin-top:0.75rem;
-  margin-left:0; /* use padding for consistent marker placement */
+  margin-left:0; 
   padding-left:1.25rem;
   color:#111827;
   line-height:1.55;
-  list-style-type:disc; /* ensure bullets are visible */
+  list-style-type:disc; 
   list-style-position:outside;
 }
 .support-steps li{margin-bottom:0.5rem}
 
-/* ensure marker color/size matches text and reference image */
 .support-steps li::marker{color:#111827;font-size:1rem}
 
 @media (max-width:900px){
@@ -640,10 +536,6 @@ footer a{transition:color .15s}
   .support-pill{width:calc(100% - 2rem);margin:0 1rem 1rem}
 }
 
-/* ==========================
-   Inner Rib comparison section (placed above support bracket)
-   Uses the same visual language as .support-section but with two stacked compare rows
-   ========================== */
 .compare-section{margin-top:2rem;margin-bottom:1.5rem}
 .compare-pill{display:block;background:var(--brand);color:#fff;padding:.6rem 1.25rem;border-radius:10px;font-weight:700;text-align:center;margin:1.75rem 0 1rem;width:100%;max-width:none}
 .compare-content{background:transparent;padding:0;margin:0}
@@ -661,37 +553,26 @@ footer a{transition:color .15s}
   .compare-pill{width:calc(100% - 2rem);margin:0 1rem 1rem}
 }
 
-/* Print helper: when printing show only the invoice modal (if present) and hide other UI.
-  This ensures mobile printing renders the invoice instead of blank pages. Keep table semantics
-  so columns render horizontally instead of stacking. */
 @media print{
-  /* hide everything by default */
+  
   body > *{display:none !important}
 
-  /* If the invoice modal exists, show it and its contents */
+  
   #invoiceModal, #invoiceModal *{display:block !important}
   #invoiceModal{position:relative !important; width:100% !important; max-width:760px !important; margin:0 auto !important; padding:20px !important; box-shadow:none !important; background:transparent !important}
-  /* Ensure the modal panel's table and layout keep native table display */
+  
   #invoiceModal table{display:table !important; width:100% !important; border-collapse:collapse !important; table-layout:fixed !important}
   #invoiceModal thead, #invoiceModal tbody{display:table-row-group !important}
   #invoiceModal tr{display:table-row !important}
   #invoiceModal th, #invoiceModal td{display:table-cell !important}
 
-  /* Also respect existing print-only-invoice class if used */
+  
   .print-only-invoice{display:block !important}
 
-  /* hide other overlays */
+  
   .toast-container{display:none !important}
 }
 
-/* ==========================
-   Local fixes: cart button, footer spacing, contact form tweaks
-   These are small, targeted rules to restore the look and spacing lost when some
-   Tailwind utilities were not present in the built CSS. They are intentionally
-   lightweight and override earlier utility classes where necessary.
-   ========================== */
-
-/* Cart button (store header) — make it feel like a pill and stand out) */
 #cartBtn{
   background:var(--brand);
   color:#fff;
@@ -705,16 +586,11 @@ footer a{transition:color .15s}
 }
 #cartBtn:hover{ background:var(--brand-dark); transform:translateY(-3px); box-shadow:0 18px 36px rgba(81,124,173,0.12) }
 
-/* Ensure header/shop buttons have breathing room from surrounding content */
 footer.site-footer .pill-btn,
 header .pill-btn{ margin-bottom:0.6rem }
 
-/* Reduce external gap above footer entirely and control internal spacing via
-   the footer container so we get a consistent 20px padding between the top
-   edge of the footer and its content (overrides Tailwind `mt-*` and `py-*`). */
 footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
 
-/* Contact page: improve spacing and input appearance inside the card */
 .max-w-5xl.bg-gray-100{ padding:1.25rem; }
 .max-w-5xl .grid{ gap:1.5rem }
 .max-w-5xl .space-y-4 > *{ margin-bottom:1rem }
@@ -725,22 +601,16 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
 .max-w-5xl a[title],
 .max-w-5xl .p-3{ font-family:inherit; font-size:1rem; padding:.85rem; border-radius:9999px; border:1px solid rgba(0,0,0,0.08); background:#fff; display:block }
 
-/* Make the follow/message items align nicely with their icons */
 .max-w-5xl .flex.items-center.gap-3,
 .max-w-5xl .flex.items-center.gap-3 > a,
 .max-w-5xl .flex.items-center.gap-3 > input{ vertical-align:middle }
 
-/* Slightly reduce the icon size inside the small-social wrappers so they match text */
 .small-social img{ width:28px; height:28px }
 
-/* Increase vertical spacing between each social 'pill' row (20px) to match reference */
 .max-w-5xl .left .space-y-3{ display:flex; flex-direction:column; row-gap:20px }
 
-/* ==========================
-   Contact card: precise layout to match reference
-   ========================== */
 .max-w-5xl.bg-gray-100{
-  background:#f3f5f7; /* ensure consistent light gray */
+  background:#f3f5f7; 
   border-radius:16px;
   padding:2rem 2.25rem;
   box-shadow:0 6px 18px rgba(15,23,42,0.03);
@@ -748,7 +618,6 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
 .max-w-5xl .grid{grid-template-columns: 1fr 1fr; align-items:start; gap:2rem}
 .max-w-5xl h2{margin:0 0 0.5rem 0}
 
-/* Left column contact inputs: pill style with icon aligned */
 .max-w-5xl .left .p-3,
 .max-w-5xl .left a[title],
 .max-w-5xl .left input[type="text"],
@@ -761,7 +630,6 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
 .max-w-5xl .left .small-social{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:transparent}
 .max-w-5xl .left .small-social img{width:30px;height:30px}
 
-/* Right column form inputs: full width, pill style except textarea */
 .max-w-5xl .right input[type="text"],
 .max-w-5xl .right input[type="email"],
 .max-w-5xl .right input[name],
@@ -770,21 +638,15 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
 }
 .max-w-5xl .right textarea{min-height:90px;border-radius:8px;padding:0.75rem;border:1px solid rgba(0,0,0,0.06);background:#fff;width:100%;resize:vertical}
 
-/* Submit button: wide, centered and rounded like reference */
 .max-w-5xl .right .btn-primary{display:block;width:68%;max-width:360px;margin:1rem auto 0;padding:.9rem 1.25rem;border-radius:9999px;text-align:center}
 
-/* Ensure labels are compact and slightly muted */
 .max-w-5xl label{display:block;margin-bottom:0.35rem;color:#374151;font-weight:700;font-size:0.95rem}
 
-/* Slightly increase spacing between left items */
 .max-w-5xl .left .mt-2{margin-top:0.5rem}
 
-/* Make the contact card stack to a single column on small screens so the
-   form and contact inputs behave like other pages. This prevents the
-   two-column layout from staying side-by-side on narrow viewports. */
 @media (max-width:768px){
   .max-w-5xl .grid{ grid-template-columns: 1fr !important; gap:1rem }
-  /* tighten left column spacing for mobile and ensure icon rows wrap neatly */
+  
   .max-w-5xl .left{ padding-right:0 }
   .max-w-5xl .left .p-3,
   .max-w-5xl .left a[title],
@@ -792,21 +654,17 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .max-w-5xl .left input[type="email"]{
     height:auto; padding:.75rem 0.9rem; border-radius:9999px; align-items:center
   }
-  /* Make right column form inputs full width and ensure submit button spans container */
+  
   .max-w-5xl .right input[type="text"],
   .max-w-5xl .right input[type="email"],
   .max-w-5xl .right input[name],
   .max-w-5xl .right .p-3,
   .max-w-5xl .right textarea{ width:100%; height:auto; padding:.75rem; }
   .max-w-5xl .right .btn-primary{ width:100%; max-width:none; margin:1rem 0 0; }
-  /* Ensure labels and text remain readable on small devices */
+  
   .max-w-5xl label{ font-size:0.95rem }
 }
 
-/* Contact action buttons (email / whatsapp) — match site pill style but compact
-   Use .contact-actions container to center buttons and allow horizontal or
-   vertical stacking on narrow screens. Buttons inherit the pill look used
-   across the site so they are visually consistent and scalable. */
 .contact-actions{display:flex;gap:0.75rem;justify-content:center;align-items:center;margin-top:0.75rem}
 .contact-actions .pill-btn, .contact-actions .contact-btn{display:inline-flex;align-items:center;justify-content:center;padding:.6rem .9rem;border-radius:12px;font-weight:700}
 .contact-actions .contact-btn img{height:18px;width:18px;margin-right:0.5rem}
@@ -820,15 +678,6 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .contact-actions .pill-btn, .contact-actions .contact-btn{width:100%;max-width:none}
 }
 
-/* Make the contact actions align with right-column inputs in the contact card.
-   When the form is inside the .max-w-5xl card, make the action group full width
-   of the right column and have each button share the space (50/50) so their
-   edges align with the text inputs/textarea. Also match input height for visual
-   consistency. */
-/* Make the action group fill the right column and have each button share space
-   Use gap to control spacing (more reliable than manual margins). Remove the
-   invalid `justify-content: stretch` which doesn't exist; use space-between and
-   align-items:stretch so buttons match input heights. */
 .max-w-5xl .right .contact-actions{
   width:100%;
   max-width:none;
@@ -844,18 +693,15 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .max-w-5xl .right .contact-actions .contact-btn + .contact-btn{margin-left:0}
 }
 
-
-
-/* Make modals and invoice tables scale down and wrap better under 1200px */
 @media (max-width:1200px){
   .modal-panel{ width: calc(100% - 40px); max-width:720px; padding:1rem; border-radius:12px; font-size:0.95rem }
   .modal-panel .modal-header h2{ font-size:1rem }
-  /* allow invoice body to scroll horizontally if needed on small screens */
+  
   #invoiceBody{ overflow:auto; -webkit-overflow-scrolling:touch }
   .invoice-table{ width:100%; font-size:0.95rem }
   .invoice-table th, .invoice-table td{ padding:0.45rem 0.5rem; word-break:break-word; white-space:normal }
   .invoice-header img{height:36px}
-  /* cart items stack vertically for improved readability */
+  
   .cart-item{flex-direction:column;align-items:flex-start;gap:0.6rem}
   .cart-item img{width:100%;height:auto;max-height:160px}
   .cart-item .right{width:100%;display:flex;justify-content:space-between;align-items:center}
@@ -867,7 +713,6 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .invoice-summary{flex-direction:column;align-items:flex-end;gap:0.5rem}
 }
 
-/* On smaller screens hide the print button and show only the save/download action */
 @media (max-width:900px){
   #printInvoice{display:none}
 }
@@ -877,42 +722,36 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .invoice-table th, .invoice-table td{ font-size:0.9rem; padding:0.3rem }
   .invoice-header{flex-direction:column;align-items:flex-start;gap:0.5rem}
   .qr-code{width:140px;height:140px;flex:0 0 140px}
-  /* reduce spacing inside cart footer to keep controls visible */
+  
   .cart-footer{flex-direction:column;align-items:flex-end;gap:0.5rem}
 }
 
-/* Further reduce invoice table density on very small screens to avoid wrapping */
 @media (max-width:480px){
   .invoice-table{ table-layout:auto }
   .invoice-table th, .invoice-table td{ font-size:0.82rem; padding:0.25rem 0.35rem; white-space:normal }
-  /* remove fixed column widths so content can reflow more gracefully */
+  
   .invoice-table th:nth-child(1), .invoice-table th:nth-child(2), .invoice-table th:nth-child(3), .invoice-table th:nth-child(4), .invoice-table th:nth-child(5), .invoice-table th:nth-child(6){ width:auto }
-  /* slightly reduce header weight to save vertical space */
+  
   .invoice-table th{ font-weight:700 }
-  /* reduce spacing between rows */
+  
   .invoice-table td{ line-height:1.15 }
 }
 
-/* Ensure downloaded invoice capture looks correct: neutral background and max widths */
 .print-only-invoice{background:#fff;color:#0f1724}
 .print-only-invoice .invoice-table{width:100%;border-collapse:collapse}
 .print-only-invoice img{max-width:100%;height:auto}
 
-/* Buttons inside modal: make them compact on small screens */
 .modal-panel .cart-footer button, .modal-panel .invoice-actions button, .modal-panel button{min-width:0;padding:.45rem .65rem}
 
-/* prevent iOS from zooming inputs inside modal (avoid accidental zoom) */
 .modal-panel input, .modal-panel textarea, .modal-panel select{font-size:16px}
 
-/* Invoice visual size on screen (make it a bit smaller and centered) */
 #invoiceBody{max-width:760px;margin:0 auto;font-size:0.95rem}
 .invoice-header img{height:40px;display:block}
 .invoice-table th,.invoice-table td{font-size:0.95rem}
 .invoice-summary div{font-size:0.98rem}
 
-/* Mobile: stack item name above its numeric fields so long names don't push numbers out of view */
 @media (max-width:640px){
-  /* show header row on mobile and align it to the same grid as rows */
+  
   .invoice-table thead{display:block}
   .invoice-table thead tr{display:grid;grid-template-columns:36px 1fr 72px 56px 64px 78px;gap:6px;padding:6px 0}
   .invoice-table thead th{display:block;padding:0.25rem 0.35rem;font-weight:700}
@@ -920,26 +759,23 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .invoice-table, .invoice-table tbody{display:block;width:100%}
   .invoice-table tr{display:grid;grid-template-columns:36px 1fr 72px 56px 64px 78px;grid-template-rows:auto auto;gap:6px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
   .invoice-table td{display:block;padding:0;margin:0}
-  /* index */
+  
   .invoice-table td:nth-child(1){grid-column:1;grid-row:1/3;align-self:start;font-weight:700;padding:0.25rem 0.35rem}
-  /* item name spans full width on first row */
+  
   .invoice-table td:nth-child(2){grid-column:2 / 7;grid-row:1;font-weight:800;white-space:normal;overflow-wrap:break-word;padding:0.25rem 0.35rem}
-  /* numeric columns appear on second row horizontally */
+  
   .invoice-table td:nth-child(3){grid-column:3;grid-row:2;font-size:0.88rem;color:#374151;padding:0.15rem 0.35rem}
   .invoice-table td:nth-child(4){grid-column:4;grid-row:2;text-align:center;font-size:0.88rem;padding:0.15rem 0.35rem}
   .invoice-table td:nth-child(5){grid-column:5;grid-row:2;text-align:right;font-size:0.88rem;padding:0.15rem 0.35rem}
   .invoice-table td:nth-child(6){grid-column:6;grid-row:2;text-align:right;font-size:0.88rem;padding:0.15rem 0.35rem}
-  /* keep vertical alignment tidy */
+  
   .invoice-table td{vertical-align:middle}
 }
 
-/* Mobile-only stacked footer: hidden by default; shown only on small viewports
-   This keeps the desktop footer (.footer-row) unchanged and provides exact
-   vertical ordering and centering on mobile devices. */
 .footer-mobile-stack{ display:none }
 
 @media (max-width:768px){
-  /* Hide the desktop footer row and reveal the mobile stack */
+  
   footer.site-footer .footer-row{ display:none !important }
   footer.site-footer .container{ padding-top:12px !important; padding-bottom:12px !important }
 
@@ -953,7 +789,7 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   .footer-mobile-stack .footer-center img{ height:44px; max-width:60%; margin-top:6px }
   .footer-mobile-stack .footer-small{ margin-top:0.25rem }
 
-  /* Improve touch targets and spacing slightly on very small screens */
+  
   @media (max-width:420px){
     .footer-mobile-stack .pill-btn{ width:94% }
     .footer-mobile-stack .social-icon, .footer-mobile-stack .small-social{ width:48px; height:48px }
@@ -961,5 +797,4 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
 }
 
   
-
 

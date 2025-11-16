@@ -27,7 +27,7 @@
           <a href="store.html" class="pill-btn">Store</a>
           <a href="contact.html" class="pill-btn">Contact</a>
         </div>
-        <!-- Mobile toggle (appears at <=1200px) -->
+        
         <button id="mobileMenuBtn" class="mobile-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
             <rect x="3" y="6" width="18" height="2" rx="1" />
@@ -59,19 +59,19 @@
     <h1 class="text-3xl font-bold">About Us</h1>
     <p class="mt-4 text-gray-600">We build interactive products with user experience in mind. Below are demos and product videos explaining the design and usage.</p>
 
-    <!-- Top media area: JS will build the portrait grid and landscape slot from available assets -->
+    
     <section class="mt-6">
-      <!-- grid where the top three portrait cards will be inserted -->
+      
       <div id="topMediaGrid" class="grid md:grid-cols-3 gap-8 items-start justify-center"></div>
 
-      <!-- pill captions under the three cards (populated dynamically) -->
+      
       <div id="mediaPills" class="mt-6 flex flex-col sm:flex-row items-center sm:justify-center gap-6"></div>
 
-      <!-- container where a landscape (horizontal) video will be moved to and displayed full-width -->
+      
       <div id="landscapeContainer" class="mt-8"></div>
     </section>
 
-    <!-- Provide the list of media assets to the page so JS can build the layout dynamically -->
+    
     <script>
       window.mediaAssets = {
         videos: [
@@ -100,15 +100,15 @@
       };
     </script>
 
-    <!-- original Inner Rib Block feature-detail removed per user request -->
+    
 
-    <!-- Mission / commitment section: updated per request to use pill heading and clearer customer-facing copy -->
+    
     <section class="mt-8">
       <span class="section-pill section-pill--wide">More about our products</span>
-      <!-- removed white background and shadow to match page look; pulled section up slightly -->
+      
       <div class="two-col mt-4 p-6 rounded">
         <div class="left">
-          <!-- optional visual placeholder: keep layout consistent with other two-col sections -->
+          
           <img src="assets/Untitled design (8).svg" alt="Product illustration (SVG #8)" class="w-full rounded">
         </div>
         <div class="right">
@@ -126,8 +126,8 @@
       </div>
     </section>
 
-    <!-- Support bracket informational section (placed just above footer) -->
-    <!-- Inner Rib Block comparison section (inserted above support bracket) -->
+    
+    
       <section class="compare-section">
         <span class="section-pill section-pill--wide">Inner Rib Block</span>
       <div class="compare-content">
@@ -162,7 +162,7 @@
         <span class="section-pill section-pill--wide">Upper Roof Support Bracket</span>
       <div class="support-content two-col mt-6">
         <div class="support-left left">
-          <!-- use SVG assets (third and fourth svg) as visual references -->
+          
           <img src="assets/Untitled design (3).svg" alt="Upper Roof Support Bracket" class="support-photo">
           <img src="assets/Untitled design (4).svg" alt="Installation diagram" class="support-diagram">
         </div>
@@ -184,7 +184,7 @@
     </section>
   </main>
 
-  <!-- Footer matching reference: left pill + note, centered logo + copy, right pill + socials -->
+  
   <footer class="site-footer mt-8">
     <div class="container mx-auto px-6 py-6">
       <div class="footer-row">
@@ -210,7 +210,7 @@
     </div>
   </footer>
 
-  <!-- Mobile-only stacked footer (hidden on desktop). Visible only under 768px via CSS -->
+  
   <div class="footer-mobile-stack" aria-hidden="true">
     <a href="store.html" class="pill-btn">Products</a>
     <a href="contact.html" class="pill-btn" style="margin-top:0.6rem">Contact Us</a>

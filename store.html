@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Store</title>
-  <!-- model-viewer for 3D placeholders -->
+  
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <link rel="stylesheet" href="css/tailwind.css">
   <link rel="stylesheet" href="css/tw-compat.css">
   <link rel="stylesheet" href="css/styles.css">
-  <!-- model-viewer for 3D placeholders -->
+  
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50 text-gray-800 antialiased">
@@ -31,7 +31,7 @@
           <a href="store.html" class="pill-btn">Store</a>
           <a href="contact.html" class="pill-btn">Contact</a>
         </div>
-        <!-- Mobile toggle (appears at <=1200px) -->
+        
         <button id="mobileMenuBtn" class="mobile-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
             <rect x="3" y="6" width="18" height="2" rx="1" />
@@ -69,7 +69,7 @@
 
     <section id="products" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
 
-    <!-- DIY Kit banner (combined products) -->
+    
     <section class="diy-kit">
       <div class="kit-strap">DIY KIT</div>
       <div class="kit-title">INNER RIB BLOCK + UPPER SUPPORT BRACKET + SCREW &amp; WASHER</div>
@@ -79,7 +79,7 @@
         <model-viewer src="https://modelviewer.dev/shared-assets/models/Chair.glb" crossorigin="anonymous" alt="Screw and Washer" camera-controls auto-rotate reveal="auto" class="model-viewport" shadow-intensity="1"></model-viewer>
       </div>
 
-      <!-- Price for the DIY kit moved into controls-left to align with product cards -->
+      
 
       <div class="kit-controls" style="margin-top:0.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem">
         <div class="kit-controls-row" style="display:flex;gap:2rem;align-items:center;justify-content:center;flex-wrap:wrap;">
@@ -120,7 +120,7 @@
       </div>
     </section>
 
-    <!-- Cart modal -->
+    
     <div id="cartModal" class="modal-overlay hidden" aria-hidden="true">
       <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
         <div class="modal-header">
@@ -142,7 +142,7 @@
       </div>
     </div>
 
-    <!-- Invoice modal (shown on Checkout) -->
+    
     <div id="invoiceModal" class="modal-overlay hidden" aria-hidden="true">
       <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="invoiceTitle">
         <div class="modal-header">
@@ -162,7 +162,7 @@
 
   </main>
 
-  <!-- Footer matching reference: left pill + note, centered logo + copy, right pill + socials -->
+  
   <footer class="site-footer mt-8">
     <div class="container mx-auto px-6 py-6">
       <div class="footer-row">
@@ -188,7 +188,7 @@
     </div>
   </footer>
 
-  <!-- Mobile-only stacked footer (hidden on desktop). Visible only under 768px via CSS -->
+  
   <div class="footer-mobile-stack" aria-hidden="true">
     <a href="store.html" class="pill-btn">Products</a>
     <a href="contact.html" class="pill-btn" style="margin-top:0.6rem">Contact Us</a>
