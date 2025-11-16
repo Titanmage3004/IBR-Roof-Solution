@@ -29,13 +29,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Tailwind CSS
-        run: node build-tailwind.js
+      - name: Build Tailwind CSS (CLI)
+        run: npx tailwindcss -i src/input.css -o public/css/tailwind.css --minify
 
       - name: Prepare Pages content
         run: |
           mkdir -p public
-          cp -r index.html about.html store.html contact.html css js assets README.md tailwind.config.cjs src public || true
+          mkdir -p public/css
+          # copy core HTML/JS/assets and config
+          cp -r index.html about.html store.html contact.html js assets README.md tailwind.config.cjs src public || true
+          # copy non-generated CSS files into public/css (the compiled tailwind is already in public/css)
+          cp css/styles.css public/css/ || true
+          cp css/tw-compat.css public/css/ || true
           # remove any backup files and node_modules that could bloat the artifact
           find public -name "*.bak" -type f -delete || true
           rm -rf public/node_modules public/.git || true
