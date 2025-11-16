@@ -239,7 +239,6 @@ function renderCartItems(){
     row.className = 'cart-item';
     row.innerHTML = `
       <div class="left">
-        <img src="${thumb}" alt="${it.title} thumbnail" onerror="this.style.display='none'" />
         <div class="meta">
           <div class="title">${it.title}</div>
           <div class="color"><span class="color-swatch" style="background:${getColorCss(it.color)}"></span>${it.color}</div>
@@ -249,14 +248,14 @@ function renderCartItems(){
         <div class="qty-controls" style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem">
           <div class="qty-box" style="display:flex;align-items:center;gap:0.5rem">
             <button class="qty-decrease" data-idx="${idx}" aria-label="Decrease quantity">−</button>
-            <div class="qty-display" data-idx="${idx}" aria-live="polite" style="font-weight:900">${it.qty}</div>
+            <div class="qty-display" data-idx="${idx}" aria-live="polite">${it.qty}</div>
             <button class="qty-increase" data-idx="${idx}" aria-label="Increase quantity">+</button>
           </div>
           <div style="display:flex;align-items:center;gap:0.5rem">
             <button data-idx="${idx}" class="remove-item" aria-label="Remove ${it.title}">🗑</button>
           </div>
         </div>
-        <div class="line-total text-sm font-semibold" style="margin-top:0.5rem">${formatCurrency(currentPrice*it.qty)}</div>
+        <div class="line-total text-sm" style="margin-top:0.5rem">${formatCurrency(currentPrice*it.qty)}</div>
       </div>
     `;
     itemsDiv.appendChild(row);
@@ -535,7 +534,7 @@ function renderInvoice(cart){
   invoiceBody.innerHTML = `
     <div class="invoice-header">
       <div style="display:flex;align-items:center;gap:0.75rem">
-        <img src="assets/ibr_header_logo.webp" alt="IBR Roof Solutions" />
+        <img src="assets/All Products Patented.svg" alt="IBR Roof Solutions" style="height:64px;max-height:140px;display:block;border:0;margin:0;padding:0;object-fit:contain" />
         <div>
           <div style="font-weight:900;font-size:1.05rem">IBR Roof Solutions</div>
           <div class="invoice-meta">Invoice #: ${invoiceNumber} • Date: ${new Date().toLocaleDateString()}</div>
@@ -587,6 +586,10 @@ function renderInvoice(cart){
   `;
 }
 renderProducts();
+// Owner request: reset next invoice number so invoices start at 0001
+try{
+  localStorage.setItem('next_invoice_number', '1');
+}catch(e){ /* ignore localStorage errors */ }
 window.addEventListener('DOMContentLoaded', ()=>{
   window.app.updateCartCount();
   try{
