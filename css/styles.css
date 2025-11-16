@@ -133,56 +133,56 @@ footer a{transition:color .15s}
 .product-card{
   background: #f4f6f8; /* very light panel */
   border-radius:18px;
-  padding:1.25rem;
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  gap:0.85rem;
-  box-shadow:none; /* reduce heavy shadow in favor of soft elevated look */
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.product-card:hover{transform:translateY(-6px);box-shadow:0 18px 36px rgba(15,23,42,0.06)}
+    display: inline-block;
+    position: relative; /* position context for the sheen pseudo-element */
+    line-height: 1.02;
+    color: #0f1724; /* solid base color */
+    font-weight: 900;
+    overflow: visible;
+  }
 
-/* Hero product image styling: remove white box and shadow so the image sits flush
-  against the page. If the PNG has transparent background this will show through. */
-.hero-product{
-  background: transparent !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  display: block;
-  max-width: 28rem; /* keep similar sizing to w-96 */
-  width: 100%;
-  height: auto;
-}
-.hero-product.object-contain{object-fit:contain}
+  /* Headline container: keep the pseudo-element strictly clipped to the
+     headline bounding box so the sheen never spills over the rest of the page. */
+  .metal-headline{ position: relative; display: inline-block; overflow: hidden; padding: 0 0.06em }
 
-/* If image still shows a visible rectangular backdrop baked into the PNG, the
-  only reliable fix is to replace the file with a version that has a transparent background.
-  I can help remove the background if you upload a higher-res PNG or allow me to attempt
-  an automated background removal (may not be perfect). */
+  /* Single, broad, soft light strip that travels from the top-left corner
+     down to the bottom-right. Implemented with a blurred ::after pseudo-element
+     which is clipped by the headline's overflow:hidden so it only overlays
+     the headline text. Animation repeats infinitely by design. */
+  .metal-headline.animate-base::after{
+    content: '';
+    position: absolute;
+    /* start well left/top so the strip appears to originate near the 'P' */
+    left: -50%;
+    top: -50%;
+    /* make the strip large enough to cover the diagonal sweep but it will be
+       clipped to the H1 box by overflow:hidden on the headline itself */
+    width: 220%;
+    height: 220%;
+    background: rgba(255,255,255,0.30);
+    filter: blur(10px);
+    transform-origin: center;
+    /* rotate so movement along X creates a diagonal top-left -> bottom-right travel */
+    transform: rotate(25deg) translateX(-150%);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0;
+    will-change: transform, opacity;
+    z-index: 2;
+    /* repeat the shine so it continues to look like a soft light sweeping the H1 */
+    animation: hero-headline-shine 5.2s linear 0s infinite;
+  }
 
-/* Secondary hero image (smaller accent image placed below main hero product) */
-.hero-aux{
-  width: 14rem;
-  max-width: 100%;
-  display:block;
-  margin-top: .25rem;
-  transform: none;
-}
-.hero-aux.object-contain{object-fit:contain}
+  @keyframes hero-headline-shine{
+    0%{ transform: rotate(25deg) translateX(-150%); opacity: 0 }
+    10%{ opacity: 0.92 }
+    55%{ opacity: 0.92 }
+    100%{ transform: rotate(25deg) translateX(150%); opacity: 0 }
+  }
 
-/* Creative hero stack layout: on larger screens stack images with a tasteful overlap
-   so they read like a product layout. On small screens they remain stacked vertically. */
-.hero-stack{display:flex;flex-direction:column;align-items:center;gap:0.75rem;position:relative}
-
-@media (min-width:768px){
-  .hero-stack{width:28rem;height:auto}
-  .hero-product{width:100%;max-width:100%;transform:translateY(-1rem)}
-  /* place the auxiliary SVG overlapping the main product, slightly rotated */
-  /* increase aux size so it better matches main product visually */
-  .hero-aux{position:absolute;right:-1.25rem;bottom:-1.25rem;width:20rem;transform:rotate(-6deg);box-shadow:none}
-}
-
+  @media (prefers-reduced-motion: reduce){
+    .metal-headline.animate-base::after{ display: none !important; animation: none !important }
+  }
 @media (min-width:1100px){
   .hero-stack{width:32rem}
   .hero-aux{right:-1.75rem;bottom:-1.5rem;width:22rem}
@@ -960,41 +960,6 @@ footer.site-footer{ padding-top:0; padding-bottom:0; margin-top:0 !important }
   }
 }
 
-  /* Helper style for nav animation clones */
-  .nav-anim-clone{
-    position:fixed;
-    z-index:9999;
-    pointer-events:none;
-    will-change:transform, opacity;
-    transition:transform .8s cubic-bezier(.2,.8,.2,1), opacity .45s ease;
-    opacity:0.98;
-  }
+  
 
-  .nav-anim-pop{ transform: scale(1.02); transition: transform .18s ease; }
-
-/* Page load animations
-   - Elements marked with .will-animate start slightly translated and transparent.
-   - When the document body receives the .loaded class they transition in with
-     a small stagger controlled by --delay. These selectors target common
-     elements across pages (logo, headings, images, product cards, buttons).
-*/
-.will-animate{ opacity:0; transform:translateY(10px) scale(0.995); transition:opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1); transition-delay:var(--delay,0s) }
-body.loaded .will-animate{ opacity:1; transform:none }
-
-/* Slightly stronger emphasis for primary hero items */
-.will-animate.hero-strong{ transform:translateY(14px) scale(0.992); transition-duration:.7s }
-
-/* Fade + scale for images so they pop in */
-.will-animate.img-pop{ transform:translateY(6px) scale(.98); transition-duration:.65s }
-
-/* Buttons: subtle pop-in with tiny scale */
-.will-animate.btn-pop{ transform:translateY(6px) scale(.985); transition-duration:.6s }
-
-/* Media cards and product cards appear with a slightly larger stagger */
-.will-animate.card-pop{ transform:translateY(16px) scale(.99); transition-duration:.7s }
-
-/* Respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .will-animate, body.loaded .will-animate{ transition:none !important; transform:none !important; opacity:1 !important }
-}
 
