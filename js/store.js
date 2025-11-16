@@ -492,10 +492,11 @@ function renderInvoice(cart){
     try{
       const key = 'next_invoice_number';
       let next = Number(localStorage.getItem(key));
-      if(!next || isNaN(next)) next = 5000;
+      if(!next || isNaN(next)) next = 1;
       const current = next;
       localStorage.setItem(key, String(next + 1));
-      return current;
+      // return zero-padded 4-digit invoice number (e.g. 0001)
+      return String(current).padStart(4, '0');
     }catch(e){ return 5000; }
   }
   let invoiceNumber = invoiceBody.dataset && invoiceBody.dataset.invoiceNumber ? invoiceBody.dataset.invoiceNumber : null;
@@ -586,10 +587,6 @@ function renderInvoice(cart){
   `;
 }
 renderProducts();
-// Owner request: reset next invoice number so invoices start at 0001
-try{
-  localStorage.setItem('next_invoice_number', '1');
-}catch(e){ /* ignore localStorage errors */ }
 window.addEventListener('DOMContentLoaded', ()=>{
   window.app.updateCartCount();
   try{
