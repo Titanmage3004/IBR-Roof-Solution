@@ -1,7 +1,7 @@
 const PRODUCTS = [
-  {id: 'p1', title: 'Inner Rib Block', price: 5.00, colors: ['black','white'], img: 'assets/476221519_594834240113185_7203426001611182768_n.jpg', imgByColor: {}},
-  {id: 'p2', title: 'Upper Roof Support Bracket', price: 5.00, colors: ['black','white'], img: 'assets/476500581_595370980059511_6236944891318466094_n.jpg', imgByColor: {}},
-  {id: 'p3', title: 'Hurricane Clip', price: 3.50, colors: ['black','white'], img: 'assets/476508509_595371040059505_2143475231093520394_n.jpg', imgByColor: {}}
+  {id: 'p1', title: 'Inner Rib Block', price: 5.00, colors: ['black','white'], img: '', imgByColor: {}},
+  {id: 'p2', title: 'Upper Roof Support Bracket', price: 5.00, colors: ['black','white'], img: '', imgByColor: {}},
+  {id: 'p3', title: 'Hurricane Clip', price: 3.50, colors: ['black','white'], img: '', imgByColor: {}}
 ];
 window.PRODUCTS = PRODUCTS;
 (function ensureRandCurrencyAndPrices(){
@@ -33,11 +33,11 @@ function renderProducts(){
     card.dataset.productId = p.id;
   card.dataset.currentColor = p.colors[0];
   card.dataset.qty = 5;
-    // Render a static image placeholder for all products (replace 3D models/videos)
+    // Render a blank viewport for all products (no image/model for now)
     const mediaHtml = `
       <div class="product-image-wrapper">
         <div class="model-viewport">
-          <img class="product-image" src="${p.img || 'assets/placeholder.jpg'}" alt="${p.title}" />
+          ${p.img ? `<img class="product-image" src="${p.img}" alt="${p.title}" />` : ``}
         </div>
       </div>
     `;
