@@ -27,3 +27,13 @@ build/
 # Temporary files
 *.tmp
 ~$*
+
+# Local backup files (editor/hand-saved backups)
+*.bak
+
+# Local Python virtual environment
+.venv/
+
+# If you prefer CI-built CSS rather than committing compiled output,
+# uncomment the following to ignore the compiled Tailwind file.
+# css/tailwind.css
