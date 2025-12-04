@@ -1,7 +1,7 @@
 const PRODUCTS = [
-  {id: 'p1', title: 'Inner Rib Block', price: 5.00, colors: ['black','white','green','blue'], img: 'assets/476221519_594834240113185_7203426001611182768_n.jpg', imgByColor: {}, model: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb'},
-  {id: 'p2', title: 'Upper Roof Support Bracket', price: 5.00, colors: ['black','white','green','blue'], img: 'assets/476500581_595370980059511_6236944891318466094_n.jpg', imgByColor: {}, model: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb'},
-  {id: 'p3', title: 'Hurricane Clip', price: 3.50, colors: ['black','white','green','blue'], img: 'assets/476508509_595371040059505_2143475231093520394_n.jpg', imgByColor: {}, model: 'https://modelviewer.dev/shared-assets/models/BoomBox.glb'}
+  {id: 'p1', title: 'Inner Rib Block', price: 5.00, colors: ['black','white'], img: 'assets/476221519_594834240113185_7203426001611182768_n.jpg', imgByColor: {}},
+  {id: 'p2', title: 'Upper Roof Support Bracket', price: 5.00, colors: ['black','white'], img: 'assets/476500581_595370980059511_6236944891318466094_n.jpg', imgByColor: {}},
+  {id: 'p3', title: 'Hurricane Clip', price: 3.50, colors: ['black','white'], img: 'assets/476508509_595371040059505_2143475231093520394_n.jpg', imgByColor: {}}
 ];
 window.PRODUCTS = PRODUCTS;
 (function ensureRandCurrencyAndPrices(){
@@ -33,16 +33,12 @@ function renderProducts(){
     card.dataset.productId = p.id;
   card.dataset.currentColor = p.colors[0];
   card.dataset.qty = 5;
-    // For the Inner Rib Block (p1) render a local MP4 video instead of the 3D model
-    const mediaHtml = (p.id === 'p1') ? `
+    // Render a static image placeholder for all products (replace 3D models/videos)
+    const mediaHtml = `
       <div class="product-image-wrapper">
         <div class="model-viewport">
-          <video class="product-video" src="assets/0001-0334.mp4" autoplay muted loop playsinline preload="metadata" aria-label="${p.title}"></video>
+          <img class="product-image" src="${p.img || 'assets/placeholder.jpg'}" alt="${p.title}" />
         </div>
-      </div>
-    ` : `
-      <div class="product-image-wrapper">
-        <model-viewer src="${p.model || 'https://modelviewer.dev/shared-assets/models/Astronaut.glb'}" crossorigin="anonymous" alt="${p.title}" camera-controls auto-rotate reveal="auto" class="model-viewport" shadow-intensity="1"></model-viewer>
       </div>
     `;
 
