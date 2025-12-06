@@ -238,5 +238,58 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {
     console.warn('markActiveMobileNavLinks failed', e);
   }
-  // Background transform-based parallax removed; using CSS `background-attachment: fixed` instead for a fixed scroll effect on desktop.
+  // Background transform-based parallax removed for desktop; add a
+  // transform-based parallax for mobile devices where
+  // `background-attachment: fixed` is not reliable.
+  try {
+    initMobileFounderParallax();
+  } catch (e) {
+    console.warn('initMobileFounderParallax failed', e);
+  }
 });
+
+/* Mobile-only parallax for the founder background.
+   Desktop keeps using CSS `background-attachment: fixed`.
+   This script runs only when the viewport is narrow (<=768px)
+   and applies a small translate3d transform to `.founder-bg`.
+   It uses requestAnimationFrame and passive scroll listeners
+   for good performance on mobile devices.
+*/
+function initMobileFounderParallax() {
+  try {
+    if (!window.matchMedia('(max-width: 768px)').matches) return;
+    const container = document.querySelector('.founder-section');
+    const bg = document.querySelector('.founder-section .founder-bg');
+    if (!container || !bg) return;
+
+    bg.style.willChange = 'transform';
+
+    let ticking = false;
+
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+    function update() {
+      const rect = container.getBoundingClientRect();
+      // rect.top is distance from viewport top to container top
+      // Use a gentle factor so background lags behind scroll
+      const translate = -rect.top * 0.18; // slower movement
+      const limited = clamp(translate, -90, 90);
+      bg.style.transform = `translate3d(0, ${limited}px, 0)`;
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    // run once to set initial position
+    onScroll();
+  } catch (err) {
+    console.warn('mobile parallax error', err);
+  }
+}

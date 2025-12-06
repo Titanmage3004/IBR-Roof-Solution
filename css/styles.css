@@ -486,6 +486,36 @@ footer a {
   }
 }
 
+/* Mobile-only: ensure the hamburger toggle sits 20px from the right edge
+   and remove any border or shadow on the toggle itself (user preference).
+   This only applies on small screens and does not affect desktop layout. */
+@media (max-width: 768px) {
+  .mobile-toggle {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.35rem;
+    z-index: 110; /* above mobile menu card */
+  }
+  .mobile-toggle svg {
+    width: 30px;
+    height: 30px;
+    display: block;
+  }
+}
+
+/* Mobile-only: add extra vertical space between CTA buttons and
+   the hero product images when the layout stacks. Keeps desktop unchanged. */
+@media (max-width: 768px) {
+  .hero-visual-column {
+    margin-top: 1.25rem; /* ~20px gap between CTAs and first product image */
+  }
+}
+
 /* Mobile: when a hamburger menu expands, give the menu a solid background
    so the page content underneath doesn't show through. This targets any
    element with an id that starts with "mobileMenu" when it is visible
