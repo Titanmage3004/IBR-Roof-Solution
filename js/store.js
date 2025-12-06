@@ -23,6 +23,14 @@ function getColorCss(name){
   return map[key] || name;
 }
 
+// Escape HTML to prevent XSS when inserting user/product data into the DOM
+function escapeHTML(input){
+  const s = input == null ? '' : String(input);
+  return s.replace(/[&<>"'`]/g, function(ch){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'}[ch]);
+  });
+}
+
 function renderProducts(){
   const container = document.getElementById('products');
   if(!container) return;
@@ -42,13 +50,15 @@ function renderProducts(){
       </div>
     `;
 
-    card.innerHTML = `
-      ${mediaHtml}
-      <h3 class="product-title">${p.title}</h3>
+    // build card content safely using escaped values
+    const priceHtml = `<div class="price-pill">${escapeHTML(formatCurrency(getProductPrice(p.id)))}</div>`;
+    const swatchesHtml = p.colors.map(c=>`<button data-color="${escapeHTML(c)}" title="${escapeHTML(c)}" class="swatch" style="background:${getColorCss(c)}" aria-label="${escapeHTML(c)}"></button>`).join('');
+    card.innerHTML = `${mediaHtml}
+      <h3 class="product-title">${escapeHTML(p.title)}</h3>
       <div class="price-row">
         <div class="price-label">Price (R):</div>
         <div class="price-main-row">
-          <div class="price-pill">${formatCurrency(getProductPrice(p.id))}</div>
+          ${priceHtml}
           <div class="price-per-unit">per unit</div>
         </div>
         <div class="price-min">Minimum order: 5 units</div>
@@ -57,21 +67,21 @@ function renderProducts(){
         <div class="controls-left">
           <div class="color-row">
             <div class="color-label">Color Selection:</div>
-            <div class="swatches" data-id="${p.id}">
-              ${p.colors.map(c=>`<button data-color="${c}" title="${c}" class="swatch" style="background:${getColorCss(c)}" aria-label="${c}"></button>`).join('')}
+            <div class="swatches" data-id="${escapeHTML(p.id)}">
+              ${swatchesHtml}
             </div>
           </div>
           <div class="units-row">
             <div class="units-label">Units Required:</div>
-            <div class="qty-controls" data-id="${p.id}">
-              <button class="qty-button btn-decrease" data-id="${p.id}" aria-label="Decrease">−</button>
-              <div class="qty-value" data-id="${p.id}">5</div>
-              <button class="qty-button btn-increase" data-id="${p.id}" aria-label="Increase">+</button>
+            <div class="qty-controls" data-id="${escapeHTML(p.id)}">
+              <button class="qty-button btn-decrease" data-id="${escapeHTML(p.id)}" aria-label="Decrease">−</button>
+              <div class="qty-value" data-id="${escapeHTML(p.id)}">5</div>
+              <button class="qty-button btn-increase" data-id="${escapeHTML(p.id)}" aria-label="Increase">+</button>
             </div>
           </div>
         </div>
         <div class="controls-right">
-          <button data-id="${p.id}" class="add-to-cart" aria-label="Add to cart">Add to cart</button>
+          <button data-id="${escapeHTML(p.id)}" class="add-to-cart" aria-label="Add to cart">Add to cart</button>
         </div>
       </div>
     `;
@@ -181,14 +191,23 @@ function showToast(message, opts = {}){
     toast.className = 'site-toast';
     toast.setAttribute('role','status');
     toast.setAttribute('aria-live','polite');
-    toast.innerHTML = `
-      <div class="toast-message">${String(message)}</div>
-      <button class="toast-close" aria-label="Close notification">✕</button>
-    `;
-    const closeBtn = toast.querySelector('.toast-close');
+
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'toast-message';
+    msgDiv.textContent = String(message);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close';
+    closeBtn.setAttribute('aria-label','Close notification');
+    closeBtn.textContent = '✕';
+
     const remove = ()=>{ toast.style.opacity = '0'; setTimeout(()=>{ try{ container.removeChild(toast); }catch(e){} }, 220); };
     closeBtn.addEventListener('click', remove);
+
+    toast.appendChild(msgDiv);
+    toast.appendChild(closeBtn);
     container.appendChild(toast);
+
     toast.style.transform = 'translateY(-6px)';
     toast.style.opacity = '0';
     requestAnimationFrame(()=>{ toast.style.transition = 'transform .18s ease, opacity .18s ease'; toast.style.transform = 'translateY(0)'; toast.style.opacity = '1'; });
@@ -243,39 +262,52 @@ function renderCartItems(){
     const thumb = product.img || '';
     const row = document.createElement('div');
     row.className = 'cart-item';
-    row.innerHTML = `
-      <div class="left">
-        <div class="meta">
-          <div class="title">${it.title}</div>
-          <div class="color"><span class="color-swatch" style="background:${getColorCss(it.color)}"></span>${it.color}</div>
-        </div>
-      </div>
-      <div class="right">
-        <div class="qty-controls" style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem">
-          <div class="qty-box" style="display:flex;align-items:center;gap:0.5rem">
-            <button class="qty-decrease" data-idx="${idx}" aria-label="Decrease quantity">−</button>
-            <div class="qty-display" data-idx="${idx}" aria-live="polite">${it.qty}</div>
-            <button class="qty-increase" data-idx="${idx}" aria-label="Increase quantity">+</button>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.5rem">
-            <button data-idx="${idx}" class="remove-item" aria-label="Remove ${it.title}">🗑</button>
-          </div>
-        </div>
-        <div class="line-total text-sm" style="margin-top:0.5rem">${formatCurrency(currentPrice*it.qty)}</div>
-      </div>
-    `;
+    // build cart item row safely
+    const left = document.createElement('div'); left.className = 'left';
+    const meta = document.createElement('div'); meta.className = 'meta';
+    const titleDiv = document.createElement('div'); titleDiv.className = 'title'; titleDiv.textContent = it.title;
+    const colorDiv = document.createElement('div'); colorDiv.className = 'color';
+    const colorSwatch = document.createElement('span'); colorSwatch.className = 'color-swatch'; colorSwatch.style.background = getColorCss(it.color);
+    colorDiv.appendChild(colorSwatch);
+    const colorText = document.createTextNode(String(it.color)); colorDiv.appendChild(colorText);
+    meta.appendChild(titleDiv); meta.appendChild(colorDiv); left.appendChild(meta);
+
+    const right = document.createElement('div'); right.className = 'right';
+    const qtyControls = document.createElement('div'); qtyControls.className = 'qty-controls'; qtyControls.style.cssText = 'display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem';
+    const qtyBox = document.createElement('div'); qtyBox.className = 'qty-box'; qtyBox.style.cssText = 'display:flex;align-items:center;gap:0.5rem';
+    const decBtn = document.createElement('button'); decBtn.className = 'qty-decrease'; decBtn.setAttribute('data-idx', String(idx)); decBtn.setAttribute('aria-label','Decrease quantity'); decBtn.textContent = '−';
+    const qtyDisplay = document.createElement('div'); qtyDisplay.className = 'qty-display'; qtyDisplay.setAttribute('data-idx', String(idx)); qtyDisplay.setAttribute('aria-live','polite'); qtyDisplay.textContent = String(it.qty);
+    const incBtn = document.createElement('button'); incBtn.className = 'qty-increase'; incBtn.setAttribute('data-idx', String(idx)); incBtn.setAttribute('aria-label','Increase quantity'); incBtn.textContent = '+';
+    qtyBox.appendChild(decBtn); qtyBox.appendChild(qtyDisplay); qtyBox.appendChild(incBtn);
+    const removeWrap = document.createElement('div'); removeWrap.style.cssText = 'display:flex;align-items:center;gap:0.5rem';
+    const removeBtn = document.createElement('button'); removeBtn.className = 'remove-item'; removeBtn.setAttribute('data-idx', String(idx)); removeBtn.setAttribute('aria-label', `Remove ${it.title}`); removeBtn.textContent = '🗑';
+    removeWrap.appendChild(removeBtn);
+    qtyControls.appendChild(qtyBox); qtyControls.appendChild(removeWrap);
+    right.appendChild(qtyControls);
+    const lineTotal = document.createElement('div'); lineTotal.className = 'line-total text-sm'; lineTotal.style.marginTop = '0.5rem'; lineTotal.textContent = formatCurrency(currentPrice * it.qty);
+    right.appendChild(lineTotal);
+    row.appendChild(left); row.appendChild(right);
     itemsDiv.appendChild(row);
   });
   const shipping = calculateShipping(subtotal);
   const grandTotal = subtotal + shipping;
   if(totalEl){
-    totalEl.innerHTML = `<div style="font-size:0.95rem;color:#6b7280">Subtotal: ${formatCurrency(subtotal)}</div><div style="font-size:0.95rem;color:#6b7280">Shipping: ${formatCurrency(shipping)}</div><div style="font-weight:800;font-size:1.05rem;margin-top:0.25rem">${formatCurrency(grandTotal)}</div>`;
+    // build total summary safely
+    if(totalEl){
+      totalEl.innerHTML = '';
+      const subDiv = document.createElement('div'); subDiv.style.fontSize = '0.95rem'; subDiv.style.color = '#6b7280'; subDiv.textContent = `Subtotal: ${formatCurrency(subtotal)}`;
+      const shipDiv = document.createElement('div'); shipDiv.style.fontSize = '0.95rem'; shipDiv.style.color = '#6b7280'; shipDiv.textContent = `Shipping: ${formatCurrency(shipping)}`;
+      const grandDiv = document.createElement('div'); grandDiv.style.fontWeight = '800'; grandDiv.style.fontSize = '1.05rem'; grandDiv.style.marginTop = '0.25rem'; grandDiv.textContent = formatCurrency(grandTotal);
+      totalEl.appendChild(subDiv); totalEl.appendChild(shipDiv); totalEl.appendChild(grandDiv);
+    }
   }
   const itemsCountEl = document.getElementById('cartItemsCount');
   if(itemsCountEl) itemsCountEl.textContent = String(totalUnits);
   const checkoutBtn = document.getElementById('checkout');
   if(!cart || cart.length === 0){
-    itemsDiv.innerHTML = '<div class="text-sm text-gray-600">Your cart is empty.</div>';
+    itemsDiv.innerHTML = '';
+    const emptyDiv = document.createElement('div'); emptyDiv.className = 'text-sm text-gray-600'; emptyDiv.textContent = 'Your cart is empty.';
+    itemsDiv.appendChild(emptyDiv);
     if(checkoutBtn){ checkoutBtn.disabled = true; checkoutBtn.classList.add('opacity-50','cursor-not-allowed'); }
   } else {
     if(checkoutBtn){ checkoutBtn.disabled = false; checkoutBtn.classList.remove('opacity-50','cursor-not-allowed'); }
@@ -400,7 +432,12 @@ if(printInvoiceBtn) printInvoiceBtn.addEventListener('click', ()=>{
     const printContainer = document.createElement('div');
     printContainer.id = 'printInvoiceContainer';
     printContainer.className = 'print-only-invoice';
-    printContainer.innerHTML = invoiceBody.innerHTML;
+    // copy invoiceBody content into print container safely by cloning nodes
+    printContainer.innerHTML = '';
+    const cloned = invoiceBody.cloneNode(true);
+    // remove any script nodes for safety
+    cloned.querySelectorAll('script').forEach(s=> s.remove());
+    printContainer.appendChild(cloned);
     document.body.appendChild(printContainer);
 
     const cleanup = ()=>{ try{ const el = document.getElementById('printInvoiceContainer'); if(el) el.remove(); }catch(e){} window.removeEventListener('afterprint', cleanup); };
@@ -416,7 +453,11 @@ if(printInvoiceBtn) printInvoiceBtn.addEventListener('click', ()=>{
       const cssHref = (Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(l=>l.getAttribute('href')).find(h=>h && h.includes('styles.css'))) || 'css/styles.css';
       const doc = newWin.document;
       doc.open();
-      doc.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invoice</title><link rel="stylesheet" href="${cssHref}"></head><body>${invoiceBody.innerHTML}</body></html>`);
+      // build a minimal printable document using escaped text where appropriate
+      const printHtml = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invoice</title><link rel="stylesheet" href="${escapeHTML(cssHref)}"></head><body>`;
+      // serialize printContainer safely
+      const serial = printContainer.innerHTML;
+      doc.write(printHtml + serial + '</body></html>');
       doc.close();
       const tryPrint = ()=>{ try{ newWin.focus(); newWin.print(); }catch(e){} setTimeout(()=>{ try{ newWin.close(); }catch(e){} }, 900); };
       newWin.onload = tryPrint;
