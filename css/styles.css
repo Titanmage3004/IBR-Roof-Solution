@@ -594,6 +594,71 @@ footer a {
   }
 }
 
+/* Ensure the media rows (portrait row, pills and landscape video) span
+   the full page content width on larger screens so videos are not
+   constrained to a single column. Also make the landscape video
+   expand to fill the available width and use cover to avoid large
+   side gutters. */
+@media (min-width: 769px) {
+  .hero-grid #topMediaGrid,
+  .hero-grid #mediaPills,
+  .hero-grid #landscapeContainer {
+    grid-column: 1 / -1;
+  }
+
+  .hero-grid #topMediaGrid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1.5rem !important;
+    align-items: start;
+    margin-bottom: 3rem !important; /* ensure a large clear gap before the landscape video */
+  }
+
+  /* Make sure grid rows expand to fit media heights and avoid overlap */
+  .hero-grid {
+    grid-auto-rows: auto !important;
+  }
+
+  /* Make landscape container and its inner wrapper expand fully */
+  #landscapeContainer {
+    width: 100% !important;
+    clear: both !important; /* ensure it sits below the thumbnail row */
+    margin-top: 2.5rem !important; /* larger visible gap between thumbnails and landscape */
+    display: block !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  #landscapeContainer > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+  }
+
+  /* Use cover on the landscape video so it fills the width while
+     preserving a pleasing framing; portrait thumbnails keep contain. */
+  #landscapeContainer video {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+    border-radius: 10px;
+    display: block;
+  }
+
+  /* Slightly increase caption spacing on desktop for clarity */
+  .media-caption {
+    margin-top: 0.75rem;
+  }
+}
+
+/* Ensure media cards are positioned statically so they participate in document flow
+   and do not overlap each other. This helps prevent the landscape item from sitting
+   on top of the thumbnails. */
+.media-card,
+.media-card-wrap {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
 /* Fallbacks for other pages when Tailwind responsive utilities are not present
    Ensure product grids and two-column content display correctly on desktop. */
 @media (min-width: 769px) {
@@ -1744,8 +1809,9 @@ footer.site-footer .footer-left .pill-btn {
 }
 .media-card img,
 .media-card video {
-  position: absolute;
-  inset: 0;
+  /* Participate in normal flow so the card's height pushes following content down.
+     Avoid absolute positioning which can cause overlap with subsequent elements. */
+  position: static;
   width: 100%;
   height: 100%;
   object-fit: cover;

@@ -197,6 +197,19 @@ function arrangeMediaLayout() {
     wrap.appendChild(caption);
     topGrid.appendChild(wrap);
   });
+  // After placing the portrait thumbnails, ensure the landscape container
+  // sits below them with a consistent gap so it cannot overlap on tall
+  // portrait items. Use an inline margin set from the measured height.
+  try {
+    const topRect = topGrid.getBoundingClientRect();
+    const gap = 20; // px desired gap between thumbnails and landscape
+    if (landscapeContainer) {
+      // Set margin-top to ensure landscape starts below the thumbnails.
+      landscapeContainer.style.marginTop = `${Math.ceil(topRect.height + gap)}px`;
+    }
+  } catch (e) {
+    // ignore measurement errors
+  }
   if (landscapes.length > 0) {
     const land = landscapes[0];
     const wrapper = document.createElement('div');
