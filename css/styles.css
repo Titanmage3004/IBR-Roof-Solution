@@ -3159,6 +3159,53 @@ footer.site-footer {
   }
 }
 
+/* Mobile-specific: stack portrait videos, remove large fixed heights, and
+   ensure they scale to the viewport while keeping rounding and spacing. */
+@media (max-width: 768px) {
+  /* Stack the portrait cards vertically */
+  #topMediaGrid {
+    display: block !important;
+    margin-bottom: 0.75rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Portrait cards should not use the desktop min-height; instead allow
+     them to size to the viewport. Use max-height to avoid excessive length. */
+  #topMediaGrid .media-card {
+    width: 100% !important;
+    min-height: auto !important;
+    /* Let JS-controlled aspect ratio determine height so the full
+       vertical video displays at its natural size on mobile */
+    aspect-ratio: var(--ar, 9/16) !important;
+    margin: 0 0 1rem 0 !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+  }
+
+  #topMediaGrid .media-card video,
+  #topMediaGrid .media-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    border-radius: 20px !important;
+    background: transparent !important;
+  }
+
+  /* Reduce caption/button spacing so the layout is compact on mobile */
+  #topMediaGrid .media-caption {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Keep the landscape container below the stacked portraits with a small gap */
+  #landscapeContainer {
+    margin-top: 1rem !important;
+    clear: both !important;
+  }
+}
+
 /* Remove dark letterbox background so portrait videos don't show black bars */
 #topMediaGrid .media-card {
   background: transparent !important;
