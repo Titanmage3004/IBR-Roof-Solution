@@ -3,10 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="IBR Roof Solutions — premium roofing solutions, Inner Rib Block, Upper Support Bracket, DIY kits and more." />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#517cad" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="index.html" />
     <title>Product Site — Home</title>
     <script
       type="module"
       src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+      crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="css/tailwind.css?v=6c08461" />
     <link rel="stylesheet" href="css/tw-compat.css?v=6c08461" />
@@ -123,12 +129,35 @@
       </section>
     </main>
 
+    <!-- Founder / Profile section (replaces placeholder). Uses local assets for portrait and background. -->
+    <section id="homepage-placeholder" class="homepage-placeholder founder-section" aria-labelledby="founder-heading">
+      <div class="founder-bg"></div>
+      <div class="founder-inner container">
+        <div class="founder-card">
+          <div class="founder-portrait-wrap">
+            <img src="assets/Image.png" alt="Founder portrait" class="founder-portrait" />
+          </div>
+          <h2 id="founder-heading" class="founder-name">Manus Venter</h2>
+          <div class="founder-title">IBR Roof Solutions</div>
+          <div class="founder-title">Creator, Owner &amp; Founder</div>
+
+          <!-- Small social icons removed per request; founder action buttons remain below -->
+
+          <div class="founder-actions">
+            <a href="https://www.facebook.com/profile.php?id=100087598423269&sk=reels_tab" class="pill-btn" target="_blank" rel="noopener">Facebook</a>
+            <a href="contact.html" class="pill-btn">Contact Us</a>
+            <a href="mailto:info@ibrroofsolutions.co.za" class="pill-btn">Email</a>
+            <a href="https://www.instagram.com/ibr_roof_solutions_?igsh=dTZqMG00aGpoZGVn" class="pill-btn" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer class="site-footer mt-8">
       <div class="container mx-auto px-6 py-6">
         <div class="footer-row">
-          <div class="footer-left">
+            <div class="footer-left">
             <a href="store.html" class="pill-btn">Products</a>
-            <div class="footer-note mt-2">Free Delivery on orders over R500</div>
           </div>
 
           <div class="footer-center">
@@ -162,12 +191,9 @@
           </div>
         </div>
 
-        <div class="footer-mobile-stack" aria-hidden="true">
+          <div class="footer-mobile-stack" aria-hidden="true">
           <a href="store.html" class="pill-btn">Products</a>
           <a href="contact.html" class="pill-btn" style="margin-top: 0.6rem">Contact Us</a>
-          <div class="footer-note" style="margin-top: 0.6rem">
-            Free Delivery on orders over R500
-          </div>
           <div class="social-icons" style="margin-top: 0.6rem">
             <a href="#" class="social-icon" aria-label="WhatsApp"
               ><img src="assets/Untitled design (9).svg" alt="WhatsApp"

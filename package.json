@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix js --ext .js",
-    "format": "prettier --write \"**/*.{js,css,html}\""
+    "format": "prettier --write \"**/*.{js,css,html}\"",
+    "build:css": "node build-tailwind.js",
+    "build": "npm run build:css",
+    "start": "npx serve . -p 5000"
   },
   "repository": {
     "type": "git",

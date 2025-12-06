@@ -104,14 +104,19 @@ function buildMediaCards() {
     art.appendChild(v);
     window._mediaCards.push(art);
   });
-  (window.mediaAssets.images || []).forEach((fname) => {
+  (window.mediaAssets.images || []).forEach((fname, idx) => {
     const art = document.createElement('article');
     art.className = 'media-card shadow';
     art.dataset.src = fname;
     art.dataset.type = 'image';
     const img = document.createElement('img');
     img.setAttribute('src', 'assets/' + fname);
-    img.setAttribute('alt', '');
+    // Derive a helpful alt text for accessibility: prefer explicit titles when available,
+    // fall back to a humanized filename.
+    const titleFromTitles = (window.mediaAssets && window.mediaAssets.titles && window.mediaAssets.titles[idx]) || null;
+    const titleFromPosition = (window.mediaAssets && window.mediaAssets.positionTitles && window.mediaAssets.positionTitles[idx]) || null;
+    const fallback = fname.replace(/\.[^/.]+$/, '').replace(/[-_]+/g, ' ');
+    img.setAttribute('alt', titleFromPosition || titleFromTitles || fallback);
     art.appendChild(img);
     window._mediaCards.push(art);
   });
@@ -233,4 +238,5 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {
     console.warn('markActiveMobileNavLinks failed', e);
   }
+  // Background transform-based parallax removed; using CSS `background-attachment: fixed` instead for a fixed scroll effect on desktop.
 });

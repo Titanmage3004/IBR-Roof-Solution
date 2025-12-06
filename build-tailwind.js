@@ -1,6 +1,6 @@
 const fs = require('fs');
 const postcss = require('postcss');
-const tailwind = require('@tailwindcss/postcss');
+const tailwind = require('tailwindcss');
 const autoprefixer = require('autoprefixer');
 
 async function build() {
@@ -8,8 +8,11 @@ async function build() {
     const inputPath = 'src/input.css';
     const outPath = 'css/tailwind.css';
     const input = fs.readFileSync(inputPath, 'utf8');
+    // Use the project's Tailwind config (tailwind.config.cjs).
+    // The tailwindcss PostCSS plugin is required above and will read
+    // the configuration automatically during processing.
     const result = await postcss([
-      tailwind({ content: ['./**/*.html', './js/**/*.js'] }),
+      tailwind(),
       autoprefixer()
     ]).process(input, { from: inputPath, to: outPath });
     fs.mkdirSync('css', { recursive: true });

@@ -14,6 +14,24 @@ body {
   line-height: 1.45;
   background: #f6f8fb;
 }
+
+/* Reset default body margin to allow full-bleed sections to reach the viewport edges */
+:root {
+  /* Header height used to offset page content when header is fixed */
+  --header-height: 7rem; /* matches .h-28 used on the nav */
+}
+
+body {
+  margin: 0;
+  /* Reserve space at the top so fixed header doesn't cover page content */
+  padding-top: var(--header-height);
+}
+
+/* Prevent tiny horizontal overflow that can appear when using full-bleed sections
+   (some browsers add a scrollbar width which can cause a 1px gap on the right). */
+html, body {
+  overflow-x: hidden;
+}
 .container {
   max-width: 1180px;
   margin-left: auto;
@@ -33,6 +51,49 @@ body {
   background: var(--accent);
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(47, 133, 90, 0.12);
+}
+
+/* Header & footer: darker, construction-themed button variants.
+   These override the global `--brand` look for navigation and footer only.
+   Preserve the existing hover 'lift' and transition behavior. */
+/* Header & footer: text-focused button variants.
+   Buttons in header/footer should appear as inline text (no filled background)
+   so they read clearly on a white page. On hover they switch to the
+   site's green accent (`--accent`) and keep the lift + shadow effect. */
+header .pill-btn,
+header .btn-primary,
+footer .pill-btn,
+footer .btn-primary,
+header .btn-outline,
+footer .btn-outline {
+  background: transparent;
+  color: #1f2937; /* dark slate for good contrast on white */
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0.35rem 0.6rem;
+  font-weight: 600;
+}
+
+/* Hover: change text color to the existing green accent, keep lift */
+header .pill-btn:hover,
+header .btn-primary:hover,
+footer .pill-btn:hover,
+footer .btn-primary:hover,
+header .btn-outline:hover,
+footer .btn-outline:hover {
+  background: transparent;
+  color: var(--accent); /* original green */
+  /* larger, sleeker hover: slight lift + subtle scale for a polished feel */
+  transform: translateY(-6px) scale(1.06);
+  box-shadow: 0 18px 36px rgba(47, 133, 90, 0.12);
+}
+
+/* Outline buttons in header/footer behave like text links (no border) */
+header .btn-outline,
+footer .btn-outline {
+  border: none;
+  background: transparent;
+  color: inherit;
 }
 .pill-green {
   background: var(--brand);
@@ -85,6 +146,18 @@ header .logo img {
   max-height: 72px;
   width: auto !important;
   display: block;
+}
+
+/* Keep the top navigation visible while scrolling */
+header {
+  /* Fixed header so navigation is always visible */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  z-index: 90; /* above other content */
+  backdrop-filter: saturate(1.02) blur(4px);
 }
 
 @media (max-width: 640px) {
@@ -355,6 +428,63 @@ footer a {
 
 .hero-product,
 .hero-aux,
+
+/* Founder section background and portrait adjustments
+   Use the provided rooftop sunrise image as the background for the founder
+   section. This preserves existing layout while improving visual quality.
+*/
+.founder-section .founder-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Quote the path to handle spaces in the filename */
+  background-image: url("../assets/a low angle image of a sunrise over a rooftop with IBR roof sheeting.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: saturate(0.98) contrast(1.02);
+}
+
+/* Overlay removed to allow the rooftop image to display clearly. */
+
+.founder-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+  /* Make this section full-bleed so the background image reaches the viewport edges */
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.founder-section .founder-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.founder-portrait {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 9999px;
+  box-shadow: 0 8px 30px rgba(15, 23, 36, 0.18);
+  border: 4px solid rgba(255,255,255,0.92);
+}
+
+@media (max-width: 768px) {
+  .founder-section {
+    min-height: 220px;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .founder-portrait {
+    width: 96px;
+    height: 96px;
+    border-width: 3px;
+  }
+}
 .hero-stack,
 .hero-product.object-contain {
   transform: none !important;
@@ -853,8 +983,8 @@ footer a {
 }
 
 footer.site-footer {
-  background: #f3f5f7;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: #ffffff; /* keep footer white to match header */
+  border-top: 1px solid rgba(0, 0, 0, 0.02); /* very subtle divider */
 }
 
 footer.site-footer .container {
@@ -936,6 +1066,135 @@ footer.site-footer .footer-center img {
 
 footer.site-footer .footer-left .pill-btn {
   margin-right: 0.6rem;
+}
+
+/* Placeholder area on homepage to reserve space for future content */
+.homepage-placeholder {
+  min-height: 820px; /* large empty area to allow scrolling */
+  width: 100%;
+  background: transparent;
+}
+
+/* Founder / profile section styles (homepage) */
+.founder-section {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 0 4.5rem;
+  background: none; /* ensure no background color hides the image */
+}
+.founder-section .founder-bg {
+  position: absolute;
+  inset: 0;
+  /* Use the rooftop image directly; remove gradient overlay so the image is visible */
+  /* Use correct relative path from the CSS file to the assets directory */
+  background-image: url("../assets/a low angle image of a sunrise over a rooftop with IBR roof sheeting.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  /* Fixed background on desktop for the fixed scroll effect; mobile overrides to 'scroll' below. */
+  background-attachment: fixed;
+  will-change: auto;
+  /* subtle blur to help foreground content stand out; keep blur small so image remains recognizable */
+  filter: blur(3px) saturate(0.98) contrast(0.96) brightness(0.98);
+  z-index: 0;
+}
+
+/* subtle overlay to increase contrast against the blurred background */
+.founder-section .founder-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+}
+
+/* Mobile browsers often ignore background-attachment:fixed; use scroll there for better performance */
+@media (max-width: 767px) {
+  .founder-section .founder-bg {
+    background-attachment: scroll;
+  }
+}
+.founder-section .founder-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.founder-card {
+  max-width: 980px;
+  width: 100%;
+  text-align: center;
+  padding: 2.25rem 1.25rem 1.5rem;
+  color: #fff;
+}
+.founder-portrait-wrap {
+  /* Increased 1.5x from original 200px -> 300px for a larger founder portrait */
+  width: 300px;
+  height: 300px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 18px 36px rgba(2,6,23,0.45);
+  border: 8px solid rgba(255,255,255,0.06);
+}
+.founder-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.founder-name {
+  font-size: 2rem;
+  margin: 0.6rem 0 0.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+.founder-title {
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.founder-socials {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.founder-socials .social-small img {
+  width: 20px;
+  height: 20px;
+}
+.founder-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 2rem;
+  margin-top: 0.6rem;
+}
+.founder-actions .pill-btn {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-weight: 700;
+}
+.founder-actions .pill-btn:hover {
+  background: transparent;
+  color: var(--accent);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 18px 36px rgba(47, 133, 90, 0.12);
+}
+
+@media (max-width: 768px) {
+  .founder-card { padding: 1.25rem; }
+  /* Mobile portrait increased proportionally: 150 -> 225 (1.5x) */
+  .founder-portrait-wrap { width: 225px; height: 225px; }
+  .founder-name { font-size: 1.4rem; }
+  .founder-actions { grid-template-columns: 1fr; }
 }
 
 .social-icon {
