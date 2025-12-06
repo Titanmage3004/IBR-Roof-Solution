@@ -633,6 +633,62 @@ footer a {
   }
 }
 
+/* Responsive media card defaults
+   Ensure media cards (portrait thumbnails and landscape video) fill their grid cells
+   and the landscape container expands to the same content width as other sections.
+*/
+.media-card,
+.media-card-wrap {
+  width: 100% !important;
+  display: block !important;
+  /* allow scripts to set the aspect ratio via --ar to prevent squashing */
+  aspect-ratio: var(--ar, 16/9);
+  min-height: 4.5rem; /* fallback minimum height while metadata loads */
+}
+
+.media-card img,
+.media-card video,
+#landscapeContainer img,
+#landscapeContainer video {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  border-radius: 10px;
+  object-fit: contain !important; /* avoid cropping; keep natural aspect */
+}
+
+/* Video-specific: ensure video preserves intrinsic aspect ratio and fills its container */
+.media-card video,
+#landscapeContainer video {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Landscape wrapper should span the full width of the content area and
+   keep spacing consistent with other page sections. */
+#landscapeContainer > div {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+/* On narrow viewports keep the thumb row stacked and centered; on desktop use
+   the 3-column grid defined by #topMediaGrid above. */
+@media (max-width: 768px) {
+  #topMediaGrid {
+    display: block !important;
+  }
+  .media-card-wrap {
+    margin: 0 0 1.25rem 0; /* slightly larger gap between stacked cards */
+  }
+  .media-caption {
+    text-align: center;
+    margin-top: 1.25rem; /* increase space between media and caption on mobile */
+  }
+}
+
 .hero-top-logo {
   display: block;
   margin: 0 auto 1rem;
