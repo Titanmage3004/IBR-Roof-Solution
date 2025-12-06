@@ -30,7 +30,8 @@ jobs:
         run: ls -la
 
       - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+        # use v2 which depends on the newer upload-artifact action
+        uses: actions/upload-pages-artifact@v2
         with:
           path: '.'
 
