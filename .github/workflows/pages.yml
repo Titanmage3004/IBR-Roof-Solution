@@ -26,6 +26,22 @@ jobs:
       - name: Build CSS (Tailwind)
         run: npm run build:css
 
+      - name: Verify build output
+        run: |
+          echo "Checking built CSS for responsive utilities..."
+          if [ ! -f css/tailwind.css ]; then
+            echo "css/tailwind.css not found"; exit 1;
+          fi
+          # Check for common responsive helpers or media queries
+          if ! grep -q "md:grid-cols-2" css/tailwind.css && ! grep -q "@media" css/tailwind.css; then
+            echo "Responsive utilities appear missing in css/tailwind.css"; exit 1;
+          fi
+          echo "Checking index.html for hero-grid fallback class..."
+          if ! grep -q "hero-grid" index.html; then
+            echo "hero-grid class not found in index.html"; exit 1;
+          fi
+          echo "Build verification passed."
+
       - name: List built files
         run: ls -la
 
