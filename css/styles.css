@@ -711,6 +711,30 @@ footer a {
   min-height: 4.5rem; /* fallback minimum height while metadata loads */
 }
 
+/* Let portrait media maintain their intrinsic aspect ratio (set via --ar)
+   so tall portrait videos render at their natural height. Keep items
+   aligned to the start of the grid and let rows size to their content. */
+#topMediaGrid {
+  grid-auto-rows: auto !important;
+  align-items: start !important;
+}
+#topMediaGrid .media-card-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+}
+#topMediaGrid .media-card {
+  display: block !important;
+  position: relative !important;
+  /* aspect-ratio is controlled by the element's --ar variable set by JS */
+}
+#topMediaGrid .media-card img,
+#topMediaGrid .media-card video {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important; /* show full video without cropping */
+  display: block !important;
+}
+
 .media-card img,
 .media-card video,
 #landscapeContainer img,
@@ -729,6 +753,45 @@ footer a {
   display: block;
   width: 100% !important;
   height: auto !important;
+}
+
+/* Ensure landscape container has a consistent gap and padding on all viewports
+   so the full-width horizontal video cannot overlap or clip the portrait row. */
+#landscapeContainer {
+  clear: both;
+  margin-top: 3.5rem; /* slightly larger gap to ensure visual separation */
+  padding: 1rem 0;
+  width: 100%;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.landscape-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Strong overrides to ensure the top media grid items always fill their
+   grid cells and cannot overlap. Placed at the end to take precedence. */
+#topMediaGrid .media-card-wrap,
+#topMediaGrid .media-card {
+  height: 100% !important;
+}
+#topMediaGrid .media-card img,
+#topMediaGrid .media-card video {
+  height: 100% !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Ensure landscape has a clear separation from the thumbnails */
+#landscapeContainer {
+  margin-top: 4rem !important;
 }
 
 /* Landscape wrapper should span the full width of the content area and
@@ -3055,5 +3118,79 @@ footer.site-footer {
       width: 48px;
       height: 48px;
     }
+  }
+}
+
+/* === Final overrides: portrait video sizing and landscape separation === */
+@media (min-width: 769px) {
+  /* Make the three portrait cards taller so vertical videos display fully. */
+  #topMediaGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1.5rem !important;
+    align-items: start !important;
+  }
+
+  #topMediaGrid .media-card {
+    /* Allow JavaScript to set --ar; provide a strong min-height so cards
+       render tall enough for vertical videos. */
+    min-height: 600px !important;
+    display: block !important;
+    position: relative !important;
+    overflow: hidden !important;
+    z-index: 2 !important;
+  }
+
+  /* Ensure media fills the card height and shows the full video without cropping */
+  #topMediaGrid .media-card video,
+  #topMediaGrid .media-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  /* Keep the landscape (horizontal) video clearly below with ample gap */
+  #landscapeContainer {
+    clear: both !important;
+    /* Start the landscape just below the portrait cards with a small gap. */
+    margin-top: calc(300px + 1rem) !important;
+    z-index: 1 !important;
+    position: relative !important;
+  }
+}
+
+/* Remove dark letterbox background so portrait videos don't show black bars */
+#topMediaGrid .media-card {
+  background: transparent !important;
+}
+#topMediaGrid .media-card video,
+#topMediaGrid .media-card img {
+  background: transparent !important;
+}
+
+/* Also ensure general .media-card fallback has no black background */
+.media-card {
+  background: transparent !important;
+}
+
+/* Portrait rounding and caption spacing tweaks */
+@media (min-width: 769px) {
+  /* Increase rounding on the portrait cards and media */
+  #topMediaGrid .media-card,
+  #topMediaGrid .media-card video,
+  #topMediaGrid .media-card img {
+    border-radius: 20px !important;
+  }
+
+  /* Reduce spacing between the caption/button under each portrait and the landscape video */
+  #topMediaGrid .media-caption {
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Slightly reduce the caption top spacing to keep the buttons closer to the media */
+  #topMediaGrid .media-caption .pill-btn {
+    margin-top: 0 !important;
+    padding-top: 0.45rem !important;
+    padding-bottom: 0.45rem !important;
   }
 }

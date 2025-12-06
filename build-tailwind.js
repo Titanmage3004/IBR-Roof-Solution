@@ -1,6 +1,8 @@
 const fs = require('fs');
 const postcss = require('postcss');
-const tailwind = require('tailwindcss');
+// Use the PostCSS plugin package for Tailwind. Newer Tailwind versions
+// expect the `@tailwindcss/postcss` plugin when used with PostCSS programmatically.
+const tailwind = require('@tailwindcss/postcss');
 const autoprefixer = require('autoprefixer');
 
 async function build() {
