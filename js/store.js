@@ -1,3 +1,15 @@
+/*
+  js/store.js
+  ----------------
+  Client-side product catalog, cart, and invoice rendering for the static site.
+  - Keeps cart state in localStorage.
+  - Renders product cards and a simple invoice for printing/downloading.
+  - Uses DOM APIs and escaping helpers to reduce XSS risk.
+
+  Notes for maintainers: prefer DOM construction over large HTML templates when
+  inserting dynamic data (see `renderProducts` and `renderCartItems`).
+*/
+
 const PRODUCTS = [
   {id: 'p1', title: 'Inner Rib Block', price: 5.00, colors: ['black','white'], img: '', imgByColor: {}},
   {id: 'p2', title: 'Upper Roof Support Bracket', price: 5.00, colors: ['black','white'], img: '', imgByColor: {}},
@@ -30,61 +42,75 @@ function escapeHTML(input){
     return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'}[ch]);
   });
 }
-
+// Render product cards into the `#products` container.
+// Uses DOM APIs to avoid unsafe string-based `innerHTML` insertion with product data.
 function renderProducts(){
   const container = document.getElementById('products');
   if(!container) return;
-  container.innerHTML = '';
+  // Clear container safely
+  while(container.firstChild) container.removeChild(container.firstChild);
   PRODUCTS.forEach(p=>{
     const card = document.createElement('div');
     card.className = 'product-card';
     card.dataset.productId = p.id;
-  card.dataset.currentColor = p.colors[0];
-  card.dataset.qty = 5;
-    // Render a blank viewport for all products (no image/model for now)
-    const mediaHtml = `
-      <div class="product-image-wrapper">
-        <div class="model-viewport">
-          ${p.img ? `<img class="product-image" src="${p.img}" alt="${p.title}" />` : ``}
-        </div>
-      </div>
-    `;
+    card.dataset.currentColor = p.colors[0];
+    card.dataset.qty = 5;
 
-    // build card content safely using escaped values
-    const priceHtml = `<div class="price-pill">${escapeHTML(formatCurrency(getProductPrice(p.id)))}</div>`;
-    const swatchesHtml = p.colors.map(c=>`<button data-color="${escapeHTML(c)}" title="${escapeHTML(c)}" class="swatch" style="background:${getColorCss(c)}" aria-label="${escapeHTML(c)}"></button>`).join('');
-    card.innerHTML = `${mediaHtml}
-      <h3 class="product-title">${escapeHTML(p.title)}</h3>
-      <div class="price-row">
-        <div class="price-label">Price (R):</div>
-        <div class="price-main-row">
-          ${priceHtml}
-          <div class="price-per-unit">per unit</div>
-        </div>
-        <div class="price-min">Minimum order: 5 units</div>
-  </div>
-      <div class="controls">
-        <div class="controls-left">
-          <div class="color-row">
-            <div class="color-label">Color Selection:</div>
-            <div class="swatches" data-id="${escapeHTML(p.id)}">
-              ${swatchesHtml}
-            </div>
-          </div>
-          <div class="units-row">
-            <div class="units-label">Units Required:</div>
-            <div class="qty-controls" data-id="${escapeHTML(p.id)}">
-              <button class="qty-button btn-decrease" data-id="${escapeHTML(p.id)}" aria-label="Decrease">−</button>
-              <div class="qty-value" data-id="${escapeHTML(p.id)}">5</div>
-              <button class="qty-button btn-increase" data-id="${escapeHTML(p.id)}" aria-label="Increase">+</button>
-            </div>
-          </div>
-        </div>
-        <div class="controls-right">
-          <button data-id="${escapeHTML(p.id)}" class="add-to-cart" aria-label="Add to cart">Add to cart</button>
-        </div>
-      </div>
-    `;
+    // media wrapper (empty placeholder or image when present)
+    const mediaWrap = document.createElement('div');
+    mediaWrap.className = 'product-image-wrapper';
+    const viewport = document.createElement('div'); viewport.className = 'model-viewport';
+    if(p.img){
+      const img = document.createElement('img'); img.className = 'product-image'; img.src = p.img; img.alt = p.title;
+      viewport.appendChild(img);
+    }
+    mediaWrap.appendChild(viewport);
+    card.appendChild(mediaWrap);
+
+    // title
+    const title = document.createElement('h3'); title.className = 'product-title'; title.textContent = p.title;
+    card.appendChild(title);
+
+    // price block
+    const priceRow = document.createElement('div'); priceRow.className = 'price-row';
+    const priceLabel = document.createElement('div'); priceLabel.className = 'price-label'; priceLabel.textContent = 'Price (R):';
+    const priceMainRow = document.createElement('div'); priceMainRow.className = 'price-main-row';
+    const pricePill = document.createElement('div'); pricePill.className = 'price-pill'; pricePill.textContent = formatCurrency(getProductPrice(p.id));
+    const perUnit = document.createElement('div'); perUnit.className = 'price-per-unit'; perUnit.textContent = 'per unit';
+    priceMainRow.appendChild(pricePill); priceMainRow.appendChild(perUnit);
+    const priceMin = document.createElement('div'); priceMin.className = 'price-min'; priceMin.textContent = 'Minimum order: 5 units';
+    priceRow.appendChild(priceLabel); priceRow.appendChild(priceMainRow); priceRow.appendChild(priceMin);
+    card.appendChild(priceRow);
+
+    // controls (swatches + qty + add-to-cart)
+    const controls = document.createElement('div'); controls.className = 'controls';
+    const left = document.createElement('div'); left.className = 'controls-left';
+    const colorRow = document.createElement('div'); colorRow.className = 'color-row';
+    const colorLabel = document.createElement('div'); colorLabel.className = 'color-label'; colorLabel.textContent = 'Color Selection:';
+    const swatches = document.createElement('div'); swatches.className = 'swatches'; swatches.setAttribute('data-id', p.id);
+    p.colors.forEach(c=>{
+      const b = document.createElement('button'); b.className = 'swatch'; b.setAttribute('data-color', c); b.setAttribute('title', c); b.setAttribute('aria-label', c); b.style.background = getColorCss(c);
+      swatches.appendChild(b);
+    });
+    colorRow.appendChild(colorLabel); colorRow.appendChild(swatches);
+
+    const unitsRow = document.createElement('div'); unitsRow.className = 'units-row';
+    const unitsLabel = document.createElement('div'); unitsLabel.className = 'units-label'; unitsLabel.textContent = 'Units Required:';
+    const qtyControls = document.createElement('div'); qtyControls.className = 'qty-controls'; qtyControls.setAttribute('data-id', p.id);
+    const decBtn = document.createElement('button'); decBtn.className = 'qty-button btn-decrease'; decBtn.setAttribute('data-id', p.id); decBtn.setAttribute('aria-label','Decrease'); decBtn.textContent = '−';
+    const valDiv = document.createElement('div'); valDiv.className = 'qty-value'; valDiv.setAttribute('data-id', p.id); valDiv.textContent = '5';
+    const incBtn = document.createElement('button'); incBtn.className = 'qty-button btn-increase'; incBtn.setAttribute('data-id', p.id); incBtn.setAttribute('aria-label','Increase'); incBtn.textContent = '+';
+    qtyControls.appendChild(decBtn); qtyControls.appendChild(valDiv); qtyControls.appendChild(incBtn);
+    unitsRow.appendChild(unitsLabel); unitsRow.appendChild(qtyControls);
+
+    left.appendChild(colorRow); left.appendChild(unitsRow);
+    const right = document.createElement('div'); right.className = 'controls-right';
+    const addBtn = document.createElement('button'); addBtn.className = 'add-to-cart'; addBtn.setAttribute('data-id', p.id); addBtn.setAttribute('aria-label','Add to cart'); addBtn.textContent = 'Add to cart';
+    right.appendChild(addBtn);
+
+    controls.appendChild(left); controls.appendChild(right);
+    card.appendChild(controls);
+
     container.appendChild(card);
   });
   document.querySelectorAll('.swatch').forEach(s=> s.addEventListener('click', (e)=>{
@@ -155,6 +181,7 @@ function initModelViewerFallbacks(){
 }
 function getAdminSettings(){ try{ return JSON.parse(localStorage.getItem('site_admin')||'{}'); }catch(e){return{}} }
 
+// Get the current price for a product id. Honors admin overrides stored in localStorage.
 function getProductPrice(id){
   const base = (PRODUCTS.find(p=>p.id===id)||{}).price||0;
   const admin = getAdminSettings();
@@ -162,17 +189,21 @@ function getProductPrice(id){
   return base;
 }
 
+// Format a numeric amount according to configured currency (admin setting or default).
 function formatCurrency(amount){
   const admin = getAdminSettings();
   const cur = (admin && admin.currency) || 'USD';
   if(cur === 'ZAR') return `R${Number(amount).toFixed(2)}`;
   return `$${Number(amount).toFixed(2)}`;
 }
+// Normalize a requested quantity up to the minimum/order step.
+// Business rule: quantities are rounded up to the nearest multiple of 5 and have a minimum of 5.
 function normalizeQty(q){
   const n = Number(q) || 0;
   const rounded = Math.ceil(n/5) * 5;
   return Math.max(5, rounded);
 }
+// Simple shipping calculation: free over threshold, otherwise flat fee.
 function calculateShipping(subtotal){
   try{
     const threshold = 500; // R500 free-shipping threshold
@@ -181,6 +212,8 @@ function calculateShipping(subtotal){
   }catch(e){ return 0; }
 }
 
+// Lightweight toast notification. Creates a transient element appended to <body>.
+// Uses ARIA attributes for accessibility and auto-removes itself after a timeout.
 function showToast(message, opts = {}){
   try{
     const timeout = opts.timeout || 3500;
@@ -216,6 +249,8 @@ function showToast(message, opts = {}){
   }catch(e){ try{ console.warn('showToast failed', e); }catch(_){} }
 }
 
+// Add an item to the cart (stored in localStorage) and update UI/state.
+// Preserves existing items, normalizes quantities, and triggers UI updates.
 function addToCart(id, color, qty, price){
   const product = PRODUCTS.find(p=>p.id===id);
   if(!product) return;
@@ -237,6 +272,8 @@ function addToCart(id, color, qty, price){
   renderCartItems();
 }
 
+// Rebuild the cart modal contents from the cart stored in localStorage.
+// Uses DOM APIs to construct rows and attach event handlers for qty/remove actions.
 function renderCartItems(){
   const modal = document.getElementById('cartModal');
   const itemsDiv = document.getElementById('cartItems');
@@ -251,7 +288,7 @@ function renderCartItems(){
     return normalized;
   });
   if(changed) localStorage.setItem('cart', JSON.stringify(cart));
-  itemsDiv.innerHTML = '';
+  while(itemsDiv.firstChild) itemsDiv.removeChild(itemsDiv.firstChild);
   let subtotal = 0;
   let totalUnits = 0;
   cart.forEach((it, idx)=>{
@@ -259,7 +296,6 @@ function renderCartItems(){
     subtotal += currentPrice * it.qty;
     totalUnits += Number(it.qty) || 0;
     const product = PRODUCTS.find(p=>p.id===it.id) || {};
-    const thumb = product.img || '';
     const row = document.createElement('div');
     row.className = 'cart-item';
     // build cart item row safely
@@ -294,7 +330,7 @@ function renderCartItems(){
   if(totalEl){
     // build total summary safely
     if(totalEl){
-      totalEl.innerHTML = '';
+      while(totalEl.firstChild) totalEl.removeChild(totalEl.firstChild);
       const subDiv = document.createElement('div'); subDiv.style.fontSize = '0.95rem'; subDiv.style.color = '#6b7280'; subDiv.textContent = `Subtotal: ${formatCurrency(subtotal)}`;
       const shipDiv = document.createElement('div'); shipDiv.style.fontSize = '0.95rem'; shipDiv.style.color = '#6b7280'; shipDiv.textContent = `Shipping: ${formatCurrency(shipping)}`;
       const grandDiv = document.createElement('div'); grandDiv.style.fontWeight = '800'; grandDiv.style.fontSize = '1.05rem'; grandDiv.style.marginTop = '0.25rem'; grandDiv.textContent = formatCurrency(grandTotal);
@@ -305,7 +341,7 @@ function renderCartItems(){
   if(itemsCountEl) itemsCountEl.textContent = String(totalUnits);
   const checkoutBtn = document.getElementById('checkout');
   if(!cart || cart.length === 0){
-    itemsDiv.innerHTML = '';
+    while(itemsDiv.firstChild) itemsDiv.removeChild(itemsDiv.firstChild);
     const emptyDiv = document.createElement('div'); emptyDiv.className = 'text-sm text-gray-600'; emptyDiv.textContent = 'Your cart is empty.';
     itemsDiv.appendChild(emptyDiv);
     if(checkoutBtn){ checkoutBtn.disabled = true; checkoutBtn.classList.add('opacity-50','cursor-not-allowed'); }
@@ -332,6 +368,7 @@ function renderCartItems(){
   }));
   document.querySelectorAll('.qty-display').forEach(d=> d.addEventListener('click', ()=>{}));
 }
+// Init handlers for the DIY kit UI (if present). Keeps behavior localized to the kit element.
 function initKitHandlers(){
   const kit = document.querySelector('.diy-kit');
   if(!kit) return;
@@ -372,12 +409,14 @@ const closeCart = document && document.getElementById('closeCart');
 const closeCartTop = document && document.getElementById('closeCartTop');
 const checkout = document && document.getElementById('checkout');
 
+// Open the cart modal and refresh its contents.
 function openCartModal(){
   renderCartItems();
   if(cartModal){ cartModal.classList.remove('hidden'); cartModal.setAttribute('aria-hidden','false'); }
   document.body.classList.add('modal-open');
 }
 
+// Close the cart modal and restore document state.
 function closeCartModal(){
   if(cartModal){ cartModal.classList.add('hidden'); cartModal.setAttribute('aria-hidden','true'); }
   document.body.classList.remove('modal-open');
@@ -433,7 +472,7 @@ if(printInvoiceBtn) printInvoiceBtn.addEventListener('click', ()=>{
     printContainer.id = 'printInvoiceContainer';
     printContainer.className = 'print-only-invoice';
     // copy invoiceBody content into print container safely by cloning nodes
-    printContainer.innerHTML = '';
+    while(printContainer.firstChild) printContainer.removeChild(printContainer.firstChild);
     const cloned = invoiceBody.cloneNode(true);
     // remove any script nodes for safety
     cloned.querySelectorAll('script').forEach(s=> s.remove());
@@ -455,8 +494,10 @@ if(printInvoiceBtn) printInvoiceBtn.addEventListener('click', ()=>{
       doc.open();
       // build a minimal printable document using escaped text where appropriate
       const printHtml = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invoice</title><link rel="stylesheet" href="${escapeHTML(cssHref)}"></head><body>`;
-      // serialize printContainer safely
-      const serial = printContainer.innerHTML;
+      // serialize current invoice safely by cloning into a temporary container
+      const clonedInvoice = invoiceBody.cloneNode(true);
+      clonedInvoice.querySelectorAll('script').forEach(s=> s.remove());
+      const serial = clonedInvoice.outerHTML;
       doc.write(printHtml + serial + '</body></html>');
       doc.close();
       const tryPrint = ()=>{ try{ newWin.focus(); newWin.print(); }catch(e){} setTimeout(()=>{ try{ newWin.close(); }catch(e){} }, 900); };
@@ -579,59 +620,66 @@ function renderInvoice(cart){
   const vat = 0; // placeholder
   const shipping = calculateShipping(subtotal);
   const total = subtotal + vat + shipping;
-  invoiceBody.innerHTML = `
-    <div class="invoice-header">
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        <img src="assets/All Products Patented.svg" alt="IBR Roof Solutions" style="height:64px;max-height:140px;display:block;border:0;margin:0;padding:0;object-fit:contain" />
-        <div>
-          <div style="font-weight:900;font-size:1.05rem">IBR Roof Solutions</div>
-          <div class="invoice-meta">Invoice #: ${invoiceNumber} • Date: ${new Date().toLocaleDateString()}</div>
-        </div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-weight:800;font-size:1.1rem">${formatCurrency(total)}</div>
-        <div class="invoice-meta">Amount Due</div>
-      </div>
-    </div>
-    <table class="invoice-table" aria-label="Invoice items">
-      <thead>
-        <tr><th>#</th><th>Item</th><th>Color</th><th>Qty</th><th>Unit</th><th>Total</th></tr>
-      </thead>
-      <tbody>
-        ${lines}
-      </tbody>
-    </table>
+  // Build invoice DOM safely (avoid constructing large HTML strings with user/cart data)
+  while(invoiceBody.firstChild) invoiceBody.removeChild(invoiceBody.firstChild);
+  const header = document.createElement('div'); header.className = 'invoice-header';
+  const headerLeft = document.createElement('div'); headerLeft.style.display = 'flex'; headerLeft.style.alignItems = 'center'; headerLeft.style.gap = '0.75rem';
+  const logo = document.createElement('img'); logo.src = 'assets/All Products Patented.svg'; logo.alt = 'IBR Roof Solutions'; logo.style.height = '64px'; logo.style.maxHeight = '140px'; logo.style.objectFit = 'contain'; logo.style.border = '0';
+  const orgWrap = document.createElement('div');
+  const orgName = document.createElement('div'); orgName.style.fontWeight = '900'; orgName.style.fontSize = '1.05rem'; orgName.textContent = 'IBR Roof Solutions';
+  const meta = document.createElement('div'); meta.className = 'invoice-meta'; meta.textContent = `Invoice #: ${invoiceNumber} • Date: ${new Date().toLocaleDateString()}`;
+  orgWrap.appendChild(orgName); orgWrap.appendChild(meta);
+  headerLeft.appendChild(logo); headerLeft.appendChild(orgWrap);
+  const headerRight = document.createElement('div'); headerRight.style.textAlign = 'right';
+  const amtDue = document.createElement('div'); amtDue.style.fontWeight = '800'; amtDue.style.fontSize = '1.1rem'; amtDue.textContent = formatCurrency(total);
+  const amtLabel = document.createElement('div'); amtLabel.className = 'invoice-meta'; amtLabel.textContent = 'Amount Due';
+  headerRight.appendChild(amtDue); headerRight.appendChild(amtLabel);
+  header.appendChild(headerLeft); header.appendChild(headerRight);
+  invoiceBody.appendChild(header);
 
-    <div class="invoice-summary">
-      <div style="text-align:right">
-        <div style="font-weight:700">Subtotal: ${formatCurrency(subtotal)}</div>
-        <div style="font-weight:700">Shipping: ${formatCurrency(shipping)}</div>
-        <div style="font-weight:900;margin-top:0.25rem">Total: ${formatCurrency(total)}</div>
-      </div>
-    </div>
+  // items table
+  const table = document.createElement('table'); table.className = 'invoice-table'; table.setAttribute('aria-label','Invoice items');
+  const thead = document.createElement('thead'); const htr = document.createElement('tr'); ['#','Item','Color','Qty','Unit','Total'].forEach(t=>{ const th = document.createElement('th'); th.textContent = t; htr.appendChild(th); }); thead.appendChild(htr); table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  (cart || []).forEach((it, idx)=>{
+    const tr = document.createElement('tr');
+    const cols = [String(idx+1), it.title, it.color, String(it.qty), formatCurrency((it.price!=null)?Number(it.price):getProductPrice(it.id)), formatCurrency(((it.price!=null)?Number(it.price):getProductPrice(it.id)) * it.qty)];
+    cols.forEach(c=>{ const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  invoiceBody.appendChild(table);
 
-    <div style="display:flex;gap:1rem;margin-top:1rem;align-items:flex-start">
-      <div style="flex:1">
-        <div class="bank-details">
-          <div style="font-weight:800;margin-bottom:0.25rem">Banking details (placeholder)</div>
-          <div>Account name: IBR Roof Solutions</div>
-          <div>Bank: Example Bank</div>
-          <div>Branch code: 000000</div>
-          <div>Account number: 1234567890</div>
-          <div style="margin-top:0.5rem;font-size:0.95rem;color:#6b7280">Use your invoice number as payment reference.</div>
-        </div>
-      </div>
-      <div style="width:180px;flex:0 0 180px">
-        <div class="qr-code" aria-hidden="true">QR</div>
-        <div style="font-size:0.85rem;color:#6b7280;margin-top:0.5rem">Scan to pay (placeholder)</div>
-      </div>
-    </div>
-    <div style="margin-top:0.85rem;border-top:1px dashed rgba(0,0,0,0.06);padding-top:0.85rem;">
-      <div style="font-weight:800;margin-bottom:0.25rem">Send proof of payment</div>
-      <div style="color:#1f2937">Email your proof to <a href="mailto:${contactEmail}?subject=Payment%20Proof%20Invoice%20${invoiceNumber}" style="color:var(--brand);font-weight:700">${contactEmail}</a> or send via WhatsApp: ${whatsappHtml}</div>
-  <div style="margin-top:0.5rem;font-size:0.9rem;color:#6b7280">Please include your invoice number in the message so we can match your payment.</div>
-    </div>
-  `;
+  // summary
+  const summaryWrap = document.createElement('div'); summaryWrap.className = 'invoice-summary';
+  const summaryInner = document.createElement('div'); summaryInner.style.textAlign = 'right';
+  const subDiv = document.createElement('div'); subDiv.style.fontWeight = '700'; subDiv.textContent = `Subtotal: ${formatCurrency(subtotal)}`;
+  const shipDiv = document.createElement('div'); shipDiv.style.fontWeight = '700'; shipDiv.textContent = `Shipping: ${formatCurrency(shipping)}`;
+  const grandDiv = document.createElement('div'); grandDiv.style.fontWeight = '900'; grandDiv.style.marginTop = '0.25rem'; grandDiv.textContent = `Total: ${formatCurrency(total)}`;
+  summaryInner.appendChild(subDiv); summaryInner.appendChild(shipDiv); summaryInner.appendChild(grandDiv); summaryWrap.appendChild(summaryInner); invoiceBody.appendChild(summaryWrap);
+
+  // bank details + QR placeholder
+  const footerWrap = document.createElement('div'); footerWrap.style.display = 'flex'; footerWrap.style.gap = '1rem'; footerWrap.style.marginTop = '1rem'; footerWrap.style.alignItems = 'flex-start';
+  const bankCol = document.createElement('div'); bankCol.style.flex = '1';
+  const bankDetails = document.createElement('div'); bankDetails.className = 'bank-details';
+  const bankTitle = document.createElement('div'); bankTitle.style.fontWeight = '800'; bankTitle.style.marginBottom = '0.25rem'; bankTitle.textContent = 'Banking details (placeholder)';
+  bankDetails.appendChild(bankTitle);
+  ['Account name: IBR Roof Solutions','Bank: Example Bank','Branch code: 000000','Account number: 1234567890'].forEach(t=>{ const d = document.createElement('div'); d.textContent = t; bankDetails.appendChild(d); });
+  const bankNote = document.createElement('div'); bankNote.style.marginTop = '0.5rem'; bankNote.style.fontSize = '0.95rem'; bankNote.style.color = '#6b7280'; bankNote.textContent = 'Use your invoice number as payment reference.';
+  bankDetails.appendChild(bankNote); bankCol.appendChild(bankDetails); footerWrap.appendChild(bankCol);
+  const qrCol = document.createElement('div'); qrCol.style.width = '180px'; qrCol.style.flex = '0 0 180px'; const qr = document.createElement('div'); qr.className = 'qr-code'; qr.setAttribute('aria-hidden','true'); qr.textContent = 'QR'; const qrNote = document.createElement('div'); qrNote.style.fontSize = '0.85rem'; qrNote.style.color = '#6b7280'; qrNote.style.marginTop = '0.5rem'; qrNote.textContent = 'Scan to pay (placeholder)'; qrCol.appendChild(qr); qrCol.appendChild(qrNote); footerWrap.appendChild(qrCol);
+  invoiceBody.appendChild(footerWrap);
+
+  // proof of payment
+  const proofWrap = document.createElement('div'); proofWrap.style.marginTop = '0.85rem'; proofWrap.style.borderTop = '1px dashed rgba(0,0,0,0.06)'; proofWrap.style.paddingTop = '0.85rem';
+  const proofTitle = document.createElement('div'); proofTitle.style.fontWeight = '800'; proofTitle.style.marginBottom = '0.25rem'; proofTitle.textContent = 'Send proof of payment';
+  const proofText = document.createElement('div'); proofText.style.color = '#1f2937';
+  const mailA = document.createElement('a'); mailA.href = `mailto:${contactEmail}?subject=Payment%20Proof%20Invoice%20${invoiceNumber}`; mailA.style.color = 'var(--brand)'; mailA.style.fontWeight = '700'; mailA.textContent = contactEmail;
+  const waA = document.createElement('a'); waA.href = `https://wa.me/${waDigits}?text=${waText}`; waA.setAttribute('target','_blank'); waA.setAttribute('rel','noopener'); waA.textContent = whatsappRaw;
+  proofText.appendChild(document.createTextNode('Email your proof to ')); proofText.appendChild(mailA); proofText.appendChild(document.createTextNode(' or send via WhatsApp: ')); proofText.appendChild(waA);
+  const proofNote = document.createElement('div'); proofNote.style.marginTop = '0.5rem'; proofNote.style.fontSize = '0.9rem'; proofNote.style.color = '#6b7280'; proofNote.textContent = 'Please include your invoice number in the message so we can match your payment.';
+  proofWrap.appendChild(proofTitle); proofWrap.appendChild(proofText); proofWrap.appendChild(proofNote);
+  invoiceBody.appendChild(proofWrap);
 }
 renderProducts();
 window.addEventListener('DOMContentLoaded', ()=>{
