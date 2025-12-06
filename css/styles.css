@@ -594,6 +594,45 @@ footer a {
   }
 }
 
+/* Fallbacks for other pages when Tailwind responsive utilities are not present
+   Ensure product grids and two-column content display correctly on desktop. */
+@media (min-width: 769px) {
+  /* Store products: 2 columns on tablet, 3 on desktop */
+  #products {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+}
+@media (min-width: 1024px) {
+  #products {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Generic two-column helper used on several pages */
+@media (min-width: 769px) {
+  .two-col {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+    align-items: start;
+  }
+  .support-content.two-col,
+  .compare-content .compare-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+  }
+  /* Top media grid fallback */
+  #topMediaGrid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1.5rem !important;
+    align-items: start;
+  }
+}
+
 .hero-top-logo {
   display: block;
   margin: 0 auto 1rem;
