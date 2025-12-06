@@ -1,92 +1,98 @@
-function setupMobileMenu(btnId, menuId){
+function setupMobileMenu(btnId, menuId) {
   const btn = document.getElementById(btnId);
   const menu = document.getElementById(menuId);
-  if(!btn || !menu) return;
-  btn.addEventListener('click', ()=>{
+  if (!btn || !menu) return;
+  btn.addEventListener('click', () => {
     menu.classList.toggle('hidden');
   });
 }
 
-setupMobileMenu('mobileMenuBtn','mobileMenu');
-setupMobileMenu('mobileMenuBtn2','mobileMenu2');
-setupMobileMenu('mobileMenuBtn3','mobileMenu3');
-setupMobileMenu('mobileMenuBtn4','mobileMenu4');
-function updateCartCount(){
+setupMobileMenu('mobileMenuBtn', 'mobileMenu');
+setupMobileMenu('mobileMenuBtn2', 'mobileMenu2');
+setupMobileMenu('mobileMenuBtn3', 'mobileMenu3');
+setupMobileMenu('mobileMenuBtn4', 'mobileMenu4');
+function updateCartCount() {
   const countEl = document.getElementById('cartCount');
-  const cart = JSON.parse(localStorage.getItem('cart')||'[]');
-  if(countEl) countEl.textContent = cart.reduce((s,i)=>s+i.qty,0);
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  if (countEl) countEl.textContent = cart.reduce((s, i) => s + i.qty, 0);
 }
 updateCartCount();
 window.app = window.app || {};
 window.app.updateCartCount = updateCartCount;
-function markActiveMobileNavLinks(){
-  try{
+function markActiveMobileNavLinks() {
+  try {
     const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
     const menus = document.querySelectorAll('[id^="mobileMenu"]');
-    menus.forEach(menu=>{
+    menus.forEach((menu) => {
       const links = menu.querySelectorAll('a[href]');
-      links.forEach(a=>{
+      links.forEach((a) => {
         const href = a.getAttribute('href') || '';
         const page = href.split('/').pop().toLowerCase();
         a.classList.remove('active');
-        if(page === current) a.classList.add('active');
+        if (page === current) a.classList.add('active');
       });
     });
-  }catch(e){console.warn('markActiveMobileNavLinks failed', e)}
+  } catch (e) {
+    console.warn('markActiveMobileNavLinks failed', e);
+  }
 }
-function initMediaAspectRatios(){
+function initMediaAspectRatios() {
   const containers = Array.from(document.querySelectorAll('.media-card'));
   let videosToLoad = 0;
   const tryArrange = () => {
     arrangeMediaLayout();
   };
 
-  containers.forEach(container => {
+  containers.forEach((container) => {
     const vid = container.querySelector('video');
     const img = container.querySelector('img');
 
-    if(vid){
+    if (vid) {
       videosToLoad++;
       const setRatioFromVideo = () => {
         const w = vid.videoWidth;
         const h = vid.videoHeight;
-        if(w && h){
+        if (w && h) {
           container.style.setProperty('--ar', `${w}/${h}`);
         }
         videosToLoad--;
-        if(videosToLoad<=0) tryArrange();
+        if (videosToLoad <= 0) tryArrange();
       };
-      if(vid.readyState >= 1){
+      if (vid.readyState >= 1) {
         setRatioFromVideo();
       } else {
-        vid.addEventListener('loadedmetadata', setRatioFromVideo, {once:true});
+        vid.addEventListener('loadedmetadata', setRatioFromVideo, { once: true });
       }
-    } else if(img){
-      if(img.naturalWidth && img.naturalHeight){
+    } else if (img) {
+      if (img.naturalWidth && img.naturalHeight) {
         container.style.setProperty('--ar', `${img.naturalWidth}/${img.naturalHeight}`);
       } else {
-        img.addEventListener('load', ()=>{
-          container.style.setProperty('--ar', `${img.naturalWidth}/${img.naturalHeight}`);
-        }, {once:true});
+        img.addEventListener(
+          'load',
+          () => {
+            container.style.setProperty('--ar', `${img.naturalWidth}/${img.naturalHeight}`);
+          },
+          { once: true }
+        );
       }
     }
   });
-  if(videosToLoad===0) tryArrange();
+  if (videosToLoad === 0) tryArrange();
 }
-function buildMediaCards(){
-  if(!window.mediaAssets) return;
+function buildMediaCards() {
+  if (!window.mediaAssets) return;
   const container = document.getElementById('topMediaGrid');
-  if(!container) return;
-  const srcFor = (filename)=> 'assets/' + encodeURIComponent(filename).replace(/%20/g,' ');
+  if (!container) return;
+  // helper to build media staging; file paths are created inline where needed
   window._mediaCards = [];
-  (window.mediaAssets.videos || []).forEach((fname, idx)=>{
+  (window.mediaAssets.videos || []).forEach((fname, idx) => {
     const art = document.createElement('article');
     art.className = 'media-card shadow';
     art.dataset.src = fname;
     art.dataset.type = 'video';
     art.dataset.title = (window.mediaAssets.titles && window.mediaAssets.titles[idx]) || '';
     const v = document.createElement('video');
-    v.setAttribute('playsinline','');
+    v.setAttribute('playsinline', '');
     v.muted = true;
     v.loop = true;
     v.autoplay = true;
@@ -98,41 +104,54 @@ function buildMediaCards(){
     art.appendChild(v);
     window._mediaCards.push(art);
   });
-  (window.mediaAssets.images || []).forEach((fname)=>{
+  (window.mediaAssets.images || []).forEach((fname) => {
     const art = document.createElement('article');
     art.className = 'media-card shadow';
     art.dataset.src = fname;
     art.dataset.type = 'image';
     const img = document.createElement('img');
-    img.setAttribute('src','assets/' + fname);
-    img.setAttribute('alt','');
+    img.setAttribute('src', 'assets/' + fname);
+    img.setAttribute('alt', '');
     art.appendChild(img);
     window._mediaCards.push(art);
   });
   const frag = document.createDocumentFragment();
-  window._mediaCards.forEach(c=>frag.appendChild(c));
+  window._mediaCards.forEach((c) => frag.appendChild(c));
   const staging = document.createElement('div');
-  staging.style.display='none';
-  staging.id='mediaStaging';
+  staging.style.display = 'none';
+  staging.id = 'mediaStaging';
   staging.appendChild(frag);
   document.body.appendChild(staging);
 }
-function arrangeMediaLayout(){
+function arrangeMediaLayout() {
   const allCards = window._mediaCards || Array.from(document.querySelectorAll('.media-card'));
-  if(!allCards || allCards.length===0) return;
+  if (!allCards || allCards.length === 0) return;
   const portraits = [];
   const landscapes = [];
 
-  allCards.forEach(card=>{
+  allCards.forEach((card) => {
     const v = card.querySelector('video');
     const img = card.querySelector('img');
-    let w=0,h=1;
-    if(v && v.videoWidth && v.videoHeight){ w=v.videoWidth; h=v.videoHeight; }
-    else if(img && img.naturalWidth && img.naturalHeight){ w=img.naturalWidth; h=img.naturalHeight; }
+    let w = 0,
+      h = 1;
+    if (v && v.videoWidth && v.videoHeight) {
+      w = v.videoWidth;
+      h = v.videoHeight;
+    } else if (img && img.naturalWidth && img.naturalHeight) {
+      w = img.naturalWidth;
+      h = img.naturalHeight;
+    }
     const ar = card.style.getPropertyValue('--ar');
-    if(!w && ar){ const parts = ar.split('/'); if(parts.length===2){ w=parseFloat(parts[0]); h=parseFloat(parts[1]); }}
-    if(w && h){
-      if(w>=h) landscapes.push(card); else portraits.push(card);
+    if (!w && ar) {
+      const parts = ar.split('/');
+      if (parts.length === 2) {
+        w = parseFloat(parts[0]);
+        h = parseFloat(parts[1]);
+      }
+    }
+    if (w && h) {
+      if (w >= h) landscapes.push(card);
+      else portraits.push(card);
     } else {
       portraits.push(card);
     }
@@ -141,17 +160,24 @@ function arrangeMediaLayout(){
   const topGrid = document.getElementById('topMediaGrid');
   const pills = document.getElementById('mediaPills');
   const landscapeContainer = document.getElementById('landscapeContainer');
-  if(!topGrid || !pills || !landscapeContainer) return;
-  topGrid.innerHTML = '';
-  pills.innerHTML = '';
-  landscapeContainer.innerHTML = '';
-  const chosenPortraits = portraits.slice(0,3);
-  chosenPortraits.forEach((card, i)=>{
+  if (!topGrid || !pills || !landscapeContainer) return;
+  // clear containers safely
+  while (topGrid.firstChild) topGrid.removeChild(topGrid.firstChild);
+  while (pills.firstChild) pills.removeChild(pills.firstChild);
+  while (landscapeContainer.firstChild)
+    landscapeContainer.removeChild(landscapeContainer.firstChild);
+  const chosenPortraits = portraits.slice(0, 3);
+  chosenPortraits.forEach((card, i) => {
     const wrap = document.createElement('div');
     wrap.className = 'media-card-wrap';
     card.style.width = '100%';
-  let title = (window.mediaAssets && window.mediaAssets.positionTitles && window.mediaAssets.positionTitles[i]) || card.dataset.title || (card.dataset.src||'').replace(/\.(mp4|jpg|jpeg|png)$/i,'');
-    if(typeof title === 'string' && (title.length>30 || /^[A-Za-z0-9_-]{20,}$/.test(title))){
+    let title =
+      (window.mediaAssets &&
+        window.mediaAssets.positionTitles &&
+        window.mediaAssets.positionTitles[i]) ||
+      card.dataset.title ||
+      (card.dataset.src || '').replace(/\.(mp4|jpg|jpeg|png)$/i, '');
+    if (typeof title === 'string' && (title.length > 30 || /^[A-Za-z0-9_-]{20,}$/.test(title))) {
       title = 'Hurricane Clip';
     }
     const caption = document.createElement('div');
@@ -166,15 +192,18 @@ function arrangeMediaLayout(){
     wrap.appendChild(caption);
     topGrid.appendChild(wrap);
   });
-  if(landscapes.length>0){
+  if (landscapes.length > 0) {
     const land = landscapes[0];
     const wrapper = document.createElement('div');
-    wrapper.style.width='100%';
-    wrapper.style.marginTop='0';
+    wrapper.style.width = '100%';
+    wrapper.style.marginTop = '0';
     wrapper.appendChild(land);
     land.classList.remove('shadow');
-    const landTitle = (window.mediaAssets && window.mediaAssets.landscapeTitle) || (land.dataset && land.dataset.src) || '';
-    if(landTitle){
+    const landTitle =
+      (window.mediaAssets && window.mediaAssets.landscapeTitle) ||
+      (land.dataset && land.dataset.src) ||
+      '';
+    if (landTitle) {
       const capWrap = document.createElement('div');
       capWrap.className = 'media-caption landscape-caption';
       const a = document.createElement('a');
@@ -188,14 +217,20 @@ function arrangeMediaLayout(){
   }
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  try{ buildMediaCards(); }catch(e){console.warn('buildMediaCards failed', e)}
-  try{ initMediaAspectRatios(); }catch(e){console.warn('media ratio init failed', e)}
-  try{ markActiveMobileNavLinks(); }catch(e){}
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    buildMediaCards();
+  } catch (e) {
+    console.warn('buildMediaCards failed', e);
+  }
+  try {
+    initMediaAspectRatios();
+  } catch (e) {
+    console.warn('media ratio init failed', e);
+  }
+  try {
+    markActiveMobileNavLinks();
+  } catch (e) {
+    console.warn('markActiveMobileNavLinks failed', e);
+  }
 });
-
-function createAdminModal(){
-  // Admin modal removed per cleanup request (no admin UI in frontend)
-}
-
-// admin UI removed to avoid insecure client-side admin access
