@@ -1965,7 +1965,13 @@ footer.site-footer .footer-left .pill-btn {
   z-index: 60;
 }
 
-@media (max-width: 1200px) {
+/* Ensure mobile menus are hidden by default on wider screens. The
+   menu is enabled (display:block) only within the mobile media query. */
+[id^="mobileMenu"] {
+  display: none;
+}
+
+@media (max-width: 768px) {
   .mobile-toggle {
     display: inline-flex;
   }
