@@ -485,6 +485,25 @@ footer a {
     border-width: 3px;
   }
 }
+
+/* Mobile: when a hamburger menu expands, give the menu a solid background
+   so the page content underneath doesn't show through. This targets any
+   element with an id that starts with "mobileMenu" when it is visible
+   (i.e., does NOT have the `hidden` class). It only applies on small screens
+   and does not affect desktop layout.
+*/
+@media (max-width: 768px) {
+  [id^="mobileMenu"] {
+    transition: background .18s ease, box-shadow .18s ease, padding .12s ease;
+  }
+  [id^="mobileMenu"]:not(.hidden) {
+    background: #ffffff;
+    padding: 0.6rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.12);
+    z-index: 95;
+  }
+}
 .hero-stack,
 .hero-product.object-contain {
   transform: none !important;
