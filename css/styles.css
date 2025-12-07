@@ -1,4 +1,4 @@
-.root,
+﻿.root,
 :root {
   --brand: #517cad;
   --brand-dark: #3e6090;
@@ -15,20 +15,19 @@ body {
   background: #f6f8fb;
 }
 
-/* Reset default body margin to allow full-bleed sections to reach the viewport edges */
+
 :root {
-  /* Header height used to offset page content when header is fixed */
-  --header-height: 7rem; /* matches .h-28 used on the nav */
+  
+  --header-height: 7rem; 
 }
 
 body {
   margin: 0;
-  /* Reserve space at the top so fixed header doesn't cover page content */
+  
   padding-top: var(--header-height);
 }
 
-/* Prevent tiny horizontal overflow that can appear when using full-bleed sections
-   (some browsers add a scrollbar width which can cause a 1px gap on the right). */
+
 html, body {
   overflow-x: hidden;
 }
@@ -53,13 +52,8 @@ html, body {
   box-shadow: 0 10px 20px rgba(47, 133, 90, 0.12);
 }
 
-/* Header & footer: darker, construction-themed button variants.
-   These override the global `--brand` look for navigation and footer only.
-   Preserve the existing hover 'lift' and transition behavior. */
-/* Header & footer: text-focused button variants.
-   Buttons in header/footer should appear as inline text (no filled background)
-   so they read clearly on a white page. On hover they switch to the
-   site's green accent (`--accent`) and keep the lift + shadow effect. */
+
+
 header .pill-btn,
 header .btn-primary,
 footer .pill-btn,
@@ -67,14 +61,14 @@ footer .btn-primary,
 header .btn-outline,
 footer .btn-outline {
   background: transparent;
-  color: #1f2937; /* dark slate for good contrast on white */
+  color: #1f2937; 
   border-radius: 0;
   box-shadow: none;
   padding: 0.35rem 0.6rem;
   font-weight: 600;
 }
 
-/* Hover: change text color to the existing green accent, keep lift */
+
 header .pill-btn:hover,
 header .btn-primary:hover,
 footer .pill-btn:hover,
@@ -82,13 +76,13 @@ footer .btn-primary:hover,
 header .btn-outline:hover,
 footer .btn-outline:hover {
   background: transparent;
-  color: var(--accent); /* original green */
-  /* larger, sleeker hover: slight lift + subtle scale for a polished feel */
+  color: var(--accent); 
+  
   transform: translateY(-6px) scale(1.06);
   box-shadow: 0 18px 36px rgba(47, 133, 90, 0.12);
 }
 
-/* Outline buttons in header/footer behave like text links (no border) */
+
 header .btn-outline,
 footer .btn-outline {
   border: none;
@@ -148,15 +142,15 @@ header .logo img {
   display: block;
 }
 
-/* Keep the top navigation visible while scrolling */
+
 header {
-  /* Fixed header so navigation is always visible */
+  
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: var(--header-height);
-  z-index: 90; /* above other content */
+  z-index: 90; 
   backdrop-filter: saturate(1.02) blur(4px);
 }
 
@@ -429,15 +423,12 @@ footer a {
 .hero-product,
 .hero-aux,
 
-/* Founder section background and portrait adjustments
-   Use the provided rooftop sunrise image as the background for the founder
-   section. This preserves existing layout while improving visual quality.
-*/
+
 .founder-section .founder-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  /* Quote the path to handle spaces in the filename */
+  
   background-image: url("../assets/a low angle image of a sunrise over a rooftop with IBR roof sheeting.jpg");
   background-size: cover;
   background-position: center center;
@@ -445,13 +436,13 @@ footer a {
   filter: saturate(0.98) contrast(1.02);
 }
 
-/* Overlay removed to allow the rooftop image to display clearly. */
+
 
 .founder-section {
   position: relative;
   overflow: hidden;
   min-height: 260px;
-  /* Make this section full-bleed so the background image reaches the viewport edges */
+  
   width: 100vw;
   left: 50%;
   right: 50%;
@@ -486,9 +477,7 @@ footer a {
   }
 }
 
-/* Mobile-only: ensure the hamburger toggle sits 20px from the right edge
-   and remove any border or shadow on the toggle itself (user preference).
-   This only applies on small screens and does not affect desktop layout. */
+
 @media (max-width: 768px) {
   .mobile-toggle {
     position: absolute;
@@ -499,7 +488,7 @@ footer a {
     border: none !important;
     box-shadow: none !important;
     padding: 0.35rem;
-    z-index: 110; /* above mobile menu card */
+    z-index: 110; 
   }
   .mobile-toggle svg {
     width: 30px;
@@ -508,20 +497,14 @@ footer a {
   }
 }
 
-/* Mobile-only: add extra vertical space between CTA buttons and
-   the hero product images when the layout stacks. Keeps desktop unchanged. */
+
 @media (max-width: 768px) {
   .hero-visual-column {
-    margin-top: 1.25rem; /* ~20px gap between CTAs and first product image */
+    margin-top: 1.25rem; 
   }
 }
 
-/* Mobile: when a hamburger menu expands, give the menu a solid background
-   so the page content underneath doesn't show through. This targets any
-   element with an id that starts with "mobileMenu" when it is visible
-   (i.e., does NOT have the `hidden` class). It only applies on small screens
-   and does not affect desktop layout.
-*/
+
 @media (max-width: 768px) {
   [id^="mobileMenu"] {
     transition: background .18s ease, box-shadow .18s ease, padding .12s ease;
@@ -579,8 +562,7 @@ footer a {
   transform: translate(24px, -0.5rem);
 }
 
-/* Ensure desktop (>=769px) shows the hero content in two columns
-   even if responsive utilities are not present in the deployed Tailwind CSS. */
+
 @media (min-width: 769px) {
   .hero-grid {
     display: grid !important;
@@ -594,11 +576,7 @@ footer a {
   }
 }
 
-/* Ensure the media rows (portrait row, pills and landscape video) span
-   the full page content width on larger screens so videos are not
-   constrained to a single column. Also make the landscape video
-   expand to fill the available width and use cover to avoid large
-   side gutters. */
+
 @media (min-width: 769px) {
   .hero-grid #topMediaGrid,
   .hero-grid #mediaPills,
@@ -611,19 +589,19 @@ footer a {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 1.5rem !important;
     align-items: start;
-    margin-bottom: 3rem !important; /* ensure a large clear gap before the landscape video */
+    margin-bottom: 3rem !important; 
   }
 
-  /* Make sure grid rows expand to fit media heights and avoid overlap */
+  
   .hero-grid {
     grid-auto-rows: auto !important;
   }
 
-  /* Make landscape container and its inner wrapper expand fully */
+  
   #landscapeContainer {
     width: 100% !important;
-    clear: both !important; /* ensure it sits below the thumbnail row */
-    margin-top: 2.5rem !important; /* larger visible gap between thumbnails and landscape */
+    clear: both !important; 
+    margin-top: 2.5rem !important; 
     display: block !important;
     position: relative !important;
     z-index: 1 !important;
@@ -634,8 +612,7 @@ footer a {
     margin: 0 auto;
   }
 
-  /* Use cover on the landscape video so it fills the width while
-     preserving a pleasing framing; portrait thumbnails keep contain. */
+  
   #landscapeContainer video {
     width: 100% !important;
     height: auto !important;
@@ -644,25 +621,22 @@ footer a {
     display: block;
   }
 
-  /* Slightly increase caption spacing on desktop for clarity */
+  
   .media-caption {
     margin-top: 0.75rem;
   }
 }
 
-/* Ensure media cards are positioned statically so they participate in document flow
-   and do not overlap each other. This helps prevent the landscape item from sitting
-   on top of the thumbnails. */
+
 .media-card,
 .media-card-wrap {
   position: relative !important;
   z-index: 2 !important;
 }
 
-/* Fallbacks for other pages when Tailwind responsive utilities are not present
-   Ensure product grids and two-column content display correctly on desktop. */
+
 @media (min-width: 769px) {
-  /* Store products: 2 columns on tablet, 3 on desktop */
+  
   #products {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
@@ -675,7 +649,7 @@ footer a {
   }
 }
 
-/* Generic two-column helper used on several pages */
+
 @media (min-width: 769px) {
   .two-col {
     display: grid !important;
@@ -689,7 +663,7 @@ footer a {
     grid-template-columns: 1fr 1fr !important;
     gap: 1.5rem !important;
   }
-  /* Top media grid fallback */
+  
   #topMediaGrid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
@@ -698,28 +672,21 @@ footer a {
   }
 }
 
-/* Responsive media card defaults
-   Ensure media cards (portrait thumbnails and landscape video) fill their grid cells
-   and the landscape container expands to the same content width as other sections.
-*/
+
 .media-card,
 .media-card-wrap {
   width: 100% !important;
   display: block !important;
-    /* allow scripts to set the aspect ratio via --ar to prevent squashing
-      Default to a portrait-friendly fallback so portrait videos are tall
-      before JS measures metadata. */
+    
     aspect-ratio: var(--ar, 9/16);
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid rgba(2,6,23,0.06);
     box-shadow: 0 8px 24px rgba(2,6,23,0.06);
-  min-height: 4.5rem; /* fallback minimum height while metadata loads */
+  min-height: 4.5rem; 
 }
 
-/* Let portrait media maintain their intrinsic aspect ratio (set via --ar)
-   so tall portrait videos render at their natural height. Keep items
-   aligned to the start of the grid and let rows size to their content. */
+
 #topMediaGrid {
   grid-auto-rows: auto !important;
   align-items: start !important;
@@ -731,13 +698,13 @@ footer a {
 #topMediaGrid .media-card {
   display: block !important;
   position: relative !important;
-  /* aspect-ratio is controlled by the element's --ar variable set by JS */
+  
 }
 #topMediaGrid .media-card img,
 #topMediaGrid .media-card video {
   width: 100% !important;
   height: auto !important;
-  object-fit: contain !important; /* show full video without cropping */
+  object-fit: contain !important; 
   display: block !important;
 }
 
@@ -750,10 +717,10 @@ footer a {
   height: auto !important;
   display: block !important;
   border-radius: 10px;
-  object-fit: contain !important; /* avoid cropping; keep natural aspect */
+  object-fit: contain !important; 
 }
 
-/* Video-specific: ensure video preserves intrinsic aspect ratio and fills its container */
+
 .media-card video,
 #landscapeContainer video {
   display: block;
@@ -761,11 +728,10 @@ footer a {
   height: auto !important;
 }
 
-/* Ensure landscape container has a consistent gap and padding on all viewports
-   so the full-width horizontal video cannot overlap or clip the portrait row. */
+
 #landscapeContainer {
   clear: both;
-  margin-top: 3.5rem; /* slightly larger gap to ensure visual separation */
+  margin-top: 3.5rem; 
   padding: 1rem 0;
   width: 100%;
   display: block;
@@ -781,8 +747,7 @@ footer a {
   padding-bottom: 0.5rem;
 }
 
-/* Strong overrides to ensure the top media grid items always fill their
-   grid cells and cannot overlap. Placed at the end to take precedence. */
+
 #topMediaGrid .media-card-wrap,
 #topMediaGrid .media-card {
   height: 100% !important;
@@ -795,31 +760,29 @@ footer a {
   display: block !important;
 }
 
-/* Ensure landscape has a clear separation from the thumbnails */
+
 #landscapeContainer {
   margin-top: 4rem !important;
 }
 
-/* Landscape wrapper should span the full width of the content area and
-   keep spacing consistent with other page sections. */
+
 #landscapeContainer > div {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 auto;
 }
 
-/* On narrow viewports keep the thumb row stacked and centered; on desktop use
-   the 3-column grid defined by #topMediaGrid above. */
+
 @media (max-width: 768px) {
   #topMediaGrid {
     display: block !important;
   }
   .media-card-wrap {
-    margin: 0 0 1.25rem 0; /* slightly larger gap between stacked cards */
+    margin: 0 0 1.25rem 0; 
   }
   .media-caption {
     text-align: center;
-    margin-top: 1.25rem; /* increase space between media and caption on mobile */
+    margin-top: 1.25rem; 
   }
 }
 
@@ -1025,7 +988,7 @@ footer a {
   border: 1px solid rgba(0, 0, 0, 0.04);
   min-width: 140px;
 }
-/* make the displayed price less bold to match kit styling */
+
 .price-pill {
   font-weight: 400;
 }
@@ -1276,8 +1239,8 @@ footer a {
 }
 
 footer.site-footer {
-  background: #ffffff; /* keep footer white to match header */
-  border-top: 1px solid rgba(0, 0, 0, 0.02); /* very subtle divider */
+  background: #ffffff; 
+  border-top: 1px solid rgba(0, 0, 0, 0.02); 
 }
 
 footer.site-footer .container {
@@ -1361,14 +1324,14 @@ footer.site-footer .footer-left .pill-btn {
   margin-right: 0.6rem;
 }
 
-/* Placeholder area on homepage to reserve space for future content */
+
 .homepage-placeholder {
-  min-height: 820px; /* large empty area to allow scrolling */
+  min-height: 820px; 
   width: 100%;
   background: transparent;
 }
 
-/* Founder / profile section styles (homepage) */
+
 .founder-section {
   position: relative;
   overflow: hidden;
@@ -1376,26 +1339,26 @@ footer.site-footer .footer-left .pill-btn {
   align-items: center;
   justify-content: center;
   padding: 3.5rem 0 4.5rem;
-  background: none; /* ensure no background color hides the image */
+  background: none; 
 }
 .founder-section .founder-bg {
   position: absolute;
   inset: 0;
-  /* Use the rooftop image directly; remove gradient overlay so the image is visible */
-  /* Use correct relative path from the CSS file to the assets directory */
+  
+  
   background-image: url("../assets/a low angle image of a sunrise over a rooftop with IBR roof sheeting.jpg");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  /* Fixed background on desktop for the fixed scroll effect; mobile overrides to 'scroll' below. */
+  
   background-attachment: fixed;
   will-change: auto;
-  /* subtle blur to help foreground content stand out; keep blur small so image remains recognizable */
+  
   filter: blur(3px) saturate(0.98) contrast(0.96) brightness(0.98);
   z-index: 0;
 }
 
-/* subtle overlay to increase contrast against the blurred background */
+
 .founder-section .founder-bg::after {
   content: "";
   position: absolute;
@@ -1404,7 +1367,7 @@ footer.site-footer .footer-left .pill-btn {
   pointer-events: none;
 }
 
-/* Mobile browsers often ignore background-attachment:fixed; use scroll there for better performance */
+
 @media (max-width: 767px) {
   .founder-section .founder-bg {
     background-attachment: scroll;
@@ -1425,7 +1388,7 @@ footer.site-footer .footer-left .pill-btn {
   color: #fff;
 }
 .founder-portrait-wrap {
-  /* Increased 1.5x from original 200px -> 300px for a larger founder portrait */
+  
   width: 300px;
   height: 300px;
   margin: 0 auto 1rem;
@@ -1484,7 +1447,7 @@ footer.site-footer .footer-left .pill-btn {
 
 @media (max-width: 768px) {
   .founder-card { padding: 1.25rem; }
-  /* Mobile portrait increased proportionally: 150 -> 225 (1.5x) */
+  
   .founder-portrait-wrap { width: 225px; height: 225px; }
   .founder-name { font-size: 1.4rem; }
   .founder-actions { grid-template-columns: 1fr; }
@@ -1695,9 +1658,9 @@ footer.site-footer .footer-left .pill-btn {
   border-top: none;
 }
 
-/* Style cart modal buttons to match site theme */
 
-/* Cart modal action buttons */
+
+
 #cartModal .cart-footer button,
 #cartModal .cart-footer a {
   min-width: 0;
@@ -1729,14 +1692,14 @@ footer.site-footer .footer-left .pill-btn {
   transform: translateY(-2px);
 }
 
-/* ensure enough space between the action buttons in cart footer */
+
 #cartModal .cart-footer .flex {
   display: flex;
   gap: 20px;
   align-items: center;
 }
 
-/* Invoice modal action buttons: restore themed styling */
+
 #printInvoice {
   background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -1878,8 +1841,7 @@ footer.site-footer .footer-left .pill-btn {
 }
 .media-card img,
 .media-card video {
-  /* Participate in normal flow so the card's height pushes following content down.
-     Avoid absolute positioning which can cause overlap with subsequent elements. */
+  
   position: static;
   width: 100%;
   height: 100%;
@@ -2016,7 +1978,7 @@ footer.site-footer .footer-left .pill-btn {
   }
 }
 
-/* Video used for product preview: fill the viewport and crop if needed */
+
 .product-video {
   width: 100%;
   height: 100%;
@@ -2210,8 +2172,7 @@ footer.site-footer .footer-left .pill-btn {
   z-index: 60;
 }
 
-/* Ensure mobile menus are hidden by default on wider screens. The
-   menu is enabled (display:block) only within the mobile media query. */
+
 [id^="mobileMenu"] {
   display: none;
 }
@@ -2485,7 +2446,7 @@ footer a {
     display: block !important;
   }
 
-  /* Ensure logo has no borders and is a bit larger when printing */
+  
   .print-only-invoice .invoice-header img {
     height: 80px !important;
     max-height: 200px !important;
@@ -3127,9 +3088,9 @@ footer.site-footer {
   }
 }
 
-/* === Final overrides: portrait video sizing and landscape separation === */
+
 @media (min-width: 769px) {
-  /* Make the three portrait cards taller so vertical videos display fully. */
+  
   #topMediaGrid {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 1.5rem !important;
@@ -3137,8 +3098,7 @@ footer.site-footer {
   }
 
   #topMediaGrid .media-card {
-    /* Allow JavaScript to set --ar; provide a strong min-height so cards
-       render tall enough for vertical videos. */
+    
     min-height: 600px !important;
     display: block !important;
     position: relative !important;
@@ -3146,7 +3106,7 @@ footer.site-footer {
     z-index: 2 !important;
   }
 
-  /* Ensure media fills the card height and shows the full video without cropping */
+  
   #topMediaGrid .media-card video,
   #topMediaGrid .media-card img {
     width: 100% !important;
@@ -3155,20 +3115,19 @@ footer.site-footer {
     display: block !important;
   }
 
-  /* Keep the landscape (horizontal) video clearly below with ample gap */
+  
   #landscapeContainer {
     clear: both !important;
-    /* Start the landscape just below the portrait cards with a small gap. */
+    
     margin-top: calc(300px + 1rem) !important;
     z-index: 1 !important;
     position: relative !important;
   }
 }
 
-/* Mobile-specific: stack portrait videos, remove large fixed heights, and
-   ensure they scale to the viewport while keeping rounding and spacing. */
+
 @media (max-width: 768px) {
-  /* Stack the portrait cards vertically */
+  
   #topMediaGrid {
     display: block !important;
     margin-bottom: 0.75rem !important;
@@ -3176,13 +3135,11 @@ footer.site-footer {
     padding-right: 0 !important;
   }
 
-  /* Portrait cards should not use the desktop min-height; instead allow
-     them to size to the viewport. Use max-height to avoid excessive length. */
+  
   #topMediaGrid .media-card {
     width: 100% !important;
     min-height: auto !important;
-    /* Let JS-controlled aspect ratio determine height so the full
-       vertical video displays at its natural size on mobile */
+    
     aspect-ratio: var(--ar, 9/16) !important;
     margin: 0 0 1rem 0 !important;
     border-radius: 20px !important;
@@ -3199,20 +3156,20 @@ footer.site-footer {
     background: transparent !important;
   }
 
-  /* Reduce caption/button spacing so the layout is compact on mobile */
+  
   #topMediaGrid .media-caption {
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
   }
 
-  /* Keep the landscape container below the stacked portraits with a small gap */
+  
   #landscapeContainer {
     margin-top: 1rem !important;
     clear: both !important;
   }
 }
 
-/* Remove dark letterbox background so portrait videos don't show black bars */
+
 #topMediaGrid .media-card {
   background: transparent !important;
 }
@@ -3221,29 +3178,30 @@ footer.site-footer {
   background: transparent !important;
 }
 
-/* Also ensure general .media-card fallback has no black background */
+
 .media-card {
   background: transparent !important;
 }
 
-/* Portrait rounding and caption spacing tweaks */
+
 @media (min-width: 769px) {
-  /* Increase rounding on the portrait cards and media */
+  
   #topMediaGrid .media-card,
   #topMediaGrid .media-card video,
   #topMediaGrid .media-card img {
     border-radius: 20px !important;
   }
 
-  /* Reduce spacing between the caption/button under each portrait and the landscape video */
+  
   #topMediaGrid .media-caption {
     margin-bottom: 0.5rem !important;
   }
 
-  /* Slightly reduce the caption top spacing to keep the buttons closer to the media */
+  
   #topMediaGrid .media-caption .pill-btn {
     margin-top: 0 !important;
     padding-top: 0.45rem !important;
     padding-bottom: 0.45rem !important;
   }
 }
+
