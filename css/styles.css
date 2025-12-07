@@ -1658,6 +1658,24 @@ footer.site-footer .footer-left .pill-btn {
 .founder-section .founder-actions { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1.25rem 2rem !important; }
 .founder-section .founder-actions .pill-btn { display: block !important; width: 100% !important; padding: 0.95rem 1.25rem !important; box-sizing: border-box !important; }
 
+/* Extra-safe rules: ensure the buttons fill their grid columns on large viewports
+   and maintain a reasonable minimum width so they don't collapse on the deployed site. */
+.founder-section .founder-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  place-items: stretch;
+}
+.founder-section .founder-actions > .pill-btn {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 260px !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .founder-section .founder-actions > .pill-btn { min-width: 0 !important; }
+}
+
 .social-icon {
   display: inline-flex;
   align-items: center;
