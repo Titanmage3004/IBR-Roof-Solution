@@ -138,6 +138,43 @@ body {
   background: #f6f8fb;
 }
 
+/* Mobile: stack About vertical videos but keep desktop visual treatment */
+@media (max-width: 768px) {
+  #vertical-videos .video-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  /* Use the same tall card height as desktop so videos keep their presence */
+  #vertical-videos .vertical-video-card {
+    height: min(64vh, 620px) !important;
+    border-radius: 20px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #000 !important;
+  }
+
+  #vertical-videos .vertical-video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    background: #000 !important;
+  }
+
+  #vertical-videos .video-labels {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Very small screens: slightly reduce card height to avoid extreme scroll */
+  @media (max-width: 420px) {
+    #vertical-videos .vertical-video-card {
+      height: min(56vh, 520px) !important;
+    }
+  }
+}
+
 
 :root {
   
