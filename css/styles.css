@@ -664,8 +664,6 @@ footer a {
 .product-cta { margin-top: 1rem }
 .rotator-controls { margin-top: 0.75rem; display:flex; gap:0.5rem }
 
-/* Recent installs */
-.recent-installs { /* padding is set above in the card rule; keep heading spacing */ }
 .recent-installs .section-heading { font-size: 1.125rem; margin-bottom: 0.75rem }
 
 /* Horizontal scrolling marquee for installs */
@@ -1516,6 +1514,71 @@ footer.site-footer .footer-center img {
   height: 46px;
   object-fit: contain;
 }
+
+/* ------------------------------------------------------------------
+   Layout safeguard: ensure footer pins to bottom when page content
+   is short (deployed environments sometimes lose tailwind utilities).
+   This block is intentionally specific and placed at EOF to avoid
+   context-matching failures when re-applying.
+   ------------------------------------------------------------------ */
+
+html, body {
+  height: 100%;
+}
+
+/* Force a column flex layout and allow main content to grow */
+body {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+}
+
+/* Ensure main content area will expand to push footer down. Target
+   common utility classes and the explicit <main> element. */
+main,
+.main,
+.content,
+.flex-grow,
+main.flex-grow {
+  flex: 1 0 auto !important;
+}
+
+/* Make footer stay at the bottom when there's little content */
+footer.site-footer {
+  margin-top: auto !important;
+  position: relative;
+  z-index: 30;
+}
+
+/* ------------------------------------------------------------------
+   Small social icons next to inputs (contact page). Ensure the
+   `.small-social` wrapper and contained <img> are visible and sized
+   consistently across deployed environments.
+   ------------------------------------------------------------------ */
+
+.small-social {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+}
+
+.small-social img {
+  width: 24px !important;
+  height: 24px !important;
+  display: block !important;
+  object-fit: contain !important;
+}
+
+/* Small helper: ensure inputs next to icons don't collapse */
+.flex.items-center.gap-3 input,
+.flex.items-center.gap-3 .p-3 {
+  flex: 1 1 auto !important;
+}
+
 
 footer.site-footer .footer-left .pill-btn {
   margin-right: 0.6rem;
