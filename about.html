@@ -67,10 +67,67 @@
       </div>
     </header>
 
-    <!-- Main left intentionally empty per request -->
+    <!-- Main content: vertical video trio at the top, responsive stack on mobile -->
     <main class="flex-grow container mx-auto px-6 py-8" role="main" aria-label="Main content">
-      <!-- Page intentionally cleared. -->
+      <section id="vertical-videos" class="vertical-videos">
+        <div class="video-grid">
+          <div class="vertical-video-card">
+            <video playsinline autoplay muted loop preload="metadata" class="vertical-video">
+              <source src="assets/Vertical Inner rib block 2.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="vertical-video-card">
+            <video playsinline autoplay muted loop preload="metadata" class="vertical-video">
+              <source src="assets/Vertical Assembeling the DIY Kit.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="vertical-video-card">
+            <video playsinline autoplay muted loop preload="metadata" class="vertical-video">
+              <source src="assets/Vertical Product Demo Support bracket.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <div class="video-labels" aria-label="Video labels">
+          <div class="video-label">Inner Rib Block</div>
+          <div class="video-label">DIY Kit Assembly</div>
+          <div class="video-label">Upper Roof Support Bracket</div>
+        </div>
+
+        <div class="horizontal-video-wrap" aria-label="Full installation demo">
+          <video class="horizontal-video" playsinline autoplay muted loop preload="metadata">
+            <source src="assets/Horizon Full Installation Demo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div class="horizontal-video-label video-label" aria-hidden="true">Full Installation Demo</div>
+      </section>
     </main>
+
+    <!-- Founder / Profile section moved from homepage. Uses local assets for portrait and background. -->
+    <section id="homepage-placeholder" class="homepage-placeholder founder-section" aria-labelledby="founder-heading">
+      <div class="founder-bg"></div>
+      <div class="founder-inner container">
+        <div class="founder-card">
+          <div class="founder-portrait-wrap">
+            <img src="assets/Founder Image.png" alt="Founder portrait" class="founder-portrait" />
+          </div>
+          <h2 id="founder-heading" class="founder-name">Manus Venter</h2>
+          <div class="founder-title">IBR Roof Solutions</div>
+          <div class="founder-title">Creator, Owner &amp; Founder</div>
+
+          <div class="founder-actions">
+            <a href="https://www.facebook.com/profile.php?id=100087598423269&sk=reels_tab" class="pill-btn" target="_blank" rel="noopener">Facebook</a>
+            <a href="contact.html" class="pill-btn">Contact Us</a>
+            <a href="mailto:info@ibrroofsolutions.co.za" class="pill-btn">Email</a>
+            <a href="https://www.instagram.com/ibr_roof_solutions_?igsh=dTZqMG00aGpoZGVn" class="pill-btn" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Single Footer (bottom navigation) -->
     <footer class="site-footer mt-8">
@@ -78,6 +135,7 @@
         <div class="footer-row">
           <div class="footer-left">
             <a href="store.html" class="pill-btn">Products</a>
+            <a href="policies.html" class="pill-btn" style="margin-left:0.5rem">Policies</a>
           </div>
 
           <div class="footer-center">
@@ -98,5 +156,21 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+      (function(){
+        try {
+          var hv = document.querySelector('#vertical-videos .horizontal-video');
+          if (!hv) return;
+          hv.muted = true;
+          hv.loop = true;
+          hv.playsInline = true;
+          // Attempt to play; ignore failures.
+          hv.play().catch(function(){});
+          // If the video is paused (user or browser), restart it.
+          hv.addEventListener('pause', function(){ try{ hv.play().catch(function(){}); }catch(e){} });
+          hv.addEventListener('ended', function(){ try{ hv.play().catch(function(){}); }catch(e){} });
+        } catch(e) {}
+      })();
+    </script>
   </body>
 </html>

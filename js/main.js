@@ -254,7 +254,103 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {
     console.warn('initMobileFounderParallax failed', e);
   }
+  try {
+    initFeaturedRotator();
+  } catch (e) {
+    console.warn('initFeaturedRotator failed', e);
+  }
+  try {
+    initAboutAutoplayVideos();
+  } catch (e) {
+    console.warn('initAboutAutoplayVideos failed', e);
+  }
+  // vertical video auto-sizing removed to keep equal heights across the trio
 });
+
+// Ensure vertical about-page videos are muted and playing (helps with some browsers)
+function initAboutAutoplayVideos() {
+  try {
+    const vids = Array.from(document.querySelectorAll('.vertical-video'));
+    if (!vids.length) return;
+    vids.forEach((v) => {
+      try {
+        v.muted = true;
+        // attempt to play; many browsers allow autoplay when muted
+        const p = v.play();
+        if (p && typeof p.then === 'function') {
+          p.catch(() => {
+            // ignore play failures (user gesture required in some contexts)
+          });
+        }
+      } catch (e) {
+        // ignore per-video errors
+      }
+    });
+  } catch (err) {
+    console.warn('about autoplay init failed', err);
+  }
+}
+
+// Adjust vertical video card heights so video fits without letterboxing
+// initVerticalVideoSizing removed — fixed equal sizes enforced by CSS
+
+/* Featured products rotator: cycles visible `.product-slide` elements with a fade.
+   Non-invasive: uses class names scoped to `#featured-products` and pauses on hover.
+ */
+function initFeaturedRotator() {
+  try {
+    const root = document.getElementById('featured-products');
+    if (!root) return;
+    const slides = Array.from(root.querySelectorAll('.product-slide'));
+    if (!slides.length) return;
+
+    let current = slides.findIndex((s) => s.classList.contains('active'));
+    if (current < 0) current = 0;
+    let interval = null;
+    const delay = 4200;
+
+    const goTo = (idx) => {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === idx);
+      });
+      current = idx;
+    };
+
+    const next = () => goTo((current + 1) % slides.length);
+    const prev = () => goTo((current - 1 + slides.length) % slides.length);
+
+    const start = () => {
+      if (interval) return;
+      interval = setInterval(next, delay);
+    };
+    const stop = () => {
+      if (!interval) return;
+      clearInterval(interval);
+      interval = null;
+    };
+
+    // Controls (optional)
+    const btnNext = root.querySelector('.rot-next');
+    const btnPrev = root.querySelector('.rot-prev');
+    if (btnNext) btnNext.addEventListener('click', () => { stop(); next(); start(); });
+    if (btnPrev) btnPrev.addEventListener('click', () => { stop(); prev(); start(); });
+
+    // Pause on hover/focus for accessibility
+    root.addEventListener('mouseenter', stop, { passive: true });
+    root.addEventListener('mouseleave', start, { passive: true });
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    // Initialize
+    goTo(current);
+    start();
+    // Expose for debugging if needed
+    window.app = window.app || {};
+    window.app.featuredRotator = { goTo, next, prev, start, stop };
+  } catch (err) {
+    console.warn('featured rotator error', err);
+  }
+}
 
 /* Mobile-only parallax for the founder background.
    Desktop keeps using CSS `background-attachment: fixed`.

@@ -129,26 +129,72 @@
       </section>
     </main>
 
-    <!-- Founder / Profile section (replaces placeholder). Uses local assets for portrait and background. -->
-    <section id="homepage-placeholder" class="homepage-placeholder founder-section" aria-labelledby="founder-heading">
-      <div class="founder-bg"></div>
-      <div class="founder-inner container">
-        <div class="founder-card">
-          <div class="founder-portrait-wrap">
-            <img src="assets/Founder Image.png" alt="Founder portrait" class="founder-portrait" />
-          </div>
-          <h2 id="founder-heading" class="founder-name">Manus Venter</h2>
-          <div class="founder-title">IBR Roof Solutions</div>
-          <div class="founder-title">Creator, Owner &amp; Founder</div>
+    <!-- Featured Products rotator (displays one product at a time with fade transitions) -->
+    <section id="featured-products" class="featured-rotator container" aria-label="Featured products">
+      <div class="featured-inner">
+        <div class="rotator-stage">
+          <article class="product-slide active" data-product="inner-rib">
+            <div class="product-media">
+              <img src="assets/Inner rib block - index.svg" alt="Inner Rib Block" />
+            </div>
+            <div class="product-copy">
+              <h3 class="product-title">Inner Rib Block</h3>
+              <p class="product-desc">A precision-fit component for secure roofing joins — fast installation, durable performance.</p>
+              <div class="product-cta">
+                <a href="store.html#p1" class="btn-primary">View Product</a>
+              </div>
+            </div>
+          </article>
 
-          <!-- Small social icons removed per request; founder action buttons remain below -->
+          <article class="product-slide" data-product="hurricane-clip">
+            <div class="product-media">
+              <img src="assets/Hurricane Clip.svg" alt="Hurricane Clip" />
+            </div>
+            <div class="product-copy">
+              <h3 class="product-title">Hurricane Clip</h3>
+              <p class="product-desc">Engineered to keep sheets secure in extreme weather — tested for reliability.</p>
+              <div class="product-cta">
+                <a href="store.html#p3" class="btn-primary">View Product</a>
+              </div>
+            </div>
+          </article>
 
-          <div class="founder-actions">
-            <a href="https://www.facebook.com/profile.php?id=100087598423269&sk=reels_tab" class="pill-btn" target="_blank" rel="noopener">Facebook</a>
-            <a href="contact.html" class="pill-btn">Contact Us</a>
-            <a href="mailto:info@ibrroofsolutions.co.za" class="pill-btn">Email</a>
-            <a href="https://www.instagram.com/ibr_roof_solutions_?igsh=dTZqMG00aGpoZGVn" class="pill-btn" target="_blank" rel="noopener">Instagram</a>
-          </div>
+          <article class="product-slide" data-product="upper-support">
+            <div class="product-media">
+              <img src="assets/Upper roof support bracket.svg" alt="Upper Roof Support Bracket" />
+            </div>
+            <div class="product-copy">
+              <h3 class="product-title">Upper Roof Support Bracket</h3>
+              <p class="product-desc">Adds structural support where you need it most — quick to mount and compatible with IBR sheets.</p>
+              <div class="product-cta">
+                <a href="store.html#p2" class="btn-primary">View Product</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Controls removed: rotator auto-advances on its own -->
+      </div>
+    </section>
+
+    <!-- Recent installations: scrolling marquee showcasing actual installation photos -->
+    <section id="recent-installations" class="recent-installs container" aria-label="Recent installations">
+      <h3 class="section-heading">Recent Installations</h3>
+      <div class="installs-marquee" tabindex="0">
+        <div class="installs-track">
+          <div class="install-item"><img src="assets/Installed Hurricane clip.jpg" alt="Installed hurricane clip 1"></div>
+          <div class="install-item"><img src="assets/Installed hurricane clips.jpg" alt="Installed hurricane clips 2"></div>
+          <div class="install-item"><img src="assets/more installed hurricane clip.jpg" alt="Installed hurricane clip 3"></div>
+          <div class="install-item"><img src="assets/More installed hurricane clips.jpg" alt="Installed hurricane clips 4"></div>
+          <div class="install-item"><img src="assets/Inner rib block installed on roof.svg" alt="Inner rib block installed"></div>
+          <div class="install-item"><img src="assets/a low angle image of a sunrise over a rooftop with IBR roof sheeting.jpg" alt="Roof installation sunrise"></div>
+          <!-- duplicate sequence for seamless looping -->
+          <div class="install-item"><img src="assets/Installed Hurricane clip.jpg" alt="Installed hurricane clip 1"></div>
+          <div class="install-item"><img src="assets/Installed hurricane clips.jpg" alt="Installed hurricane clips 2"></div>
+          <div class="install-item"><img src="assets/more installed hurricane clip.jpg" alt="Installed hurricane clip 3"></div>
+          <div class="install-item"><img src="assets/More installed hurricane clips.jpg" alt="Installed hurricane clips 4"></div>
+          <div class="install-item"><img src="assets/Inner rib block installed on roof.svg" alt="Inner rib block installed"></div>
+          <div class="install-item"><img src="assets/a low angle image of a sunrise over a rooftop with IBR roof sheeting.jpg" alt="Roof installation sunrise"></div>
         </div>
       </div>
     </section>
@@ -157,7 +203,8 @@
       <div class="container mx-auto px-6 py-6">
         <div class="footer-row">
             <div class="footer-left">
-            <a href="store.html" class="pill-btn">Products</a>
+              <a href="store.html" class="pill-btn">Products</a>
+              <a href="policies.html" class="pill-btn" style="margin-left:0.5rem">Policies</a>
           </div>
 
           <div class="footer-center">
@@ -177,6 +224,7 @@
 
           <div class="footer-mobile-stack" aria-hidden="true">
           <a href="store.html" class="pill-btn">Products</a>
+          <a href="policies.html" class="pill-btn" style="margin-top:0.6rem">Policies</a>
           <a href="contact.html" class="pill-btn" style="margin-top: 0.6rem">Contact Us</a>
           <div class="social-icons" style="margin-top: 0.6rem">
             <a href="#" class="social-icon" aria-label="WhatsApp"><img src="assets/Whatsapp logo.svg" alt="WhatsApp"/></a>
