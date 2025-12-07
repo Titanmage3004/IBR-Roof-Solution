@@ -76,6 +76,57 @@
   .vertical-video-card { height: min(46vh, 380px); }
 }
 
+/* ------------------------------------------------------------------
+   Mobile fixes: ensure header logo + hamburger align on one row,
+   and keep the featured rotator slides overlaid in a single stage
+   instead of stacking vertically on small viewports.
+   These overrides are intentionally scoped to max-width:768px.
+   ------------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+  /* Header: remove the left-shift and ensure vertical centering */
+  header .logo {
+    transform: none !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+    align-self: center !important;
+  }
+
+  /* Ensure the mobile toggle (hamburger) sits on the same baseline */
+  .nav-grid .mobile-toggle {
+    align-self: center !important;
+    justify-self: end !important;
+    margin: 0 !important;
+  }
+
+  /* Featured rotator: keep slides absolutely positioned so they
+     overlay inside the same rotator-stage instead of stacking */
+  .rotator-stage {
+    position: relative !important;
+    min-height: 220px !important; /* compact viewport height */
+  }
+
+  .product-slide {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem !important;
+  }
+
+  /* Ensure internal media/content adapts but remains within the stage */
+  .product-slide .product-media img {
+    width: 120px !important;
+    height: auto !important;
+  }
+
+  /* Keep pointer-events & opacity behavior intact for active slide */
+  .product-slide { opacity: 0; pointer-events: none; }
+  .product-slide.active { opacity: 1; pointer-events: auto; }
+}
+
 
 * {
   box-sizing: border-box;
