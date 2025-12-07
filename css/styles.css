@@ -1650,6 +1650,14 @@ footer.site-footer .footer-left .pill-btn {
   .founder-actions { grid-template-columns: 1fr; }
 }
 
+/* Stronger layout enforcement for deployed environments where defaults
+   may be overridden. Keeps buttons full-width inside their grid columns
+   and increases horizontal padding to match local appearance. Scoped
+   to .founder-section to avoid global side effects. */
+.founder-section .founder-card { max-width: 1180px !important; }
+.founder-section .founder-actions { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1.25rem 2rem !important; }
+.founder-section .founder-actions .pill-btn { display: block !important; width: 100% !important; padding: 0.95rem 1.25rem !important; box-sizing: border-box !important; }
+
 .social-icon {
   display: inline-flex;
   align-items: center;
