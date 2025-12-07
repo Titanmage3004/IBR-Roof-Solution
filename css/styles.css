@@ -706,8 +706,14 @@ footer a {
 .media-card-wrap {
   width: 100% !important;
   display: block !important;
-  /* allow scripts to set the aspect ratio via --ar to prevent squashing */
-  aspect-ratio: var(--ar, 16/9);
+    /* allow scripts to set the aspect ratio via --ar to prevent squashing
+      Default to a portrait-friendly fallback so portrait videos are tall
+      before JS measures metadata. */
+    aspect-ratio: var(--ar, 9/16);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(2,6,23,0.06);
+    box-shadow: 0 8px 24px rgba(2,6,23,0.06);
   min-height: 4.5rem; /* fallback minimum height while metadata loads */
 }
 
